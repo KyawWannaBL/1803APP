@@ -97,7 +97,7 @@ select throws_ok($t$
     'R','099','A','C','S',
     1000,1000
   );
-$t$, '.*row-level security.*', 'MERCHANT cannot insert shipment for other merchant');
+$t$, '42501', 'new row violates row-level security policy for table "shipments"', 'MERCHANT cannot insert shipment for other merchant');
 
 select * from finish();
 rollback;
