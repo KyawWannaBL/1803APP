@@ -5,20 +5,23 @@ select has_table('public', 'shipment_tracking', 'public.shipment_tracking exists
 
 do $$
 declare
-  u1 uuid := gen_random_uuid();
-  m_user1 uuid := gen_random_uuid();
-  m1 uuid := gen_random_uuid();
-  s1 uuid := gen_random_uuid();
-  track_type regtype;
-  first_label text;
+  rider_uid uuid := '11000000-0000-0000-0000-000000000001';
+  merchant_uid uuid := '11000000-0000-0000-0000-000000000002';
+  merchant_id uuid := '11000000-0000-0000-0000-000000000003';
+  shipment_id uuid := '11000000-0000-0000-0000-000000000004';
 begin
-  insert into public.users(id,firebase_uid,email,full_name) values
-    (m_user1,'fb_m1b','merchant_tracking@test.local','Merchant Track'),
-    (u1,'fb_r1b','rider_tracking@test.local','Rider Track')
-  on conflict do nothing;
+  insert into auth.users(id, aud, role, email, raw_app_meta_data, raw_user_meta_data, created_at, updated_at) values
+    (merchant_uid, 'authenticated', 'authenticated', 'merchant_tracking@test.local', '{}'::jsonb, '{}'::jsonb, now(), now()),
+    (rider_uid, 'authenticated', 'authenticated', 'rider_tracking@test.local', '{}'::jsonb, '{}'::jsonb, now(), now())
+  on conflict (id) do nothing;
+
+  insert into public.users(id,firebase_uid,email,full_name,role) values
+    (merchant_uid,'fb_m1b','merchant_tracking@test.local','Merchant Track','MERCHANT'),
+    (rider_uid,'fb_r1b','rider_tracking@test.local','Rider Track','RIDER')
+  on conflict (id) do nothing;
 
   insert into public.merchants(id,user_id,merchant_code,business_name,contact_person,phone,email,address,city,state)
-  values (m1,m_user1,'MRC-T','Biz T','Owner T','093333333','merchant_tracking@test.local','Addr','Yangon','YG')
+  values (merchant_id,merchant_uid,'MRC-T','Biz T','Owner T','093333333','merchant_tracking@test.local','Addr','Yangon','YG')
   on conflict do nothing;
 
   insert into public.shipments(
@@ -27,55 +30,50 @@ begin
     receiver_name,receiver_phone,receiver_address,receiver_city,receiver_state,
     delivery_fee,total_amount,assigned_rider_id
   ) values
-    (s1,'WAY-TRACK-001',m1,'S','090','A','C','S','R','0977777','A','C','S',1500,1500,u1)
+    (shipment_id,'WAY-TRACK-001',merchant_id,'S','090','A','C','S','R','0977777','A','C','S',1500,1500,rider_uid)
   on conflict do nothing;
 
-  track_type := public.col_type('public.shipment_tracking'::regclass,'status');
-  first_label := public.enum_first_label(track_type);
-  if first_label is null then first_label := 'pending'; end if;
-
-  execute format(
-    'insert into public.shipment_tracking(shipment_id,status,notes,is_customer_visible,handled_by) values (%L::uuid, %L::%s, %L, true, %L::uuid)',
-    s1::text, first_label, track_type::text, 'Created', u1::text
-  );
+  insert into public.shipment_tracking(shipment_id,status,notes,is_customer_visible,handled_by)
+  values (shipment_id,'PENDING','Created',true,rider_uid)
+  on conflict do nothing;
 end $$;
 
--- Rider can insert tracking for assigned shipment
-select lives_ok($$
-  do $$
-  declare
-    sid uuid;
-    ttype regtype;
-    label text;
-  begin
-    select id into sid from public.shipments where way_id='WAY-TRACK-001' limit 1;
-    ttype := public.col_type('public.shipment_tracking'::regclass,'status');
-    label := public.enum_first_label(ttype);
-    if label is null then label := 'pending'; end if;
+select lives_ok($t$
+  set local role authenticated;
+  select set_config('request.jwt.claim.sub', '11000000-0000-0000-0000-000000000001', true);
+  select set_config('request.jwt.claim.email', 'rider_tracking@test.local', true);
+  select set_config(
+    'request.jwt.claims',
+    json_build_object(
+      'sub','11000000-0000-0000-0000-000000000001',
+      'email','rider_tracking@test.local',
+      'app_role','RIDER'
+    )::text,
+    true
+  );
 
-    perform set_config('request.jwt.claim.sub', '22222222-2222-2222-2222-222222222222', true);
-    perform set_config('request.jwt.claim.email', 'rider_tracking@test.local', true);
-    perform set_config('request.jwt.claims', json_build_object('sub','22222222-2222-2222-2222-222222222222','email','rider_tracking@test.local','app_role','RIDER')::text, true);
-    execute 'set local role authenticated';
+  insert into public.shipment_tracking(shipment_id,status,notes,is_customer_visible)
+  values (
+    (select id from public.shipments where way_id='WAY-TRACK-001' limit 1),
+    'PENDING',
+    'Scan update',
+    true
+  );
+$t$, 'RIDER can add tracking on assigned shipment');
 
-    execute format(
-      'insert into public.shipment_tracking(shipment_id,status,notes,is_customer_visible) values (%L::uuid, %L::%s, %L, true)',
-      sid::text, label, ttype::text, 'Scan update'
-    );
-  end $$;
-$$, 'RIDER can add tracking on assigned shipment');
-
--- Merchant can read tracking for own shipment
-select lives_ok($$
-  do $$
-  begin
-    perform set_config('request.jwt.claim.sub', '33333333-3333-3333-3333-333333333333', true);
-    perform set_config('request.jwt.claim.email', 'merchant_tracking@test.local', true);
-    perform set_config('request.jwt.claims', json_build_object('sub','33333333-3333-3333-3333-333333333333','email','merchant_tracking@test.local','app_role','MERCHANT')::text, true);
-    execute 'set local role authenticated';
-    perform ok((select count(*) from public.shipment_tracking) >= 1, 'MERCHANT can read tracking for own shipment');
-  end $$;
-$$, 'Merchant tracking select works');
+set local role authenticated;
+select set_config('request.jwt.claim.sub', '11000000-0000-0000-0000-000000000002', true);
+select set_config('request.jwt.claim.email', 'merchant_tracking@test.local', true);
+select set_config(
+  'request.jwt.claims',
+  json_build_object(
+    'sub','11000000-0000-0000-0000-000000000002',
+    'email','merchant_tracking@test.local',
+    'app_role','MERCHANT'
+  )::text,
+  true
+);
+select ok((select count(*) from public.shipment_tracking) >= 1, 'MERCHANT can read tracking for own shipment');
 
 select * from finish();
 rollback;

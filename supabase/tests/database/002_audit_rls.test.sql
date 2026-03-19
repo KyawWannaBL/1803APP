@@ -1,35 +1,33 @@
 begin;
 select plan(2);
 
--- As authenticated but non-privileged => should see 0 rows even if table has rows.
-do $$
-begin
-  perform set_config('request.jwt.claim.sub', '22222222-2222-2222-2222-222222222222', true);
-    perform set_config('request.jwt.claim.email', 'u@u.com', true);
-    perform set_config('request.jwt.claims', json_build_object(
+set local role authenticated;
+
+select set_config('request.jwt.claim.sub', '22222222-2222-2222-2222-222222222222', true);
+select set_config('request.jwt.claim.email', 'u@u.com', true);
+select set_config(
+  'request.jwt.claims',
+  json_build_object(
     'sub','22222222-2222-2222-2222-222222222222',
     'email','u@u.com',
     'app_role','CUSTOMER'
-  )::text, true);
+  )::text,
+  true
+);
+select ok((select count(*) from public.audit_logs) = 0, 'Non-privileged role sees 0 audit rows');
 
-  execute 'set local role authenticated';
-  perform ok((select count(*) from public.audit_logs) = 0, 'Non-privileged role sees 0 audit rows');
-end $$;
-
--- As SUPER_ADMIN => can select (still may be 0 rows; policy must allow select without error)
-do $$
-begin
-  perform set_config('request.jwt.claim.sub', '33333333-3333-3333-3333-333333333333', true);
-    perform set_config('request.jwt.claim.email', 'a@a.com', true);
-    perform set_config('request.jwt.claims', json_build_object(
+select set_config('request.jwt.claim.sub', '33333333-3333-3333-3333-333333333333', true);
+select set_config('request.jwt.claim.email', 'a@a.com', true);
+select set_config(
+  'request.jwt.claims',
+  json_build_object(
     'sub','33333333-3333-3333-3333-333333333333',
     'email','a@a.com',
     'app_role','SUPER_ADMIN'
-  )::text, true);
-
-  execute 'set local role authenticated';
-  perform ok(true, 'SUPER_ADMIN can query audit_logs (policy permits select)');
-end $$;
+  )::text,
+  true
+);
+select ok((select count(*) from public.audit_logs) >= 0, 'SUPER_ADMIN can query audit_logs');
 
 select * from finish();
 rollback;
