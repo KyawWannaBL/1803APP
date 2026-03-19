@@ -1,0 +1,2507 @@
+[
+  {
+    "code": "branch_registry",
+    "route": "/admin/branch-\\1egistry",
+    "legacy_route": null,
+    "title_en": "Branch Registry",
+    "title_mm": "Branch Registry",
+    "portal": "enterprise_admin",
+    "portal_name_en": "Enterprise Admin",
+    "portal_name_mm": "Enterprise Admin",
+    "roles": [
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Administration",
+    "kind": "operation",
+    "tables": [
+      "users",
+      "roles",
+      "permissions"
+    ],
+    "modules": []
+  },
+  {
+    "code": "organization_registry",
+    "route": "/admin/organization-\\1egistry",
+    "legacy_route": null,
+    "title_en": "Organization Registry",
+    "title_mm": "Organization Registry",
+    "portal": "enterprise_admin",
+    "portal_name_en": "Enterprise Admin",
+    "portal_name_mm": "Enterprise Admin",
+    "roles": [
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Administration",
+    "kind": "operation",
+    "tables": [
+      "users",
+      "roles",
+      "permissions"
+    ],
+    "modules": []
+  },
+  {
+    "code": "portal_access_hub",
+    "route": "/admin/portal-\\1ccess-\\1ub",
+    "legacy_route": null,
+    "title_en": "Portal Access Hub",
+    "title_mm": "Portal Access Hub",
+    "portal": "enterprise_admin",
+    "portal_name_en": "Enterprise Admin",
+    "portal_name_mm": "Enterprise Admin",
+    "roles": [
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Administration",
+    "kind": "operation",
+    "tables": [
+      "users",
+      "roles",
+      "permissions"
+    ],
+    "modules": []
+  },
+  {
+    "code": "role_permission_matrix",
+    "route": "/admin/role-\\1ermission-\\1atrix",
+    "legacy_route": null,
+    "title_en": "Role Permission Matrix",
+    "title_mm": "Role Permission Matrix",
+    "portal": "enterprise_admin",
+    "portal_name_en": "Enterprise Admin",
+    "portal_name_mm": "Enterprise Admin",
+    "roles": [
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Administration",
+    "kind": "operation",
+    "tables": [
+      "users",
+      "roles",
+      "permissions"
+    ],
+    "modules": []
+  },
+  {
+    "code": "system_settings",
+    "route": "/admin/system-\\1ettings",
+    "legacy_route": null,
+    "title_en": "System Settings",
+    "title_mm": "System Settings",
+    "portal": "enterprise_admin",
+    "portal_name_en": "Enterprise Admin",
+    "portal_name_mm": "Enterprise Admin",
+    "roles": [
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Administration",
+    "kind": "operation",
+    "tables": [
+      "users",
+      "roles",
+      "permissions"
+    ],
+    "modules": []
+  },
+  {
+    "code": "user_access_management",
+    "route": "/admin/user-\\1ccess-\\1anagement",
+    "legacy_route": null,
+    "title_en": "User Access Management",
+    "title_mm": "User Access Management",
+    "portal": "enterprise_admin",
+    "portal_name_en": "Enterprise Admin",
+    "portal_name_mm": "Enterprise Admin",
+    "roles": [
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Administration",
+    "kind": "operation",
+    "tables": [
+      "users",
+      "roles",
+      "permissions"
+    ],
+    "modules": []
+  },
+  {
+    "code": "b_i_failure_analysis",
+    "route": "/bi/bi-\\1ailure-\\1nalysis",
+    "legacy_route": null,
+    "title_en": "B I Failure Analysis",
+    "title_mm": "B I Failure Analysis",
+    "portal": "bi_reporting",
+    "portal_name_en": "Bi Reporting",
+    "portal_name_mm": "Bi Reporting",
+    "roles": [
+      "BI",
+      "ANALYST",
+      "FINANCE_MANAGER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "BI & Reporting",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "payment_records"
+    ],
+    "modules": []
+  },
+  {
+    "code": "b_i_delivery_performance",
+    "route": "/bi/bi-\\1elivery-\\1erformance",
+    "legacy_route": null,
+    "title_en": "B I Delivery Performance",
+    "title_mm": "B I Delivery Performance",
+    "portal": "bi_reporting",
+    "portal_name_en": "Bi Reporting",
+    "portal_name_mm": "Bi Reporting",
+    "roles": [
+      "BI",
+      "ANALYST",
+      "FINANCE_MANAGER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "BI & Reporting",
+    "kind": "operation",
+    "tables": [
+      "delivery_tasks",
+      "tracking_events",
+      "orders"
+    ],
+    "modules": []
+  },
+  {
+    "code": "b_i_merchant_performance",
+    "route": "/bi/bi-\\1erchant-\\1erformance",
+    "legacy_route": null,
+    "title_en": "B I Merchant Performance",
+    "title_mm": "B I Merchant Performance",
+    "portal": "bi_reporting",
+    "portal_name_en": "Bi Reporting",
+    "portal_name_mm": "Bi Reporting",
+    "roles": [
+      "BI",
+      "ANALYST",
+      "FINANCE_MANAGER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "BI & Reporting",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "payment_records"
+    ],
+    "modules": []
+  },
+  {
+    "code": "b_i_revenue_analytics",
+    "route": "/bi/bi-\\1evenue-\\1nalytics",
+    "legacy_route": null,
+    "title_en": "B I Revenue Analytics",
+    "title_mm": "B I Revenue Analytics",
+    "portal": "bi_reporting",
+    "portal_name_en": "Bi Reporting",
+    "portal_name_mm": "Bi Reporting",
+    "roles": [
+      "BI",
+      "ANALYST",
+      "FINANCE_MANAGER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "BI & Reporting",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "payment_records"
+    ],
+    "modules": []
+  },
+  {
+    "code": "b_i_rider_performance",
+    "route": "/bi/bi-\\1ider-\\1erformance",
+    "legacy_route": null,
+    "title_en": "B I Rider Performance",
+    "title_mm": "B I Rider Performance",
+    "portal": "bi_reporting",
+    "portal_name_en": "Bi Reporting",
+    "portal_name_mm": "Bi Reporting",
+    "roles": [
+      "BI",
+      "ANALYST",
+      "FINANCE_MANAGER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "BI & Reporting",
+    "kind": "operation",
+    "tables": [
+      "delivery_tasks",
+      "tracking_events",
+      "orders"
+    ],
+    "modules": []
+  },
+  {
+    "code": "b_i_sla_performance",
+    "route": "/bi/bi-\\1la-\\1erformance",
+    "legacy_route": null,
+    "title_en": "B I Sla Performance",
+    "title_mm": "B I Sla Performance",
+    "portal": "bi_reporting",
+    "portal_name_en": "Bi Reporting",
+    "portal_name_mm": "Bi Reporting",
+    "roles": [
+      "BI",
+      "ANALYST",
+      "FINANCE_MANAGER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "BI & Reporting",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "payment_records"
+    ],
+    "modules": []
+  },
+  {
+    "code": "b_i_custom_reports",
+    "route": "/bi/bi-\\1ustom-\\1eports",
+    "legacy_route": null,
+    "title_en": "B I Custom Reports",
+    "title_mm": "B I Custom Reports",
+    "portal": "bi_reporting",
+    "portal_name_en": "Bi Reporting",
+    "portal_name_mm": "Bi Reporting",
+    "roles": [
+      "BI",
+      "ANALYST",
+      "FINANCE_MANAGER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "BI & Reporting",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "payment_records"
+    ],
+    "modules": []
+  },
+  {
+    "code": "b_i_dashboard",
+    "route": "/bi/dashboard",
+    "legacy_route": null,
+    "title_en": "B I Dashboard",
+    "title_mm": "B I Dashboard",
+    "portal": "bi_reporting",
+    "portal_name_en": "Bi Reporting",
+    "portal_name_mm": "Bi Reporting",
+    "roles": [
+      "BI",
+      "ANALYST",
+      "FINANCE_MANAGER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "BI & Reporting",
+    "kind": "workspace",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "payment_records"
+    ],
+    "modules": []
+  },
+  {
+    "code": "branch_office_dashboard",
+    "route": "/branch-office/dashboard",
+    "legacy_route": null,
+    "title_en": "Branch Office Dashboard",
+    "title_mm": "Branch Office Dashboard",
+    "portal": "branch_office",
+    "portal_name_en": "Branch Office",
+    "portal_name_mm": "Branch Office",
+    "roles": [
+      "BRANCH_MANAGER",
+      "BRANCH_OFFICER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Branch Office",
+    "kind": "workspace",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "branches"
+    ],
+    "modules": []
+  },
+  {
+    "code": "branch_office_reports",
+    "route": "/branchOffice/branch-\\1ffice-\\1eports",
+    "legacy_route": null,
+    "title_en": "Branch Office Reports",
+    "title_mm": "Branch Office Reports",
+    "portal": "branch_office",
+    "portal_name_en": "Branch Office",
+    "portal_name_mm": "Branch Office",
+    "roles": [
+      "BRANCH_MANAGER",
+      "BRANCH_OFFICER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Branch Office",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "branches"
+    ],
+    "modules": []
+  },
+  {
+    "code": "branch_office_settings",
+    "route": "/branchOffice/branch-\\1ffice-\\1ettings",
+    "legacy_route": null,
+    "title_en": "Branch Office Settings",
+    "title_mm": "Branch Office Settings",
+    "portal": "branch_office",
+    "portal_name_en": "Branch Office",
+    "portal_name_mm": "Branch Office",
+    "roles": [
+      "BRANCH_MANAGER",
+      "BRANCH_OFFICER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Branch Office",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "branches"
+    ],
+    "modules": []
+  },
+  {
+    "code": "branch_office_shipments",
+    "route": "/branchOffice/branch-\\1ffice-\\1hipments",
+    "legacy_route": null,
+    "title_en": "Branch Office Shipments",
+    "title_mm": "Branch Office Shipments",
+    "portal": "branch_office",
+    "portal_name_en": "Branch Office",
+    "portal_name_mm": "Branch Office",
+    "roles": [
+      "BRANCH_MANAGER",
+      "BRANCH_OFFICER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Branch Office",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "branch_office_riders",
+    "route": "/branchOffice/branch-\\1ffice-\\1iders",
+    "legacy_route": null,
+    "title_en": "Branch Office Riders",
+    "title_mm": "Branch Office Riders",
+    "portal": "branch_office",
+    "portal_name_en": "Branch Office",
+    "portal_name_mm": "Branch Office",
+    "roles": [
+      "BRANCH_MANAGER",
+      "BRANCH_OFFICER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Branch Office",
+    "kind": "operation",
+    "tables": [
+      "delivery_tasks",
+      "tracking_events",
+      "orders"
+    ],
+    "modules": []
+  },
+  {
+    "code": "branch_office_dispatch",
+    "route": "/branchOffice/branch-\\1ffice-\\1ispatch",
+    "legacy_route": null,
+    "title_en": "Branch Office Dispatch",
+    "title_mm": "Branch Office Dispatch",
+    "portal": "branch_office",
+    "portal_name_en": "Branch Office",
+    "portal_name_mm": "Branch Office",
+    "roles": [
+      "BRANCH_MANAGER",
+      "BRANCH_OFFICER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Branch Office",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "branches"
+    ],
+    "modules": []
+  },
+  {
+    "code": "branch_office_exceptions",
+    "route": "/branchOffice/branch-\\1ffice-\\1xceptions",
+    "legacy_route": null,
+    "title_en": "Branch Office Exceptions",
+    "title_mm": "Branch Office Exceptions",
+    "portal": "branch_office",
+    "portal_name_en": "Branch Office",
+    "portal_name_mm": "Branch Office",
+    "roles": [
+      "BRANCH_MANAGER",
+      "BRANCH_OFFICER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Branch Office",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "branches"
+    ],
+    "modules": []
+  },
+  {
+    "code": "customer_create_request",
+    "route": "/customer/create-request",
+    "legacy_route": null,
+    "title_en": "Customer Create Request",
+    "title_mm": "Customer Create Request",
+    "portal": "customer",
+    "portal_name_en": "Customer",
+    "portal_name_mm": "Customer",
+    "roles": [
+      "CUS",
+      "CUSTOMER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Customer",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "tickets",
+      "customers"
+    ],
+    "modules": []
+  },
+  {
+    "code": "customer_dashboard",
+    "route": "/customer/dashboard",
+    "legacy_route": null,
+    "title_en": "Customer Dashboard",
+    "title_mm": "Customer Dashboard",
+    "portal": "customer",
+    "portal_name_en": "Customer",
+    "portal_name_mm": "Customer",
+    "roles": [
+      "CUS",
+      "CUSTOMER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Customer",
+    "kind": "workspace",
+    "tables": [
+      "orders",
+      "tickets",
+      "customers"
+    ],
+    "modules": []
+  },
+  {
+    "code": "customer_orders",
+    "route": "/customer/orders",
+    "legacy_route": null,
+    "title_en": "Customer Orders",
+    "title_mm": "Customer Orders",
+    "portal": "customer",
+    "portal_name_en": "Customer",
+    "portal_name_mm": "Customer",
+    "roles": [
+      "CUS",
+      "CUSTOMER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Customer",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "customer_preferences",
+    "route": "/customer/preferences",
+    "legacy_route": null,
+    "title_en": "Customer Preferences",
+    "title_mm": "Customer Preferences",
+    "portal": "customer",
+    "portal_name_en": "Customer",
+    "portal_name_mm": "Customer",
+    "roles": [
+      "CUS",
+      "CUSTOMER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Customer",
+    "kind": "operation",
+    "tables": [
+      "customers",
+      "orders",
+      "tickets"
+    ],
+    "modules": []
+  },
+  {
+    "code": "customer_profile",
+    "route": "/customer/profile",
+    "legacy_route": null,
+    "title_en": "Customer Profile",
+    "title_mm": "Customer Profile",
+    "portal": "customer",
+    "portal_name_en": "Customer",
+    "portal_name_mm": "Customer",
+    "roles": [
+      "CUS",
+      "CUSTOMER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Customer",
+    "kind": "operation",
+    "tables": [
+      "customers",
+      "orders",
+      "tickets"
+    ],
+    "modules": []
+  },
+  {
+    "code": "customer_support_tickets",
+    "route": "/customer/support-tickets",
+    "legacy_route": null,
+    "title_en": "Customer Support Tickets",
+    "title_mm": "Customer Support Tickets",
+    "portal": "customer",
+    "portal_name_en": "Customer",
+    "portal_name_mm": "Customer",
+    "roles": [
+      "CUS",
+      "CUSTOMER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Customer",
+    "kind": "operation",
+    "tables": [
+      "tickets",
+      "orders",
+      "customers"
+    ],
+    "modules": []
+  },
+  {
+    "code": "customer_tracking",
+    "route": "/customer/tracking",
+    "legacy_route": null,
+    "title_en": "Customer Tracking",
+    "title_mm": "Customer Tracking",
+    "portal": "customer",
+    "portal_name_en": "Customer",
+    "portal_name_mm": "Customer",
+    "roles": [
+      "CUS",
+      "CUSTOMER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Customer",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "tickets",
+      "customers"
+    ],
+    "modules": [
+      "tracking"
+    ]
+  },
+  {
+    "code": "data_entry_dashboard",
+    "route": "/data-entry/dashboard",
+    "legacy_route": null,
+    "title_en": "Data Entry Dashboard",
+    "title_mm": "Data Entry Dashboard",
+    "portal": "data_entry",
+    "portal_name_en": "Data Entry",
+    "portal_name_mm": "Data Entry",
+    "roles": [
+      "DATA_ENTRY",
+      "DE",
+      "SUPERVISOR",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Data Entry",
+    "kind": "workspace",
+    "tables": [
+      "orders",
+      "approvals",
+      "audit_logs"
+    ],
+    "modules": []
+  },
+  {
+    "code": "data_entry_validation_results",
+    "route": "/dataEntry/data-\\1ntry-\\1alidation-\\1esults",
+    "legacy_route": null,
+    "title_en": "Data Entry Validation Results",
+    "title_mm": "Data Entry Validation Results",
+    "portal": "data_entry",
+    "portal_name_en": "Data Entry",
+    "portal_name_mm": "Data Entry",
+    "roles": [
+      "DATA_ENTRY",
+      "DE",
+      "SUPERVISOR",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Data Entry",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "approvals",
+      "audit_logs"
+    ],
+    "modules": []
+  },
+  {
+    "code": "data_entry_activity_log",
+    "route": "/dataEntry/data-\\1ntry-\\1ctivity-\\1og",
+    "legacy_route": null,
+    "title_en": "Data Entry Activity Log",
+    "title_mm": "Data Entry Activity Log",
+    "portal": "data_entry",
+    "portal_name_en": "Data Entry",
+    "portal_name_mm": "Data Entry",
+    "roles": [
+      "DATA_ENTRY",
+      "DE",
+      "SUPERVISOR",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Data Entry",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "approvals",
+      "audit_logs"
+    ],
+    "modules": []
+  },
+  {
+    "code": "data_entry_correction_queue",
+    "route": "/dataEntry/data-\\1ntry-\\1orrection-\\1ueue",
+    "legacy_route": null,
+    "title_en": "Data Entry Correction Queue",
+    "title_mm": "Data Entry Correction Queue",
+    "portal": "data_entry",
+    "portal_name_en": "Data Entry",
+    "portal_name_mm": "Data Entry",
+    "roles": [
+      "DATA_ENTRY",
+      "DE",
+      "SUPERVISOR",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Data Entry",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "approvals",
+      "audit_logs"
+    ],
+    "modules": []
+  },
+  {
+    "code": "data_entry_draft_orders",
+    "route": "/dataEntry/data-\\1ntry-\\1raft-\\1rders",
+    "legacy_route": null,
+    "title_en": "Data Entry Draft Orders",
+    "title_mm": "Data Entry Draft Orders",
+    "portal": "data_entry",
+    "portal_name_en": "Data Entry",
+    "portal_name_mm": "Data Entry",
+    "roles": [
+      "DATA_ENTRY",
+      "DE",
+      "SUPERVISOR",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Data Entry",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "data_entry_create_shipment",
+    "route": "/dataEntry/data-\\1ntry-\\1reate-\\1hipment",
+    "legacy_route": null,
+    "title_en": "Data Entry Create Shipment",
+    "title_mm": "Data Entry Create Shipment",
+    "portal": "data_entry",
+    "portal_name_en": "Data Entry",
+    "portal_name_mm": "Data Entry",
+    "roles": [
+      "DATA_ENTRY",
+      "DE",
+      "SUPERVISOR",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Data Entry",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "data_entry_submit_approval",
+    "route": "/dataEntry/data-\\1ntry-\\1ubmit-\\1pproval",
+    "legacy_route": null,
+    "title_en": "Data Entry Submit Approval",
+    "title_mm": "Data Entry Submit Approval",
+    "portal": "data_entry",
+    "portal_name_en": "Data Entry",
+    "portal_name_mm": "Data Entry",
+    "roles": [
+      "DATA_ENTRY",
+      "DE",
+      "SUPERVISOR",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Data Entry",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "approvals",
+      "audit_logs"
+    ],
+    "modules": []
+  },
+  {
+    "code": "data_entry_bulk_upload",
+    "route": "/dataEntry/data-\\1ntry-\\1ulk-\\1pload",
+    "legacy_route": null,
+    "title_en": "Data Entry Bulk Upload",
+    "title_mm": "Data Entry Bulk Upload",
+    "portal": "data_entry",
+    "portal_name_en": "Data Entry",
+    "portal_name_mm": "Data Entry",
+    "roles": [
+      "DATA_ENTRY",
+      "DE",
+      "SUPERVISOR",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Data Entry",
+    "kind": "operation",
+    "tables": [
+      "outbound_manifests",
+      "route_plans",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "enterprise_admin_dashboard",
+    "route": "/enterprise-admin/dashboard",
+    "legacy_route": null,
+    "title_en": "Enterprise Admin Dashboard",
+    "title_mm": "Enterprise Admin Dashboard",
+    "portal": "enterprise_admin",
+    "portal_name_en": "Enterprise Admin",
+    "portal_name_mm": "Enterprise Admin",
+    "roles": [
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Administration",
+    "kind": "workspace",
+    "tables": [
+      "users",
+      "roles",
+      "permissions"
+    ],
+    "modules": []
+  },
+  {
+    "code": "finance_cod_reconciliation",
+    "route": "/finance/cod-reconciliation",
+    "legacy_route": null,
+    "title_en": "Finance Cod Reconciliation",
+    "title_mm": "Finance Cod Reconciliation",
+    "portal": "finance",
+    "portal_name_en": "Finance",
+    "portal_name_mm": "Finance",
+    "roles": [
+      "FIN",
+      "FINANCE_MANAGER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Finance",
+    "kind": "operation",
+    "tables": [
+      "invoices",
+      "settlements",
+      "payment_records"
+    ],
+    "modules": []
+  },
+  {
+    "code": "finance_dashboard",
+    "route": "/finance/dashboard",
+    "legacy_route": null,
+    "title_en": "Finance Dashboard",
+    "title_mm": "Finance Dashboard",
+    "portal": "finance",
+    "portal_name_en": "Finance",
+    "portal_name_mm": "Finance",
+    "roles": [
+      "FIN",
+      "FINANCE_MANAGER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Finance",
+    "kind": "workspace",
+    "tables": [
+      "invoices",
+      "settlements",
+      "payment_records"
+    ],
+    "modules": []
+  },
+  {
+    "code": "finance_invoices",
+    "route": "/finance/invoices",
+    "legacy_route": null,
+    "title_en": "Finance Invoices",
+    "title_mm": "Finance Invoices",
+    "portal": "finance",
+    "portal_name_en": "Finance",
+    "portal_name_mm": "Finance",
+    "roles": [
+      "FIN",
+      "FINANCE_MANAGER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Finance",
+    "kind": "operation",
+    "tables": [
+      "invoices",
+      "payment_records",
+      "settlements"
+    ],
+    "modules": []
+  },
+  {
+    "code": "finance_merchant_ledger",
+    "route": "/finance/merchant-ledger",
+    "legacy_route": null,
+    "title_en": "Finance Merchant Ledger",
+    "title_mm": "Finance Merchant Ledger",
+    "portal": "finance",
+    "portal_name_en": "Finance",
+    "portal_name_mm": "Finance",
+    "roles": [
+      "FIN",
+      "FINANCE_MANAGER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Finance",
+    "kind": "operation",
+    "tables": [
+      "merchant_ledger_entries",
+      "payment_records",
+      "invoices"
+    ],
+    "modules": []
+  },
+  {
+    "code": "finance_payment_records",
+    "route": "/finance/payment-records",
+    "legacy_route": null,
+    "title_en": "Finance Payment Records",
+    "title_mm": "Finance Payment Records",
+    "portal": "finance",
+    "portal_name_en": "Finance",
+    "portal_name_mm": "Finance",
+    "roles": [
+      "FIN",
+      "FINANCE_MANAGER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Finance",
+    "kind": "operation",
+    "tables": [
+      "invoices",
+      "settlements",
+      "payment_records"
+    ],
+    "modules": []
+  },
+  {
+    "code": "finance_refund_review",
+    "route": "/finance/refund-review",
+    "legacy_route": null,
+    "title_en": "Finance Refund Review",
+    "title_mm": "Finance Refund Review",
+    "portal": "finance",
+    "portal_name_en": "Finance",
+    "portal_name_mm": "Finance",
+    "roles": [
+      "FIN",
+      "FINANCE_MANAGER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Finance",
+    "kind": "operation",
+    "tables": [
+      "refunds",
+      "payment_records",
+      "orders"
+    ],
+    "modules": []
+  },
+  {
+    "code": "finance_rider_payouts",
+    "route": "/finance/rider-payouts",
+    "legacy_route": null,
+    "title_en": "Finance Rider Payouts",
+    "title_mm": "Finance Rider Payouts",
+    "portal": "finance",
+    "portal_name_en": "Finance",
+    "portal_name_mm": "Finance",
+    "roles": [
+      "FIN",
+      "FINANCE_MANAGER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Finance",
+    "kind": "operation",
+    "tables": [
+      "rider_payouts",
+      "payment_records",
+      "riders"
+    ],
+    "modules": []
+  },
+  {
+    "code": "finance_settlement_queue",
+    "route": "/finance/settlement-queue",
+    "legacy_route": null,
+    "title_en": "Finance Settlement Queue",
+    "title_mm": "Finance Settlement Queue",
+    "portal": "finance",
+    "portal_name_en": "Finance",
+    "portal_name_mm": "Finance",
+    "roles": [
+      "FIN",
+      "FINANCE_MANAGER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Finance",
+    "kind": "operation",
+    "tables": [
+      "invoices",
+      "settlements",
+      "payment_records"
+    ],
+    "modules": []
+  },
+  {
+    "code": "merchant_bulk_upload",
+    "route": "/merchant/bulk-upload",
+    "legacy_route": null,
+    "title_en": "Merchant Bulk Upload",
+    "title_mm": "Merchant Bulk Upload",
+    "portal": "merchant",
+    "portal_name_en": "Merchant",
+    "portal_name_mm": "Merchant",
+    "roles": [
+      "MER",
+      "MERCHANT",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Merchant",
+    "kind": "operation",
+    "tables": [
+      "outbound_manifests",
+      "route_plans",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "merchant_create_order",
+    "route": "/merchant/create-order",
+    "legacy_route": null,
+    "title_en": "Merchant Create Order",
+    "title_mm": "Merchant Create Order",
+    "portal": "merchant",
+    "portal_name_en": "Merchant",
+    "portal_name_mm": "Merchant",
+    "roles": [
+      "MER",
+      "MERCHANT",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Merchant",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "merchant_dashboard",
+    "route": "/merchant/dashboard",
+    "legacy_route": null,
+    "title_en": "Merchant Dashboard",
+    "title_mm": "Merchant Dashboard",
+    "portal": "merchant",
+    "portal_name_en": "Merchant",
+    "portal_name_mm": "Merchant",
+    "roles": [
+      "MER",
+      "MERCHANT",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Merchant",
+    "kind": "workspace",
+    "tables": [
+      "orders",
+      "returns",
+      "invoices"
+    ],
+    "modules": []
+  },
+  {
+    "code": "merchant_invoices",
+    "route": "/merchant/invoices",
+    "legacy_route": null,
+    "title_en": "Merchant Invoices",
+    "title_mm": "Merchant Invoices",
+    "portal": "merchant",
+    "portal_name_en": "Merchant",
+    "portal_name_mm": "Merchant",
+    "roles": [
+      "MER",
+      "MERCHANT",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Merchant",
+    "kind": "operation",
+    "tables": [
+      "invoices",
+      "payment_records",
+      "settlements"
+    ],
+    "modules": []
+  },
+  {
+    "code": "merchant_orders",
+    "route": "/merchant/orders",
+    "legacy_route": null,
+    "title_en": "Merchant Orders",
+    "title_mm": "Merchant Orders",
+    "portal": "merchant",
+    "portal_name_en": "Merchant",
+    "portal_name_mm": "Merchant",
+    "roles": [
+      "MER",
+      "MERCHANT",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Merchant",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "merchant_returns",
+    "route": "/merchant/returns",
+    "legacy_route": null,
+    "title_en": "Merchant Returns",
+    "title_mm": "Merchant Returns",
+    "portal": "merchant",
+    "portal_name_en": "Merchant",
+    "portal_name_mm": "Merchant",
+    "roles": [
+      "MER",
+      "MERCHANT",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Merchant",
+    "kind": "operation",
+    "tables": [
+      "returns",
+      "orders",
+      "tickets"
+    ],
+    "modules": []
+  },
+  {
+    "code": "merchant_settings",
+    "route": "/merchant/settings",
+    "legacy_route": null,
+    "title_en": "Merchant Settings",
+    "title_mm": "Merchant Settings",
+    "portal": "merchant",
+    "portal_name_en": "Merchant",
+    "portal_name_mm": "Merchant",
+    "roles": [
+      "MER",
+      "MERCHANT",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Merchant",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "returns",
+      "invoices"
+    ],
+    "modules": []
+  },
+  {
+    "code": "merchant_tracking",
+    "route": "/merchant/tracking",
+    "legacy_route": null,
+    "title_en": "Merchant Tracking",
+    "title_mm": "Merchant Tracking",
+    "portal": "merchant",
+    "portal_name_en": "Merchant",
+    "portal_name_mm": "Merchant",
+    "roles": [
+      "MER",
+      "MERCHANT",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Merchant",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "returns",
+      "invoices"
+    ],
+    "modules": [
+      "tracking"
+    ]
+  },
+  {
+    "code": "operations_assignment_workbench",
+    "route": "/operations/assignment-workbench",
+    "legacy_route": null,
+    "title_en": "Operations Assignment Workbench",
+    "title_mm": "Operations Assignment Workbench",
+    "portal": "operations_dispatch",
+    "portal_name_en": "Operations Dispatch",
+    "portal_name_mm": "Operations Dispatch",
+    "roles": [
+      "OPS",
+      "OPS_MANAGER",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Operations",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "operations_control_room",
+    "route": "/operations/control-room",
+    "legacy_route": null,
+    "title_en": "Operations Control Room",
+    "title_mm": "Operations Control Room",
+    "portal": "operations_dispatch",
+    "portal_name_en": "Operations Dispatch",
+    "portal_name_mm": "Operations Dispatch",
+    "roles": [
+      "OPS",
+      "OPS_MANAGER",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Operations",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "operations_dashboard",
+    "route": "/operations/dashboard",
+    "legacy_route": null,
+    "title_en": "Operations Dashboard",
+    "title_mm": "Operations Dashboard",
+    "portal": "operations_dispatch",
+    "portal_name_en": "Operations Dispatch",
+    "portal_name_mm": "Operations Dispatch",
+    "roles": [
+      "OPS",
+      "OPS_MANAGER",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Operations",
+    "kind": "workspace",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "operations_escalations",
+    "route": "/operations/escalations",
+    "legacy_route": null,
+    "title_en": "Operations Escalations",
+    "title_mm": "Operations Escalations",
+    "portal": "operations_dispatch",
+    "portal_name_en": "Operations Dispatch",
+    "portal_name_mm": "Operations Dispatch",
+    "roles": [
+      "OPS",
+      "OPS_MANAGER",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Operations",
+    "kind": "operation",
+    "tables": [
+      "tickets",
+      "orders",
+      "customers"
+    ],
+    "modules": []
+  },
+  {
+    "code": "operations_failed_deliveries",
+    "route": "/operations/failed-deliveries",
+    "legacy_route": null,
+    "title_en": "Operations Failed Deliveries",
+    "title_mm": "Operations Failed Deliveries",
+    "portal": "operations_dispatch",
+    "portal_name_en": "Operations Dispatch",
+    "portal_name_mm": "Operations Dispatch",
+    "roles": [
+      "OPS",
+      "OPS_MANAGER",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Operations",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "operations_in_transit_board",
+    "route": "/operations/in-transit-board",
+    "legacy_route": null,
+    "title_en": "Operations In Transit Board",
+    "title_mm": "Operations In Transit Board",
+    "portal": "operations_dispatch",
+    "portal_name_en": "Operations Dispatch",
+    "portal_name_mm": "Operations Dispatch",
+    "roles": [
+      "OPS",
+      "OPS_MANAGER",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Operations",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "operations_new_orders",
+    "route": "/operations/new-orders",
+    "legacy_route": null,
+    "title_en": "Operations New Orders",
+    "title_mm": "Operations New Orders",
+    "portal": "operations_dispatch",
+    "portal_name_en": "Operations Dispatch",
+    "portal_name_mm": "Operations Dispatch",
+    "roles": [
+      "OPS",
+      "OPS_MANAGER",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Operations",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "operations_shipments",
+    "route": "/operations/operations-\\1hipments",
+    "legacy_route": null,
+    "title_en": "Operations Shipments",
+    "title_mm": "Operations Shipments",
+    "portal": "operations_dispatch",
+    "portal_name_en": "Operations Dispatch",
+    "portal_name_mm": "Operations Dispatch",
+    "roles": [
+      "OPS",
+      "OPS_MANAGER",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Operations",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "operations_returns",
+    "route": "/operations/returns",
+    "legacy_route": null,
+    "title_en": "Operations Returns",
+    "title_mm": "Operations Returns",
+    "portal": "operations_dispatch",
+    "portal_name_en": "Operations Dispatch",
+    "portal_name_mm": "Operations Dispatch",
+    "roles": [
+      "OPS",
+      "OPS_MANAGER",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Operations",
+    "kind": "operation",
+    "tables": [
+      "returns",
+      "orders",
+      "tickets"
+    ],
+    "modules": []
+  },
+  {
+    "code": "operations_rider_availability",
+    "route": "/operations/rider-availability",
+    "legacy_route": null,
+    "title_en": "Operations Rider Availability",
+    "title_mm": "Operations Rider Availability",
+    "portal": "operations_dispatch",
+    "portal_name_en": "Operations Dispatch",
+    "portal_name_mm": "Operations Dispatch",
+    "roles": [
+      "OPS",
+      "OPS_MANAGER",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Operations",
+    "kind": "operation",
+    "tables": [
+      "delivery_tasks",
+      "tracking_events",
+      "orders"
+    ],
+    "modules": []
+  },
+  {
+    "code": "operations_sla_risk_board",
+    "route": "/operations/sla-risk-board",
+    "legacy_route": null,
+    "title_en": "Operations Sla Risk Board",
+    "title_mm": "Operations Sla Risk Board",
+    "portal": "operations_dispatch",
+    "portal_name_en": "Operations Dispatch",
+    "portal_name_mm": "Operations Dispatch",
+    "roles": [
+      "OPS",
+      "OPS_MANAGER",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Operations",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "delivery_tasks",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "rider_assigned_tasks",
+    "route": "/rider/assigned-tasks",
+    "legacy_route": null,
+    "title_en": "Rider Assigned Tasks",
+    "title_mm": "Rider Assigned Tasks",
+    "portal": "rider",
+    "portal_name_en": "Rider",
+    "portal_name_mm": "Rider",
+    "roles": [
+      "RIDER",
+      "OPS",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Execution",
+    "kind": "operation",
+    "tables": [
+      "delivery_tasks",
+      "tracking_events",
+      "orders"
+    ],
+    "modules": []
+  },
+  {
+    "code": "rider_dashboard",
+    "route": "/rider/dashboard",
+    "legacy_route": null,
+    "title_en": "Rider Dashboard",
+    "title_mm": "Rider Dashboard",
+    "portal": "rider",
+    "portal_name_en": "Rider",
+    "portal_name_mm": "Rider",
+    "roles": [
+      "RIDER",
+      "OPS",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Execution",
+    "kind": "workspace",
+    "tables": [
+      "delivery_tasks",
+      "tracking_events",
+      "orders"
+    ],
+    "modules": []
+  },
+  {
+    "code": "rider_delivery",
+    "route": "/rider/delivery",
+    "legacy_route": null,
+    "title_en": "Rider Delivery",
+    "title_mm": "Rider Delivery",
+    "portal": "rider",
+    "portal_name_en": "Rider",
+    "portal_name_mm": "Rider",
+    "roles": [
+      "RIDER",
+      "OPS",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Execution",
+    "kind": "operation",
+    "tables": [
+      "delivery_tasks",
+      "tracking_events",
+      "orders"
+    ],
+    "modules": []
+  },
+  {
+    "code": "rider_incident",
+    "route": "/rider/incidents",
+    "legacy_route": null,
+    "title_en": "Rider Incident",
+    "title_mm": "Rider Incident",
+    "portal": "rider",
+    "portal_name_en": "Rider",
+    "portal_name_mm": "Rider",
+    "roles": [
+      "RIDER",
+      "OPS",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Execution",
+    "kind": "operation",
+    "tables": [
+      "delivery_tasks",
+      "tracking_events",
+      "orders"
+    ],
+    "modules": []
+  },
+  {
+    "code": "rider_pickup",
+    "route": "/rider/pickup",
+    "legacy_route": null,
+    "title_en": "Rider Pickup",
+    "title_mm": "Rider Pickup",
+    "portal": "rider",
+    "portal_name_en": "Rider",
+    "portal_name_mm": "Rider",
+    "roles": [
+      "RIDER",
+      "OPS",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Execution",
+    "kind": "operation",
+    "tables": [
+      "delivery_tasks",
+      "tracking_events",
+      "orders"
+    ],
+    "modules": []
+  },
+  {
+    "code": "super_admin_dashboard",
+    "route": "/super-admin/dashboard",
+    "legacy_route": null,
+    "title_en": "Super Admin Dashboard",
+    "title_mm": "Super Admin Dashboard",
+    "portal": "enterprise_admin",
+    "portal_name_en": "Enterprise Admin",
+    "portal_name_mm": "Enterprise Admin",
+    "roles": [
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Administration",
+    "kind": "workspace",
+    "tables": [
+      "users",
+      "roles",
+      "permissions"
+    ],
+    "modules": []
+  },
+  {
+    "code": "supervisor_dashboard",
+    "route": "/supervisor/dashboard",
+    "legacy_route": null,
+    "title_en": "Supervisor Dashboard",
+    "title_mm": "Supervisor Dashboard",
+    "portal": "supervisor",
+    "portal_name_en": "Supervisor",
+    "portal_name_mm": "Supervisor",
+    "roles": [
+      "SUPERVISOR",
+      "SV",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Supervisor",
+    "kind": "workspace",
+    "tables": [
+      "delivery_tasks",
+      "tickets",
+      "audit_logs"
+    ],
+    "modules": []
+  },
+  {
+    "code": "supervisor_failed_deliveries",
+    "route": "/supervisor/supervisor-\\1ailed-\\1eliveries",
+    "legacy_route": null,
+    "title_en": "Supervisor Failed Deliveries",
+    "title_mm": "Supervisor Failed Deliveries",
+    "portal": "supervisor",
+    "portal_name_en": "Supervisor",
+    "portal_name_mm": "Supervisor",
+    "roles": [
+      "SUPERVISOR",
+      "SV",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Supervisor",
+    "kind": "operation",
+    "tables": [
+      "delivery_tasks",
+      "tickets",
+      "audit_logs"
+    ],
+    "modules": []
+  },
+  {
+    "code": "supervisor_team_performance",
+    "route": "/supervisor/supervisor-\\1eam-\\1erformance",
+    "legacy_route": null,
+    "title_en": "Supervisor Team Performance",
+    "title_mm": "Supervisor Team Performance",
+    "portal": "supervisor",
+    "portal_name_en": "Supervisor",
+    "portal_name_mm": "Supervisor",
+    "roles": [
+      "SUPERVISOR",
+      "SV",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Supervisor",
+    "kind": "operation",
+    "tables": [
+      "delivery_tasks",
+      "tickets",
+      "audit_logs"
+    ],
+    "modules": []
+  },
+  {
+    "code": "supervisor_reassignment_approval",
+    "route": "/supervisor/supervisor-\\1eassignment-\\1pproval",
+    "legacy_route": null,
+    "title_en": "Supervisor Reassignment Approval",
+    "title_mm": "Supervisor Reassignment Approval",
+    "portal": "supervisor",
+    "portal_name_en": "Supervisor",
+    "portal_name_mm": "Supervisor",
+    "roles": [
+      "SUPERVISOR",
+      "SV",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Supervisor",
+    "kind": "operation",
+    "tables": [
+      "delivery_tasks",
+      "tickets",
+      "audit_logs"
+    ],
+    "modules": []
+  },
+  {
+    "code": "supervisor_sla_risk",
+    "route": "/supervisor/supervisor-\\1la-\\1isk",
+    "legacy_route": null,
+    "title_en": "Supervisor Sla Risk",
+    "title_mm": "Supervisor Sla Risk",
+    "portal": "supervisor",
+    "portal_name_en": "Supervisor",
+    "portal_name_mm": "Supervisor",
+    "roles": [
+      "SUPERVISOR",
+      "SV",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Supervisor",
+    "kind": "operation",
+    "tables": [
+      "delivery_tasks",
+      "tickets",
+      "audit_logs"
+    ],
+    "modules": []
+  },
+  {
+    "code": "supervisor_approval_queue",
+    "route": "/supervisor/supervisor-\\1pproval-\\1ueue",
+    "legacy_route": null,
+    "title_en": "Supervisor Approval Queue",
+    "title_mm": "Supervisor Approval Queue",
+    "portal": "supervisor",
+    "portal_name_en": "Supervisor",
+    "portal_name_mm": "Supervisor",
+    "roles": [
+      "SUPERVISOR",
+      "SV",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Supervisor",
+    "kind": "operation",
+    "tables": [
+      "delivery_tasks",
+      "tickets",
+      "audit_logs"
+    ],
+    "modules": []
+  },
+  {
+    "code": "supervisor_escalations",
+    "route": "/supervisor/supervisor-\\1scalations",
+    "legacy_route": null,
+    "title_en": "Supervisor Escalations",
+    "title_mm": "Supervisor Escalations",
+    "portal": "supervisor",
+    "portal_name_en": "Supervisor",
+    "portal_name_mm": "Supervisor",
+    "roles": [
+      "SUPERVISOR",
+      "SV",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Supervisor",
+    "kind": "operation",
+    "tables": [
+      "tickets",
+      "orders",
+      "customers"
+    ],
+    "modules": []
+  },
+  {
+    "code": "supervisor_audit_review",
+    "route": "/supervisor/supervisor-\\1udit-\\1eview",
+    "legacy_route": null,
+    "title_en": "Supervisor Audit Review",
+    "title_mm": "Supervisor Audit Review",
+    "portal": "supervisor",
+    "portal_name_en": "Supervisor",
+    "portal_name_mm": "Supervisor",
+    "roles": [
+      "SUPERVISOR",
+      "SV",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Supervisor",
+    "kind": "operation",
+    "tables": [
+      "delivery_tasks",
+      "tickets",
+      "audit_logs"
+    ],
+    "modules": []
+  },
+  {
+    "code": "support_complaint_logging",
+    "route": "/support/complaint-logging",
+    "legacy_route": null,
+    "title_en": "Support Complaint Logging",
+    "title_mm": "Support Complaint Logging",
+    "portal": "customer_support",
+    "portal_name_en": "Customer Support",
+    "portal_name_mm": "Customer Support",
+    "roles": [
+      "SUP",
+      "SUPPORT",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Support",
+    "kind": "operation",
+    "tables": [
+      "tickets",
+      "orders",
+      "customers"
+    ],
+    "modules": []
+  },
+  {
+    "code": "support_customer_history",
+    "route": "/support/customer-history",
+    "legacy_route": null,
+    "title_en": "Support Customer History",
+    "title_mm": "Support Customer History",
+    "portal": "customer_support",
+    "portal_name_en": "Customer Support",
+    "portal_name_mm": "Customer Support",
+    "roles": [
+      "SUP",
+      "SUPPORT",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Support",
+    "kind": "operation",
+    "tables": [
+      "tickets",
+      "orders",
+      "customers"
+    ],
+    "modules": []
+  },
+  {
+    "code": "support_dashboard",
+    "route": "/support/dashboard",
+    "legacy_route": null,
+    "title_en": "Support Dashboard",
+    "title_mm": "Support Dashboard",
+    "portal": "customer_support",
+    "portal_name_en": "Customer Support",
+    "portal_name_mm": "Customer Support",
+    "roles": [
+      "SUP",
+      "SUPPORT",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Support",
+    "kind": "workspace",
+    "tables": [
+      "tickets",
+      "orders",
+      "customers"
+    ],
+    "modules": []
+  },
+  {
+    "code": "support_escalation_queue",
+    "route": "/support/escalation-queue",
+    "legacy_route": null,
+    "title_en": "Support Escalation Queue",
+    "title_mm": "Support Escalation Queue",
+    "portal": "customer_support",
+    "portal_name_en": "Customer Support",
+    "portal_name_mm": "Customer Support",
+    "roles": [
+      "SUP",
+      "SUPPORT",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Support",
+    "kind": "operation",
+    "tables": [
+      "tickets",
+      "orders",
+      "customers"
+    ],
+    "modules": []
+  },
+  {
+    "code": "support_knowledge_base",
+    "route": "/support/knowledge-base",
+    "legacy_route": null,
+    "title_en": "Support Knowledge Base",
+    "title_mm": "Support Knowledge Base",
+    "portal": "customer_support",
+    "portal_name_en": "Customer Support",
+    "portal_name_mm": "Customer Support",
+    "roles": [
+      "SUP",
+      "SUPPORT",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Support",
+    "kind": "operation",
+    "tables": [
+      "tickets",
+      "orders",
+      "customers"
+    ],
+    "modules": []
+  },
+  {
+    "code": "support_order_search",
+    "route": "/support/order-search",
+    "legacy_route": null,
+    "title_en": "Support Order Search",
+    "title_mm": "Support Order Search",
+    "portal": "customer_support",
+    "portal_name_en": "Customer Support",
+    "portal_name_mm": "Customer Support",
+    "roles": [
+      "SUP",
+      "SUPPORT",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Support",
+    "kind": "operation",
+    "tables": [
+      "tickets",
+      "orders",
+      "customers"
+    ],
+    "modules": []
+  },
+  {
+    "code": "support_ticket_inbox",
+    "route": "/support/ticket-inbox",
+    "legacy_route": null,
+    "title_en": "Support Ticket Inbox",
+    "title_mm": "Support Ticket Inbox",
+    "portal": "customer_support",
+    "portal_name_en": "Customer Support",
+    "portal_name_mm": "Customer Support",
+    "roles": [
+      "SUP",
+      "SUPPORT",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Support",
+    "kind": "operation",
+    "tables": [
+      "tickets",
+      "orders",
+      "customers"
+    ],
+    "modules": []
+  },
+  {
+    "code": "public_tracking_landing",
+    "route": "/track",
+    "legacy_route": null,
+    "title_en": "Public Tracking Landing",
+    "title_mm": "Public Tracking Landing",
+    "portal": "public_tracking",
+    "portal_name_en": "Public Tracking",
+    "portal_name_mm": "Public Tracking",
+    "roles": [
+      "PUBLIC"
+    ],
+    "menu": "Public",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "tracking_events",
+      "tickets"
+    ],
+    "modules": [
+      "tracking"
+    ]
+  },
+  {
+    "code": "public_tracking_not_found",
+    "route": "/track/not-found",
+    "legacy_route": null,
+    "title_en": "Public Tracking Not Found",
+    "title_mm": "Public Tracking Not Found",
+    "portal": "public_tracking",
+    "portal_name_en": "Public Tracking",
+    "portal_name_mm": "Public Tracking",
+    "roles": [
+      "PUBLIC"
+    ],
+    "menu": "Public",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "tracking_events",
+      "tickets"
+    ],
+    "modules": [
+      "tracking"
+    ]
+  },
+  {
+    "code": "public_tracking_result",
+    "route": "/track/result",
+    "legacy_route": null,
+    "title_en": "Public Tracking Result",
+    "title_mm": "Public Tracking Result",
+    "portal": "public_tracking",
+    "portal_name_en": "Public Tracking",
+    "portal_name_mm": "Public Tracking",
+    "roles": [
+      "PUBLIC"
+    ],
+    "menu": "Public",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "tracking_events",
+      "tickets"
+    ],
+    "modules": [
+      "tracking"
+    ]
+  },
+  {
+    "code": "public_tracking_search",
+    "route": "/track/search",
+    "legacy_route": null,
+    "title_en": "Public Tracking Search",
+    "title_mm": "Public Tracking Search",
+    "portal": "public_tracking",
+    "portal_name_en": "Public Tracking",
+    "portal_name_mm": "Public Tracking",
+    "roles": [
+      "PUBLIC"
+    ],
+    "menu": "Public",
+    "kind": "operation",
+    "tables": [
+      "orders",
+      "tracking_events",
+      "tickets"
+    ],
+    "modules": [
+      "tracking"
+    ]
+  },
+  {
+    "code": "public_tracking_support",
+    "route": "/track/support",
+    "legacy_route": null,
+    "title_en": "Public Tracking Support",
+    "title_mm": "Public Tracking Support",
+    "portal": "public_tracking",
+    "portal_name_en": "Public Tracking",
+    "portal_name_mm": "Public Tracking",
+    "roles": [
+      "PUBLIC"
+    ],
+    "menu": "Public",
+    "kind": "operation",
+    "tables": [
+      "tickets",
+      "orders",
+      "customers"
+    ],
+    "modules": [
+      "tracking"
+    ]
+  },
+  {
+    "code": "warehouse_cargo_receiving_scan",
+    "route": "/warehouse/cargo-receiving-scan",
+    "legacy_route": null,
+    "title_en": "Warehouse Cargo Receiving Scan",
+    "title_mm": "Warehouse Cargo Receiving Scan",
+    "portal": "warehouse_hub_operations",
+    "portal_name_en": "Warehouse Hub Operations",
+    "portal_name_mm": "Warehouse Hub Operations",
+    "roles": [
+      "WHM",
+      "WH",
+      "OPS",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Warehouse",
+    "kind": "operation",
+    "tables": [
+      "inbound_manifests",
+      "putaway_tasks",
+      "inventory_snapshots"
+    ],
+    "modules": [
+      "qr"
+    ]
+  },
+  {
+    "code": "warehouse_dashboard",
+    "route": "/warehouse/dashboard",
+    "legacy_route": null,
+    "title_en": "Warehouse Dashboard",
+    "title_mm": "Warehouse Dashboard",
+    "portal": "warehouse_hub_operations",
+    "portal_name_en": "Warehouse Hub Operations",
+    "portal_name_mm": "Warehouse Hub Operations",
+    "roles": [
+      "WHM",
+      "WH",
+      "OPS",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Warehouse",
+    "kind": "workspace",
+    "tables": [
+      "outbound_manifests",
+      "route_plans",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "warehouse_dispatch_handover",
+    "route": "/warehouse/dispatch-handover",
+    "legacy_route": null,
+    "title_en": "Warehouse Dispatch Handover",
+    "title_mm": "Warehouse Dispatch Handover",
+    "portal": "warehouse_hub_operations",
+    "portal_name_en": "Warehouse Hub Operations",
+    "portal_name_mm": "Warehouse Hub Operations",
+    "roles": [
+      "WHM",
+      "WH",
+      "OPS",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Warehouse",
+    "kind": "operation",
+    "tables": [
+      "outbound_manifests",
+      "route_plans",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "warehouse_inbound_manifest",
+    "route": "/warehouse/inbound-manifest",
+    "legacy_route": null,
+    "title_en": "Warehouse Inbound Manifest",
+    "title_mm": "Warehouse Inbound Manifest",
+    "portal": "warehouse_hub_operations",
+    "portal_name_en": "Warehouse Hub Operations",
+    "portal_name_mm": "Warehouse Hub Operations",
+    "roles": [
+      "WHM",
+      "WH",
+      "OPS",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Warehouse",
+    "kind": "operation",
+    "tables": [
+      "inbound_manifests",
+      "putaway_tasks",
+      "inventory_snapshots"
+    ],
+    "modules": []
+  },
+  {
+    "code": "warehouse_load_confirmation",
+    "route": "/warehouse/load-confirmation",
+    "legacy_route": null,
+    "title_en": "Warehouse Load Confirmation",
+    "title_mm": "Warehouse Load Confirmation",
+    "portal": "warehouse_hub_operations",
+    "portal_name_en": "Warehouse Hub Operations",
+    "portal_name_mm": "Warehouse Hub Operations",
+    "roles": [
+      "WHM",
+      "WH",
+      "OPS",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Warehouse",
+    "kind": "operation",
+    "tables": [
+      "outbound_manifests",
+      "route_plans",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "warehouse_outbound_manifest",
+    "route": "/warehouse/outbound-manifest",
+    "legacy_route": null,
+    "title_en": "Warehouse Outbound Manifest",
+    "title_mm": "Warehouse Outbound Manifest",
+    "portal": "warehouse_hub_operations",
+    "portal_name_en": "Warehouse Hub Operations",
+    "portal_name_mm": "Warehouse Hub Operations",
+    "roles": [
+      "WHM",
+      "WH",
+      "OPS",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Warehouse",
+    "kind": "operation",
+    "tables": [
+      "outbound_manifests",
+      "route_plans",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "warehouse_receiving_bay",
+    "route": "/warehouse/receiving-bay",
+    "legacy_route": null,
+    "title_en": "Warehouse Receiving Bay",
+    "title_mm": "Warehouse Receiving Bay",
+    "portal": "warehouse_hub_operations",
+    "portal_name_en": "Warehouse Hub Operations",
+    "portal_name_mm": "Warehouse Hub Operations",
+    "roles": [
+      "WHM",
+      "WH",
+      "OPS",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Warehouse",
+    "kind": "operation",
+    "tables": [
+      "inbound_manifests",
+      "putaway_tasks",
+      "inventory_snapshots"
+    ],
+    "modules": []
+  },
+  {
+    "code": "warehouse_shortage_damage_entry",
+    "route": "/warehouse/shortage-damage-entry",
+    "legacy_route": null,
+    "title_en": "Warehouse Shortage Damage Entry",
+    "title_mm": "Warehouse Shortage Damage Entry",
+    "portal": "warehouse_hub_operations",
+    "portal_name_en": "Warehouse Hub Operations",
+    "portal_name_mm": "Warehouse Hub Operations",
+    "roles": [
+      "WHM",
+      "WH",
+      "OPS",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Warehouse",
+    "kind": "operation",
+    "tables": [
+      "outbound_manifests",
+      "route_plans",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "warehouse_vehicle_load_verification",
+    "route": "/warehouse/vehicle-load-verification",
+    "legacy_route": null,
+    "title_en": "Warehouse Vehicle Load Verification",
+    "title_mm": "Warehouse Vehicle Load Verification",
+    "portal": "warehouse_hub_operations",
+    "portal_name_en": "Warehouse Hub Operations",
+    "portal_name_mm": "Warehouse Hub Operations",
+    "roles": [
+      "WHM",
+      "WH",
+      "OPS",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Warehouse",
+    "kind": "operation",
+    "tables": [
+      "outbound_manifests",
+      "route_plans",
+      "tracking_events"
+    ],
+    "modules": []
+  },
+  {
+    "code": "warehouse_receiving",
+    "route": "/warehouse/warehouse-\\1eceiving",
+    "legacy_route": null,
+    "title_en": "Warehouse Receiving",
+    "title_mm": "Warehouse Receiving",
+    "portal": "warehouse_hub_operations",
+    "portal_name_en": "Warehouse Hub Operations",
+    "portal_name_mm": "Warehouse Hub Operations",
+    "roles": [
+      "WHM",
+      "WH",
+      "OPS",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Warehouse",
+    "kind": "operation",
+    "tables": [
+      "inbound_manifests",
+      "putaway_tasks",
+      "inventory_snapshots"
+    ],
+    "modules": []
+  },
+  {
+    "code": "warehouse_dispatch",
+    "route": "/warehouse/warehouse-\\1ispatch",
+    "legacy_route": null,
+    "title_en": "Warehouse Dispatch",
+    "title_mm": "Warehouse Dispatch",
+    "portal": "warehouse_hub_operations",
+    "portal_name_en": "Warehouse Hub Operations",
+    "portal_name_mm": "Warehouse Hub Operations",
+    "roles": [
+      "WHM",
+      "WH",
+      "OPS",
+      "SYS",
+      "SUPER_ADMIN"
+    ],
+    "menu": "Warehouse",
+    "kind": "operation",
+    "tables": [
+      "outbound_manifests",
+      "route_plans",
+      "tracking_events"
+    ],
+    "modules": []
+  }
+]

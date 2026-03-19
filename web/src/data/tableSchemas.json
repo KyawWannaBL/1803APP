@@ -1,0 +1,1164 @@
+{
+  "orders": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "order_code",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status_code",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "sender_name",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "sender_address",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "receiver_name",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "receiver_address",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "assigned_rider_id",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "branch_id",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "zone_id",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "total_charge_mm_k",
+      "type": "numeric",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "customer_name",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp",
+      "required": false,
+      "hasDefault": true,
+      "references": null
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp",
+      "required": false,
+      "hasDefault": true,
+      "references": null
+    }
+  ],
+  "delivery_tasks": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "task_code",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "task_type",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "order_id",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "assigned_rider_id",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "branch_id",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "zone_id",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "planned_at",
+      "type": "timestamp",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp",
+      "required": false,
+      "hasDefault": true,
+      "references": null
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp",
+      "required": false,
+      "hasDefault": true,
+      "references": null
+    }
+  ],
+  "inbound_manifests": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "manifest_code",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "origin_branch",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "expected_count",
+      "type": "integer",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "item_count",
+      "type": "integer",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp",
+      "required": false,
+      "hasDefault": true,
+      "references": null
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp",
+      "required": false,
+      "hasDefault": true,
+      "references": null
+    }
+  ],
+  "outbound_manifests": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "manifest_code",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "destination_branch",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "expected_count",
+      "type": "integer",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "item_count",
+      "type": "integer",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp",
+      "required": false,
+      "hasDefault": true,
+      "references": null
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp",
+      "required": false,
+      "hasDefault": true,
+      "references": null
+    }
+  ],
+  "route_plans": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "route_code",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "vehicle_id",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp",
+      "required": false,
+      "hasDefault": true,
+      "references": null
+    }
+  ],
+  "tracking_events": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "order_id",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "event_code",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp",
+      "required": false,
+      "hasDefault": true,
+      "references": null
+    }
+  ],
+  "putaway_tasks": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "manifest_id",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "location_code",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "inventory_snapshots": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "sku_code",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "qty_on_hand",
+      "type": "integer",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp",
+      "required": false,
+      "hasDefault": true,
+      "references": null
+    }
+  ],
+  "staging_lanes": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "lane_code",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "storage_locations": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "location_code",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "notifications": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "title",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp",
+      "required": false,
+      "hasDefault": true,
+      "references": null
+    }
+  ],
+  "cargo_exception_cases": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "manifest_id",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "notes",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "handover_manifests": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "manifest_code",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "rider_shifts": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "rider_id",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "rider_devices": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "rider_id",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "riders": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "availability_status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "zone_id",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "branch_id",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "tickets": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "subject",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "category",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "priority",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "order_id",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "customers": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "email",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "knowledge_articles": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "title",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "invoices": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "invoice_no",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "amount",
+      "type": "integer",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "returns": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "return_code",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "order_id",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "branches": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "branch_code",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "users": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "role",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "organizations": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "roles": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "code",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "permissions": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "code",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "approvals": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "entity",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "entity_id",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "audit_logs": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "action",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp",
+      "required": false,
+      "hasDefault": true,
+      "references": null
+    }
+  ],
+  "merchants": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "payment_records": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "payment_no",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "amount",
+      "type": "integer",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "merchant_ledger_entries": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "amount",
+      "type": "integer",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "refunds": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "amount",
+      "type": "integer",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "rider_payouts": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "amount",
+      "type": "integer",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "settlements": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "amount",
+      "type": "integer",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ],
+  "system_settings": [
+    {
+      "name": "id",
+      "type": "text",
+      "required": true,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "key",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    },
+    {
+      "name": "value",
+      "type": "text",
+      "required": false,
+      "hasDefault": false,
+      "references": null
+    }
+  ]
+}

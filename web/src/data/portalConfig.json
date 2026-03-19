@@ -1,0 +1,173 @@
+{
+  "super_admin": {
+    "name_en": "Super Admin",
+    "name_mm": "Super Admin",
+    "base": "/super-admin/dashboard",
+    "roles": [
+      "SYS",
+      "SUPER_ADMIN"
+    ]
+  },
+  "enterprise_admin": {
+    "name_en": "Enterprise Admin",
+    "name_mm": "Enterprise Admin",
+    "base": "/enterprise-admin/dashboard",
+    "roles": [
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ]
+  },
+  "branch_office": {
+    "name_en": "Branch Office",
+    "name_mm": "Branch Office",
+    "base": "/branch-office/dashboard",
+    "roles": [
+      "BRANCH_MANAGER",
+      "BRANCH_OFFICER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ]
+  },
+  "data_entry": {
+    "name_en": "Data Entry",
+    "name_mm": "Data Entry",
+    "base": "/data-entry/dashboard",
+    "roles": [
+      "DATA_ENTRY",
+      "DE",
+      "SUPERVISOR",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ]
+  },
+  "supervisor": {
+    "name_en": "Supervisor",
+    "name_mm": "Supervisor",
+    "base": "/supervisor/dashboard",
+    "roles": [
+      "SUPERVISOR",
+      "SV",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ]
+  },
+  "bi_reporting": {
+    "name_en": "BI / Reporting",
+    "name_mm": "BI / Reporting",
+    "base": "/bi/dashboard",
+    "roles": [
+      "BI",
+      "ANALYST",
+      "FINANCE_MANAGER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ]
+  },
+  "rider": {
+    "name_en": "Rider",
+    "name_mm": "Rider",
+    "base": "/rider/dashboard",
+    "roles": [
+      "RIDER",
+      "OPS",
+      "SYS",
+      "SUPER_ADMIN"
+    ]
+  },
+  "warehouse_hub_operations": {
+    "name_en": "Warehouse",
+    "name_mm": "Warehouse",
+    "base": "/warehouse/dashboard",
+    "roles": [
+      "WHM",
+      "WH",
+      "OPS",
+      "SYS",
+      "SUPER_ADMIN"
+    ]
+  },
+  "operations_dispatch": {
+    "name_en": "Operations",
+    "name_mm": "Operations",
+    "base": "/operations/dashboard",
+    "roles": [
+      "OPS",
+      "OPS_MANAGER",
+      "SYS",
+      "SUPER_ADMIN"
+    ]
+  },
+  "finance": {
+    "name_en": "Finance",
+    "name_mm": "Finance",
+    "base": "/finance/dashboard",
+    "roles": [
+      "FIN",
+      "FINANCE_MANAGER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ]
+  },
+  "customer_support": {
+    "name_en": "Customer Support",
+    "name_mm": "Customer Support",
+    "base": "/support/dashboard",
+    "roles": [
+      "SUP",
+      "SUPPORT",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ]
+  },
+  "merchant": {
+    "name_en": "Merchant",
+    "name_mm": "Merchant",
+    "base": "/merchant/dashboard",
+    "roles": [
+      "MER",
+      "MERCHANT",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ]
+  },
+  "customer": {
+    "name_en": "Customer",
+    "name_mm": "Customer",
+    "base": "/customer/dashboard",
+    "roles": [
+      "CUS",
+      "CUSTOMER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ]
+  },
+  "customer_portal": {
+    "name_en": "Customer Portal",
+    "name_mm": "Customer Portal",
+    "base": "/customer/dashboard",
+    "roles": [
+      "CUS",
+      "CUSTOMER",
+      "EA",
+      "SYS",
+      "SUPER_ADMIN"
+    ]
+  },
+  "public_tracking": {
+    "name_en": "Public Tracking",
+    "name_mm": "Public Tracking",
+    "base": "/track",
+    "roles": [
+      "PUBLIC"
+    ]
+  }
+}

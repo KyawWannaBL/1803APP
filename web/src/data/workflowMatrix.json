@@ -1,0 +1,161 @@
+{
+  "order": {
+    "transitions": [
+      {
+        "from": "created",
+        "to": "validated",
+        "action": "validate_order",
+        "requirements": [
+          "required_fields_complete",
+          "pricing_validated",
+          "address_validated"
+        ]
+      },
+      {
+        "from": "validated",
+        "to": "assigned",
+        "action": "assign_order",
+        "requirements": [
+          "assignment_scope_valid"
+        ]
+      },
+      {
+        "from": "assigned",
+        "to": "picked_up",
+        "action": "pickup_order",
+        "requirements": [
+          "rider_acceptance_recorded",
+          "pickup_scan_completed"
+        ]
+      },
+      {
+        "from": "picked_up",
+        "to": "in_transit",
+        "action": "start_transit",
+        "requirements": [
+          "departure_confirmed"
+        ]
+      },
+      {
+        "from": "in_transit",
+        "to": "delivered",
+        "action": "complete_delivery",
+        "requirements": [
+          "pod_record_created",
+          "otp_or_signature_complete"
+        ]
+      },
+      {
+        "from": "in_transit",
+        "to": "failed",
+        "action": "mark_failed",
+        "requirements": [
+          "failure_reason_recorded"
+        ]
+      }
+    ]
+  },
+  "delivery_task": {
+    "transitions": [
+      {
+        "from": "assigned",
+        "to": "accepted",
+        "action": "accept_task",
+        "requirements": []
+      },
+      {
+        "from": "accepted",
+        "to": "picked_up",
+        "action": "confirm_pickup",
+        "requirements": [
+          "pickup_scan_completed"
+        ]
+      },
+      {
+        "from": "picked_up",
+        "to": "in_transit",
+        "action": "start_transit",
+        "requirements": [
+          "departure_confirmed"
+        ]
+      },
+      {
+        "from": "in_transit",
+        "to": "delivered",
+        "action": "complete_delivery",
+        "requirements": [
+          "pod_record_created",
+          "otp_or_signature_complete"
+        ]
+      },
+      {
+        "from": "in_transit",
+        "to": "failed",
+        "action": "mark_failed",
+        "requirements": [
+          "failure_reason_recorded"
+        ]
+      }
+    ]
+  },
+  "inbound_manifest": {
+    "transitions": [
+      {
+        "from": "draft",
+        "to": "receiving",
+        "action": "start_receiving",
+        "requirements": [
+          "bay_assigned",
+          "vehicle_arrival_confirmed"
+        ]
+      },
+      {
+        "from": "receiving",
+        "to": "staged",
+        "action": "complete_receiving",
+        "requirements": [
+          "receiving_scans_complete",
+          "staging_lane_assigned"
+        ]
+      },
+      {
+        "from": "staged",
+        "to": "reconciled",
+        "action": "reconcile_inbound",
+        "requirements": [
+          "inbound_manifest_reconciled"
+        ]
+      }
+    ]
+  },
+  "outbound_manifest": {
+    "transitions": [
+      {
+        "from": "draft",
+        "to": "loading",
+        "action": "start_loading",
+        "requirements": [
+          "manifest_items_selected",
+          "vehicle_and_driver_assigned"
+        ]
+      },
+      {
+        "from": "loading",
+        "to": "loaded",
+        "action": "complete_loading",
+        "requirements": [
+          "load_scans_complete"
+        ]
+      },
+      {
+        "from": "loaded",
+        "to": "closed",
+        "action": "handover_manifest",
+        "requirements": [
+          "handover_signature_captured",
+          "seal_check_completed"
+        ]
+      }
+    ]
+  }
+}

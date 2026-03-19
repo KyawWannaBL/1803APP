@@ -1,0 +1,14 @@
+[
+  {
+    "legacyRoute": "/operations/shipments",
+    "newRoute": "/operations/new-orders"
+  },
+  {
+    "legacyRoute": "/operations/shipment-lifecycle",
+    "newRoute": "/operations/in-transit-board"
+  },
+  {
+    "legacyRoute": "/public/tracking",
+    "newRoute": "/track/search"
+  }
+]

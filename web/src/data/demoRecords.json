@@ -1,0 +1,507 @@
+{
+  "orders": [
+    {
+      "id": "ord-1001",
+      "order_code": "ORD-1001",
+      "status_code": "created",
+      "sender_name": "Merchant A",
+      "sender_address": "Yangon Hub",
+      "receiver_name": "Ko Aung",
+      "receiver_address": "Tamwe",
+      "assigned_rider_id": null,
+      "branch_id": "branch-yg",
+      "zone_id": "zone-east",
+      "total_charge_mm_k": 4.5,
+      "customer_name": "Ko Aung",
+      "created_at": "2026-03-19T09:00:00Z",
+      "updated_at": "2026-03-20T08:00:00Z"
+    },
+    {
+      "id": "ord-1002",
+      "order_code": "ORD-1002",
+      "status_code": "validated",
+      "sender_name": "Merchant B",
+      "sender_address": "Mandalay Hub",
+      "receiver_name": "Ma Hnin",
+      "receiver_address": "Ahlone",
+      "assigned_rider_id": "rider-01",
+      "branch_id": "branch-yg",
+      "zone_id": "zone-west",
+      "total_charge_mm_k": 6.0,
+      "customer_name": "Ma Hnin",
+      "created_at": "2026-03-19T13:00:00Z",
+      "updated_at": "2026-03-20T07:00:00Z"
+    },
+    {
+      "id": "ord-1003",
+      "order_code": "ORD-1003",
+      "status_code": "assigned",
+      "sender_name": "Merchant C",
+      "sender_address": "Yangon Hub",
+      "receiver_name": "U Min",
+      "receiver_address": "Hlaing",
+      "assigned_rider_id": "rider-02",
+      "branch_id": "branch-yg",
+      "zone_id": "zone-north",
+      "total_charge_mm_k": 5.0,
+      "customer_name": "U Min",
+      "created_at": "2026-03-19T15:00:00Z",
+      "updated_at": "2026-03-20T06:00:00Z"
+    },
+    {
+      "id": "ord-1004",
+      "order_code": "ORD-1004",
+      "status_code": "in_transit",
+      "sender_name": "Merchant A",
+      "sender_address": "Yangon Hub",
+      "receiver_name": "Daw Mya",
+      "receiver_address": "Sanchaung",
+      "assigned_rider_id": "rider-01",
+      "branch_id": "branch-yg",
+      "zone_id": "zone-west",
+      "total_charge_mm_k": 3.5,
+      "customer_name": "Daw Mya",
+      "created_at": "2026-03-19T17:00:00Z",
+      "updated_at": "2026-03-20T08:00:00Z"
+    },
+    {
+      "id": "ord-1005",
+      "order_code": "ORD-1005",
+      "status_code": "delivered",
+      "sender_name": "Merchant B",
+      "sender_address": "Yangon Hub",
+      "receiver_name": "Ko Toe",
+      "receiver_address": "Mayangone",
+      "assigned_rider_id": "rider-03",
+      "branch_id": "branch-yg",
+      "zone_id": "zone-north",
+      "total_charge_mm_k": 5.5,
+      "customer_name": "Ko Toe",
+      "created_at": "2026-03-19T21:00:00Z",
+      "updated_at": "2026-03-20T08:00:00Z"
+    }
+  ],
+  "delivery_tasks": [
+    {
+      "id": "task-1001",
+      "task_code": "TASK-1001",
+      "task_type": "pickup",
+      "status": "assigned",
+      "order_id": "ord-1001",
+      "assigned_rider_id": "rider-01",
+      "branch_id": "branch-yg",
+      "zone_id": "zone-east",
+      "planned_at": "2026-03-20T10:00:00Z",
+      "created_at": "2026-03-20T05:00:00Z",
+      "updated_at": "2026-03-20T08:00:00Z"
+    },
+    {
+      "id": "task-1002",
+      "task_code": "TASK-1002",
+      "task_type": "pickup",
+      "status": "accepted",
+      "order_id": "ord-1002",
+      "assigned_rider_id": "rider-01",
+      "branch_id": "branch-yg",
+      "zone_id": "zone-west",
+      "planned_at": "2026-03-20T11:00:00Z",
+      "accepted_at": "2026-03-20T07:00:00Z",
+      "rider_acceptance": true,
+      "created_at": "2026-03-20T04:00:00Z",
+      "updated_at": "2026-03-20T07:00:00Z"
+    },
+    {
+      "id": "task-1003",
+      "task_code": "TASK-1003",
+      "task_type": "delivery",
+      "status": "picked_up",
+      "order_id": "ord-1003",
+      "assigned_rider_id": "rider-02",
+      "branch_id": "branch-yg",
+      "zone_id": "zone-north",
+      "planned_at": "2026-03-20T12:00:00Z",
+      "pickup_scan_completed": true,
+      "pickup_confirmed_at": "2026-03-20T08:00:00Z",
+      "created_at": "2026-03-20T03:00:00Z",
+      "updated_at": "2026-03-20T08:00:00Z"
+    },
+    {
+      "id": "task-1004",
+      "task_code": "TASK-1004",
+      "task_type": "delivery",
+      "status": "in_transit",
+      "order_id": "ord-1004",
+      "assigned_rider_id": "rider-01",
+      "branch_id": "branch-yg",
+      "zone_id": "zone-west",
+      "planned_at": "2026-03-20T13:00:00Z",
+      "pickup_scan_completed": true,
+      "departure_confirmed": true,
+      "departed_at": "2026-03-20T08:00:00Z",
+      "created_at": "2026-03-20T02:00:00Z",
+      "updated_at": "2026-03-20T08:00:00Z"
+    },
+    {
+      "id": "task-1005",
+      "task_code": "TASK-1005",
+      "task_type": "delivery",
+      "status": "failed",
+      "order_id": "ord-1005",
+      "assigned_rider_id": "rider-03",
+      "branch_id": "branch-yg",
+      "zone_id": "zone-north",
+      "planned_at": "2026-03-20T14:00:00Z",
+      "failure_reason": "Customer unavailable",
+      "created_at": "2026-03-20T01:00:00Z",
+      "updated_at": "2026-03-20T08:00:00Z"
+    }
+  ],
+  "inbound_manifests": [
+    {
+      "id": "inb-01",
+      "manifest_code": "INB-01",
+      "status": "draft",
+      "origin_branch": "MDY",
+      "expected_count": 20,
+      "item_count": 20,
+      "created_at": "2026-03-19T23:00:00Z",
+      "updated_at": "2026-03-20T08:00:00Z"
+    },
+    {
+      "id": "inb-02",
+      "manifest_code": "INB-02",
+      "status": "receiving",
+      "origin_branch": "NPT",
+      "expected_count": 15,
+      "received_count": 6,
+      "bay_code": "RB-02",
+      "arrival_confirmed": true,
+      "vehicle_arrived_at": "2026-03-20T06:00:00Z",
+      "created_at": "2026-03-20T00:00:00Z",
+      "updated_at": "2026-03-20T08:00:00Z"
+    },
+    {
+      "id": "inb-03",
+      "manifest_code": "INB-03",
+      "status": "staged",
+      "origin_branch": "BGO",
+      "expected_count": 12,
+      "received_count": 12,
+      "staging_lane_code": "SL-01",
+      "created_at": "2026-03-20T01:00:00Z",
+      "updated_at": "2026-03-20T08:00:00Z"
+    }
+  ],
+  "outbound_manifests": [
+    {
+      "id": "out-01",
+      "manifest_code": "OUT-01",
+      "status": "draft",
+      "destination_branch": "MDY",
+      "expected_count": 18,
+      "item_count": 18,
+      "created_at": "2026-03-19T23:00:00Z",
+      "updated_at": "2026-03-20T08:00:00Z"
+    },
+    {
+      "id": "out-02",
+      "manifest_code": "OUT-02",
+      "status": "loading",
+      "destination_branch": "BGO",
+      "expected_count": 10,
+      "loaded_count": 5,
+      "vehicle_no": "VH-02",
+      "driver_name": "U Kyaw",
+      "created_at": "2026-03-20T01:00:00Z",
+      "updated_at": "2026-03-20T08:00:00Z"
+    },
+    {
+      "id": "out-03",
+      "manifest_code": "OUT-03",
+      "status": "loaded",
+      "destination_branch": "NPT",
+      "expected_count": 14,
+      "loaded_count": 14,
+      "vehicle_no": "VH-03",
+      "driver_name": "Daw Nwe",
+      "created_at": "2026-03-20T02:00:00Z",
+      "updated_at": "2026-03-20T08:00:00Z"
+    }
+  ],
+  "route_plans": [
+    {
+      "id": "route-01",
+      "route_code": "RT-01",
+      "status": "active",
+      "vehicle_id": "VH-01",
+      "updated_at": "2026-03-20T08:00:00Z"
+    }
+  ],
+  "tracking_events": [
+    {
+      "id": "trk-01",
+      "order_id": "ord-1004",
+      "status": "in_transit",
+      "event_code": "DEPARTED_HUB",
+      "created_at": "2026-03-20T08:00:00Z"
+    },
+    {
+      "id": "trk-02",
+      "order_id": "ord-1005",
+      "status": "delivered",
+      "event_code": "DELIVERED",
+      "created_at": "2026-03-20T07:00:00Z"
+    }
+  ],
+  "putaway_tasks": [
+    {
+      "id": "put-01",
+      "status": "open",
+      "manifest_id": "inb-03",
+      "location_code": "A-01"
+    }
+  ],
+  "inventory_snapshots": [
+    {
+      "id": "inv-01",
+      "sku_code": "SKU-001",
+      "qty_on_hand": 120,
+      "status": "ok",
+      "updated_at": "2026-03-20T08:00:00Z"
+    }
+  ],
+  "staging_lanes": [
+    {
+      "id": "lane-01",
+      "lane_code": "SL-01",
+      "status": "available"
+    }
+  ],
+  "storage_locations": [
+    {
+      "id": "loc-01",
+      "location_code": "A-01",
+      "status": "available"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "noti-01",
+      "title": "New order pending validation",
+      "status": "open",
+      "created_at": "2026-03-20T08:00:00Z"
+    }
+  ],
+  "cargo_exception_cases": [
+    {
+      "id": "exc-01",
+      "manifest_id": "inb-02",
+      "notes": "Box seal damaged",
+      "status": "open"
+    }
+  ],
+  "handover_manifests": [
+    {
+      "id": "hand-01",
+      "manifest_code": "HND-01",
+      "status": "loaded"
+    }
+  ],
+  "rider_shifts": [
+    {
+      "id": "shift-01",
+      "rider_id": "rider-01",
+      "status": "active"
+    }
+  ],
+  "rider_devices": [
+    {
+      "id": "dev-01",
+      "rider_id": "rider-01",
+      "status": "online"
+    }
+  ],
+  "riders": [
+    {
+      "id": "rider-01",
+      "name": "Aung Rider",
+      "status": "available",
+      "availability_status": "available",
+      "zone_id": "zone-west",
+      "branch_id": "branch-yg"
+    },
+    {
+      "id": "rider-02",
+      "name": "Hnin Rider",
+      "status": "available",
+      "availability_status": "available",
+      "zone_id": "zone-north",
+      "branch_id": "branch-yg"
+    },
+    {
+      "id": "rider-03",
+      "name": "Min Rider",
+      "status": "busy",
+      "availability_status": "busy",
+      "zone_id": "zone-east",
+      "branch_id": "branch-yg"
+    }
+  ],
+  "tickets": [
+    {
+      "id": "tic-01",
+      "subject": "Late delivery complaint",
+      "category": "complaint",
+      "priority": "high",
+      "status": "open",
+      "order_id": "ord-1004"
+    },
+    {
+      "id": "tic-02",
+      "subject": "Address clarification",
+      "category": "support",
+      "priority": "normal",
+      "status": "open",
+      "order_id": "ord-1002"
+    }
+  ],
+  "customers": [
+    {
+      "id": "cus-01",
+      "name": "Ko Aung",
+      "email": "ko.aung@example.com",
+      "status": "active"
+    },
+    {
+      "id": "cus-02",
+      "name": "Ma Hnin",
+      "email": "ma.hnin@example.com",
+      "status": "active"
+    }
+  ],
+  "knowledge_articles": [
+    {
+      "id": "kb-01",
+      "title": "How to handle failed delivery",
+      "status": "published"
+    }
+  ],
+  "invoices": [
+    {
+      "id": "inv-1001",
+      "invoice_no": "FIN-1001",
+      "status": "open",
+      "amount": 120000
+    }
+  ],
+  "returns": [
+    {
+      "id": "ret-01",
+      "return_code": "RET-01",
+      "status": "pending",
+      "order_id": "ord-1001"
+    }
+  ],
+  "branches": [
+    {
+      "id": "branch-yg",
+      "branch_code": "YGN",
+      "name": "Yangon Main"
+    }
+  ],
+  "users": [
+    {
+      "id": "user-01",
+      "name": "Enterprise Admin",
+      "role": "EA",
+      "status": "active"
+    }
+  ],
+  "organizations": [
+    {
+      "id": "org-01",
+      "name": "Britium Logistics",
+      "status": "active"
+    }
+  ],
+  "roles": [
+    {
+      "id": "role-01",
+      "code": "EA",
+      "name": "Enterprise Admin"
+    }
+  ],
+  "permissions": [
+    {
+      "id": "perm-01",
+      "code": "orders.read",
+      "status": "active"
+    }
+  ],
+  "approvals": [
+    {
+      "id": "app-01",
+      "status": "pending",
+      "entity": "order",
+      "entity_id": "ord-1001"
+    }
+  ],
+  "audit_logs": [
+    {
+      "id": "audit-01",
+      "action": "order.validated",
+      "status": "ok",
+      "created_at": "2026-03-20T08:00:00Z"
+    }
+  ],
+  "merchants": [
+    {
+      "id": "mer-01",
+      "name": "Merchant A",
+      "status": "active"
+    }
+  ],
+  "payment_records": [
+    {
+      "id": "pay-01",
+      "payment_no": "PAY-01",
+      "status": "posted",
+      "amount": 95000
+    }
+  ],
+  "merchant_ledger_entries": [
+    {
+      "id": "led-01",
+      "status": "posted",
+      "amount": 40000
+    }
+  ],
+  "refunds": [
+    {
+      "id": "ref-01",
+      "status": "review",
+      "amount": 5000
+    }
+  ],
+  "rider_payouts": [
+    {
+      "id": "rpo-01",
+      "status": "pending",
+      "amount": 22000
+    }
+  ],
+  "settlements": [
+    {
+      "id": "set-01",
+      "status": "queued",
+      "amount": 80000
+    }
+  ],
+  "system_settings": [
+    {
+      "id": "cfg-01",
+      "key": "ui.theme",
+      "value": "light"
+    }
+  ]
+}
