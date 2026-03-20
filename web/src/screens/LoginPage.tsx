@@ -150,6 +150,24 @@ export function LoginPage() {
             </div>
           </form>
 
+          <div className="toolbar auth-toolbar" style={{ marginTop: '1rem', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <Link to="/sign-up" className="toolbar-button">
+              {locale === 'en' ? 'Sign Up' : 'Sign Up'}
+            </Link>
+
+            <Link to="/forgot-password" className="toolbar-button">
+              {locale === 'en' ? 'Forgot Password' : 'Forgot Password'}
+            </Link>
+
+            <a
+              href="/britium-enterprise.apk"
+              download
+              className="toolbar-button"
+            >
+              {locale === 'en' ? 'Download APK' : 'Download APK'}
+            </a>
+          </div>
+
           <div className="auth-form-footer">
             <span>{locale === 'en' ? 'Need public tracking?' : 'Need public tracking?'}</span>
             <Link to="/track" className="auth-inline-link">
