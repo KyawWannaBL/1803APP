@@ -1,5 +1,9 @@
+cd /d/1803APP/apps/web
+
+cat > src/auth/AuthProvider.tsx <<'EOF'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
+import type { Session } from '@supabase/supabase-js';
 import { demoUsers } from '@/auth/demoUsers';
 import { supabase } from '@/lib/supabase';
 import { env, isSupabaseConfigured } from '@/lib/env';
@@ -21,34 +25,43 @@ const STORAGE_KEY = 'britium-demo-user-role';
 async function fetchProfile(userId: string, email: string): Promise<SessionUser | null> {
   if (!supabase) return null;
 
-  const profileResult = await supabase
-    .from('profiles')
-    .select('id, full_name, email, default_role, role')
-    .eq('id', userId)
-    .maybeSingle();
+  try {
+    const profileResult = await supabase
+      .from('profiles')
+      .select('id, full_name, email, default_role, role')
+      .eq('id', userId)
+      .maybeSingle();
 
-  if (profileResult.data) {
+    if (profileResult.data) {
+      return {
+        id: profileResult.data.id,
+        email: profileResult.data.email ?? email,
+        fullName: profileResult.data.full_name ?? email,
+        role: (profileResult.data.default_role ?? profileResult.data.role ?? 'EA') as AppRole,
+      };
+    }
+
+    const assignmentResult = await supabase
+      .from('user_role_assignments')
+      .select('role_code')
+      .eq('user_id', userId)
+      .limit(1)
+      .maybeSingle();
+
     return {
-      id: profileResult.data.id,
-      email: profileResult.data.email ?? email,
-      fullName: profileResult.data.full_name ?? email,
-      role: (profileResult.data.default_role ?? profileResult.data.role ?? 'EA') as AppRole,
+      id: userId,
+      email,
+      fullName: email,
+      role: (assignmentResult.data?.role_code ?? 'EA') as AppRole,
+    };
+  } catch {
+    return {
+      id: userId,
+      email,
+      fullName: email,
+      role: 'EA' as AppRole,
     };
   }
-
-  const assignmentResult = await supabase
-    .from('user_role_assignments')
-    .select('role_code')
-    .eq('user_id', userId)
-    .limit(1)
-    .maybeSingle();
-
-  return {
-    id: userId,
-    email,
-    fullName: email,
-    role: (assignmentResult.data?.role_code ?? 'EA') as AppRole,
-  };
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -56,47 +69,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const mode: 'demo' | 'supabase' =
-    isSupabaseConfigured && (!env.enableDemoFallback || env.appEnv === 'production') ? 'supabase' : 'demo';
+    isSupabaseConfigured && (!env.enableDemoFallback || env.appEnv === 'production')
+      ? 'supabase'
+      : 'demo';
 
   useEffect(() => {
     let active = true;
 
-    async function bootstrap() {
-      if (mode === 'demo') {
-        const storedRole = (localStorage.getItem(STORAGE_KEY) as AppRole | null) ?? 'EA';
-        const demoUser = demoUsers.find((item) => item.role === storedRole) ?? demoUsers[0];
-        if (active) {
-          setUser(demoUser);
-          setLoading(false);
-        }
-        return;
-      }
-
-      const { data } = await supabase!.auth.getSession();
-      const session = data.session;
-
-      if (!session) {
-        if (active) {
-          setUser(null);
-          setLoading(false);
-        }
-        return;
-      }
-
-      const profile = await fetchProfile(
-        session.user.id,
-        session.user.email ?? 'unknown@britium.local',
-      );
-
-      if (active) {
-        setUser(profile);
-        setLoading(false);
-      }
-    }
-
-    void bootstrap();
-
-    const subscription = supabase?.auth.onAuthStateChange(async (_event, session) => {
+    async function syncUserFromSession(session: Session | null) {
       if (!active) return;
 
       if (!session?.user) {
@@ -110,28 +90,81 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         session.user.email ?? 'unknown@britium.local',
       );
 
+      if (!active) return;
       setUser(profile);
       setLoading(false);
+    }
+
+    async function bootstrap() {
+      setLoading(true);
+
+      if (mode === 'demo') {
+        const storedRole = (localStorage.getItem(STORAGE_KEY) as AppRole | null) ?? 'EA';
+        const demoUser = demoUsers.find((item) => item.role === storedRole) ?? demoUsers[0];
+
+        if (!active) return;
+        setUser(demoUser);
+        setLoading(false);
+        return;
+      }
+
+      localStorage.removeItem(STORAGE_KEY);
+
+      if (!supabase) {
+        if (!active) return;
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+
+      const { data } = await supabase.auth.getSession();
+      await syncUserFromSession(data.session);
+    }
+
+    void bootstrap();
+
+    if (mode !== 'supabase' || !supabase) {
+      return () => {
+        active = false;
+      };
+    }
+
+    const subscription = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!active) return;
+
+      setTimeout(() => {
+        if (!active) return;
+        void syncUserFromSession(session);
+      }, 0);
     });
 
     return () => {
       active = false;
-      subscription?.data.subscription.unsubscribe();
+      subscription.data.subscription.unsubscribe();
     };
   }, [mode]);
 
   const signInWithPassword = async (email: string, password: string) => {
     if (mode === 'demo') {
       if (!password) return { error: 'Password is required.' };
-      const found = demoUsers.find((item) => item.email.toLowerCase() === email.toLowerCase());
+
+      const found = demoUsers.find(
+        (item) => item.email.toLowerCase() === email.toLowerCase(),
+      );
+
       if (!found) return { error: 'Demo user not found.' };
+
       localStorage.setItem(STORAGE_KEY, found.role);
       setUser(found);
       setLoading(false);
       return {};
     }
 
-    const { error } = await supabase!.auth.signInWithPassword({ email, password });
+    if (!supabase) {
+      return { error: 'Supabase is not configured.' };
+    }
+
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     return error ? { error: error.message } : {};
   };
 
@@ -155,10 +188,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (mode === 'demo') {
           localStorage.removeItem(STORAGE_KEY);
           setUser(null);
+          setLoading(false);
           return;
         }
-        await supabase!.auth.signOut();
+
+        if (!supabase) {
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+
+        await supabase.auth.signOut();
         setUser(null);
+        setLoading(false);
       },
     }),
     [user, loading, mode],
@@ -172,3 +214,4 @@ export function useAuth() {
   if (!ctx) throw new Error('useAuth must be used inside AuthProvider');
   return ctx;
 }
+EOF
