@@ -1,162 +1,149 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Globe, Loader2, ArrowLeft, KeyRound } from "lucide-react";
-import toast from "react-hot-toast";
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useI18n } from '@/i18n/I18nProvider';
+import { supabase } from '@/lib/supabase';
 
-/**
- * PREVIEW ENVIRONMENT MOCKS
- * These mocks resolve the "Could not resolve" errors in the Canvas environment.
- * In your local project, these will be replaced by your actual imports from:
- * - @/contexts/LanguageContext
- * - @/lib/supabase
- */
-
-// Mocking @/contexts/LanguageContext
-const useLanguage = () => ({
-  lang: "en",
-  setLang: (l: string) => console.log("Language changed to:", l),
-  t: (en: string, my: string) => en
-});
-
-// Mocking @/lib/supabase
-const supabase = {
-  auth: {
-    resetPasswordForEmail: async (email: string, options: any) => {
-      console.log("Mock ResetPassword call for:", email, options);
-      // Simulate network delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      return { error: null };
-    }
-  }
-};
-
-export function ForgotPassword() {
+export default function ForgotPassword() {
+  const { t, locale } = useI18n();
   const navigate = useNavigate();
-  const langCtx = useLanguage();
-  const lang = langCtx.lang ?? "en";
-  const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  
-  const t = (en: string, my: string) => (lang === "en" ? en : my);
 
-  const handleReset = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  const [email, setEmail] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
+
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (busy) return;
+
+    setBusy(true);
+    setError('');
+    setMessage('');
 
     try {
-      const redirectTo = `${window.location.origin}/reset-password`;
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo,
+      if (!email.trim()) {
+        throw new Error('Email is required.');
+      }
+
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+        redirectTo: `${window.location.origin}/reset-password`,
       });
 
-      if (error) throw error;
+      if (resetError) {
+        throw resetError;
+      }
 
-      toast.success(
-        t(
-          "Reset link sent. Please check your email.",
-          "Reset link ပို့ပြီးပါပြီ။ သင့် email ကို စစ်ဆေးပါ။"
-        )
+      setMessage(
+        locale === 'en'
+          ? 'Password reset link sent. Please check your email.'
+          : 'Password reset link ပို့ပြီးပါပြီ။ Email ကို စစ်ဆေးပါ။',
       );
-    } catch (error: any) {
-      toast.error(
-        error?.message || t("Could not send reset email.", "Reset email မပို့နိုင်ပါ။")
-      );
+    } catch (e: any) {
+      setError(e?.message ?? t('common.requestFailed', 'Request failed.'));
     } finally {
-      setLoading(false);
+      setBusy(false);
     }
-  };
+  }
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-slate-950 font-sans antialiased text-slate-900">
-      {/* Cinematic Background Layer */}
-      <video 
-        autoPlay 
-        muted 
-        loop 
-        playsInline 
-        className="fixed top-0 left-0 min-w-full min-h-full object-cover z-0 opacity-40"
-      >
-        <source src="/background.mp4" type="video/mp4" />
-      </video>
-      <div className="fixed top-0 left-0 w-full h-full bg-gradient-to-br from-slate-950/95 via-slate-900/70 to-amber-950/30 backdrop-blur-[2px] z-10" />
+    <section className="auth-shell">
+      <div className="auth-shell__panel auth-shell__panel--brand">
+        <div className="auth-brand-badge">
+          {t('common.enterprisePlatform', 'Enterprise Delivery Platform')}
+        </div>
 
-      <div className="relative z-20 flex min-h-screen items-center justify-center p-6">
-        <div className="w-full max-w-md">
-          {/* Brand Identity */}
-          <div className="mb-10 flex flex-col items-center text-center">
-            <div className="mb-6 rounded-[2rem] bg-white p-5 shadow-[0_0_60px_rgba(255,255,255,0.15)] ring-1 ring-white/20 transform transition-all hover:scale-105">
-              <img src="/logo.png" alt="Britium Logo" className="h-16 w-auto object-contain" />
-            </div>
-            <h1 className="text-4xl font-black tracking-tighter text-white uppercase">
-              Britium <span className="text-indigo-400 italic font-light">Express</span>
-            </h1>
-            <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.4em] text-slate-400">
-              Credential Recovery
+        <h1 className="auth-hero-title">
+          {locale === 'en'
+            ? 'Britium Express Credential Recovery'
+            : 'Britium Express Credential Recovery'}
+        </h1>
+
+        <p className="auth-hero-text">
+          {locale === 'en'
+            ? 'Recover secure access for enterprise delivery operations, role-based workspaces, and protected customer workflows.'
+            : 'enterprise delivery operations, role-based workspace များနှင့် protected customer workflow များအတွက် secure access ကို ပြန်လည်ရယူနိုင်ပါသည်။'}
+        </p>
+
+        <div className="auth-feature-list">
+          <article className="auth-feature-card">
+            <h3>{locale === 'en' ? 'Secure recovery flow' : 'Secure recovery flow'}</h3>
+            <p>
+              {locale === 'en'
+                ? 'Password reset links are issued through the configured Supabase authentication flow.'
+                : 'Password reset link များကို configured Supabase authentication flow မှတဆင့် ထုတ်ပေးပါသည်။'}
             </p>
-          </div>
+          </article>
 
-          {/* Form Container (Glassmorphism) */}
-          <div className="rounded-[2.5rem] border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-3xl lg:p-10 ring-1 ring-white/5">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-white tracking-tight">
-                {t("Forgot Password", "စကားဝှက်မေ့")}
-              </h2>
-              <p className="text-xs text-slate-400 mt-1">
-                {t("Secure Token Retrieval", "လုံခြုံရေး Token တောင်းဆိုမှု")}
-              </p>
-            </div>
+          <article className="auth-feature-card">
+            <h3>{locale === 'en' ? 'Enterprise-ready access control' : 'Enterprise-ready access control'}</h3>
+            <p>
+              {locale === 'en'
+                ? 'Recovery keeps users aligned with protected routes, role-aware landing, and controlled portal access.'
+                : 'Recovery flow သည် protected route, role-aware landing နှင့် controlled portal access တို့နှင့် ကိုက်ညီစွာ အလုပ်လုပ်ပါသည်။'}
+            </p>
+          </article>
+        </div>
 
-            <form onSubmit={handleReset} className="space-y-6">
-              <div className="relative group">
-                <input
-                  type="email"
-                  required
-                  placeholder={t("IDENTITY EMAIL", "အီးမေးလ်")}
-                  className="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-4 text-sm font-semibold text-white outline-none transition-all placeholder:text-slate-500 focus:border-amber-500/50 focus:bg-white/10"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-
-              <button
-                disabled={loading}
-                type="submit"
-                className="w-full flex items-center justify-center gap-2 rounded-2xl bg-amber-600 py-4 text-xs font-black uppercase tracking-widest text-white shadow-xl shadow-amber-900/20 transition-all hover:bg-amber-500 active:scale-95 disabled:opacity-50"
-              >
-                {loading ? <Loader2 className="animate-spin" /> : <KeyRound size={16} />}
-                {t("Send Reset Link", "Reset Link ပို့မည်")}
-              </button>
-            </form>
-
-            <button
-              onClick={() => navigate("/")}
-              className="mt-8 flex w-full items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-white transition-colors"
-            >
-              <ArrowLeft size={14} /> {t("Back to Login", "အကောင့်ဝင်ရန် ပြန်သွားမည်")}
-            </button>
-          </div>
-
-          {/* Utils Footer */}
-          <div className="mt-8 flex justify-center">
-            <div className="flex items-center space-x-2 text-[10px] font-bold uppercase tracking-widest text-white/30">
-              <Globe size={12} />
-              <span>Recovery Protocol v4.2</span>
-            </div>
-          </div>
+        <div className="auth-brand-footer">
+          <strong>Britium Express</strong>
+          <span>{locale === 'en' ? 'Fast. Controlled. Auditable.' : 'Fast. Controlled. Auditable.'}</span>
         </div>
       </div>
-    </div>
-  );
-}
 
-/**
- * PREVIEW WRAPPER
- * This ensures the component has the necessary Router context during Canvas preview.
- */
-export default function App() {
-  return (
-    
-      <ForgotPassword />
-    
+      <div className="auth-shell__panel auth-shell__panel--form">
+        <article className="auth-form-card">
+          <div className="page-eyebrow">
+            {locale === 'en' ? 'Credential Recovery' : 'Credential Recovery'}
+          </div>
+
+          <h2>{locale === 'en' ? 'Forgot password' : 'Forgot password'}</h2>
+
+          <p>
+            {locale === 'en'
+              ? 'Enter your email address and we will send a reset link.'
+              : 'သင့် email address ကိုဖြည့်ပြီး password reset link ကို ရယူနိုင်ပါသည်။'}
+          </p>
+
+          <form className="page-main-stack" onSubmit={onSubmit}>
+            <label className="field">
+              <span>{t('common.email', 'Email')}</span>
+              <input
+                type="email"
+                autoComplete="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder={t('common.emailPlaceholder', 'Enter your email')}
+              />
+            </label>
+
+            {error ? <div className="callout">{error}</div> : null}
+            {message ? <div className="callout">{message}</div> : null}
+
+            <div className="toolbar auth-toolbar">
+              <button type="submit" className="toolbar-button toolbar-button--primary">
+                {busy
+                  ? (locale === 'en' ? 'Sending...' : 'Sending...')
+                  : (locale === 'en' ? 'Send Reset Link' : 'Send Reset Link')}
+              </button>
+
+              <button
+                type="button"
+                className="toolbar-button"
+                onClick={() => navigate('/login')}
+              >
+                {locale === 'en' ? 'Back to Login' : 'Back to Login'}
+              </button>
+            </div>
+          </form>
+
+          <div className="auth-form-footer">
+            <span>{locale === 'en' ? 'Need public tracking?' : 'Need public tracking?'}</span>
+            <Link to="/track" className="auth-inline-link">
+              {t('common.openTracking', 'Open Tracking')}
+            </Link>
+          </div>
+        </article>
+      </div>
+    </section>
   );
 }
