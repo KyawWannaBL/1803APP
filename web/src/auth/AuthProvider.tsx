@@ -1,6 +1,3 @@
-cd /d/1803APP/apps/web
-
-cat > src/auth/AuthProvider.tsx <<'EOF'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Session } from '@supabase/supabase-js';
@@ -214,4 +211,3 @@ export function useAuth() {
   if (!ctx) throw new Error('useAuth must be used inside AuthProvider');
   return ctx;
 }
-EOF
