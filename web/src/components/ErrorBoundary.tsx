@@ -1,4 +1,5 @@
 import React from 'react';
+import { logger } from '@/lib/logger';
 
 type Props = { children: React.ReactNode };
 type State = { error: Error | null };
@@ -11,7 +12,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
   }
 
   componentDidCatch(error: Error) {
-    console.error('Unhandled application error', error);
+    logger.error('Unhandled application error', { error });
   }
 
   render() {
@@ -20,6 +21,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
         <section className="page-card">
           <h1>Application error</h1>
           <p>{this.state.error.message}</p>
+          <p>Please check environment variables, backend connectivity, and runtime logs.</p>
         </section>
       );
     }

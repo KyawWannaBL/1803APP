@@ -7,7 +7,7 @@ import { QRScanPanel } from '@/components/QRScanPanel';
 import { SignaturePanel } from '@/components/SignaturePanel';
 import { TimelinePanel } from '@/components/TimelinePanel';
 import { KpiStrip } from '@/components/KpiStrip';
-import { DatasetPanel } from '@/components/DatasetPanel';
+import { DatasetPanel } from '@/components/DataSetPanel';
 import { WorkflowGatePanel } from '@/components/WorkflowGatePanel';
 import { fetchPortalSummary, fetchScreenDatasets, getPrimaryEntityType, type GenericRecord } from '@/services/repositories';
 import type { WorkflowEntityType } from '@/services/workflowService';

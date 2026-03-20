@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import screens from '@/data/screenCatalog.json';
 import portals from '@/data/portalConfig.json';
 import { useAuth } from '@/auth/AuthProvider';
+import { env } from '@/lib/env';
 import { LanguageToggle } from '@/components/LanguageToggle';
 import { useI18n } from '@/i18n/I18nProvider';
 
@@ -45,7 +46,7 @@ function inferPortalFromPath(pathname: string) {
 }
 
 export function AppShell() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, mode } = useAuth();
   const { locale, t } = useI18n();
   const location = useLocation();
   const [openPortal, setOpenPortal] = useState<string | null>(null);
@@ -95,6 +96,12 @@ export function AppShell() {
               ? 'Operational shell with all permitted portals wired to demo and backend data providers.'
               : 'Operational shell with all permitted portals wired to demo and backend data providers.'}
           </span>
+          <div className="shell__meta">
+            <span className={`status-chip ${mode === 'demo' ? 'status-chip--warn' : 'status-chip--ok'}`}>
+              {mode === 'demo' ? 'Demo mode' : 'Backend mode'}
+            </span>
+            <span className="status-chip">{env.appEnv}</span>
+          </div>
         </div>
 
         <nav className="nav">

@@ -1,4 +1,3 @@
-
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import screens from '@/data/screenCatalog.json';
 import portals from '@/data/portalConfig.json';
@@ -85,16 +84,69 @@ const LIVE_PORTAL_KEYS = new Set([
 ]);
 
 const publicScreens = screens.filter((s) => s.portal === 'public_tracking');
+
 const dedicatedRoutes = new Set([
-  '/rider/dashboard','/rider/assigned-tasks','/rider/pickup','/rider/delivery','/rider/incidents',
-  '/warehouse/dashboard','/warehouse/inbound-manifest','/warehouse/receiving-bay','/warehouse/cargo-receiving-scan','/warehouse/shortage-damage-entry','/warehouse/outbound-manifest','/warehouse/vehicle-load-verification','/warehouse/load-confirmation','/warehouse/dispatch-handover',
-  '/operations/dashboard','/operations/control-room','/operations/new-orders','/operations/assignment-workbench','/operations/rider-availability','/operations/in-transit-board','/operations/sla-risk-board','/operations/failed-deliveries','/operations/returns','/operations/escalations','/operations/shipments','/operations/shipment-lifecycle',
-  '/finance/dashboard','/finance/cod-reconciliation','/finance/settlement-queue','/finance/invoices','/finance/payment-records','/finance/rider-payouts','/finance/merchant-ledger','/finance/refund-review',
-  '/support/dashboard','/support/ticket-inbox','/support/order-search','/support/customer-history','/support/complaint-logging','/support/escalation-queue','/support/knowledge-base',
-  '/merchant/dashboard','/merchant/create-order','/merchant/bulk-upload','/merchant/orders','/merchant/tracking','/merchant/returns','/merchant/invoices','/merchant/settings',
-  '/customer/dashboard','/customer/create-request','/customer/orders','/customer/tracking','/customer/support-tickets','/customer/profile','/customer/preferences',
+  '/rider/dashboard',
+  '/rider/assigned-tasks',
+  '/rider/pickup',
+  '/rider/delivery',
+  '/rider/incidents',
+  '/warehouse/dashboard',
+  '/warehouse/inbound-manifest',
+  '/warehouse/receiving-bay',
+  '/warehouse/cargo-receiving-scan',
+  '/warehouse/shortage-damage-entry',
+  '/warehouse/outbound-manifest',
+  '/warehouse/vehicle-load-verification',
+  '/warehouse/load-confirmation',
+  '/warehouse/dispatch-handover',
+  '/operations/dashboard',
+  '/operations/control-room',
+  '/operations/new-orders',
+  '/operations/assignment-workbench',
+  '/operations/rider-availability',
+  '/operations/in-transit-board',
+  '/operations/sla-risk-board',
+  '/operations/failed-deliveries',
+  '/operations/returns',
+  '/operations/escalations',
+  '/operations/shipments',
+  '/operations/shipment-lifecycle',
+  '/finance/dashboard',
+  '/finance/cod-reconciliation',
+  '/finance/settlement-queue',
+  '/finance/invoices',
+  '/finance/payment-records',
+  '/finance/rider-payouts',
+  '/finance/merchant-ledger',
+  '/finance/refund-review',
+  '/support/dashboard',
+  '/support/ticket-inbox',
+  '/support/order-search',
+  '/support/customer-history',
+  '/support/complaint-logging',
+  '/support/escalation-queue',
+  '/support/knowledge-base',
+  '/merchant/dashboard',
+  '/merchant/create-order',
+  '/merchant/bulk-upload',
+  '/merchant/orders',
+  '/merchant/tracking',
+  '/merchant/returns',
+  '/merchant/invoices',
+  '/merchant/settings',
+  '/customer/dashboard',
+  '/customer/create-request',
+  '/customer/orders',
+  '/customer/tracking',
+  '/customer/support-tickets',
+  '/customer/profile',
+  '/customer/preferences',
 ]);
-const privateScreens = screens.filter((s) => s.portal !== 'public_tracking' && !dedicatedRoutes.has(s.route));
+
+const privateScreens = screens.filter(
+  (s) => s.portal !== 'public_tracking' && !dedicatedRoutes.has(s.route),
+);
 
 function getPortalHome(key: string, base: string) {
   if (key === 'rider') return '/rider/dashboard';
@@ -109,17 +161,20 @@ function getPortalHome(key: string, base: string) {
 
 function AppRoutes() {
   const { user } = useAuth();
+
   return (
     <Routes>
       <Route path="/" element={<Navigate to={user ? '/portal-home' : '/login'} replace />} />
       <Route path="/login" element={<LoginPage />} />
 
-      {publicScreens.map((s) => <Route key={s.code} path={s.route} element={<ScreenPage />} />)}
+      {publicScreens.map((s) => (
+        <Route key={s.code} path={s.route} element={<ScreenPage />} />
+      ))}
 
       <Route element={<ProtectedRoute />}>
-        <Route element={<AppShell />}>
-          <Route path="/portal-home" element={<PortalLandingPage />} />
+        <Route path="/portal-home" element={<PortalLandingPage />} />
 
+        <Route element={<AppShell />}>
           {Object.entries(portals)
             .filter(([key, p]) => p.base !== '/track' && LIVE_PORTAL_KEYS.has(key))
             .map(([key, portal]) => (
@@ -193,8 +248,17 @@ function AppRoutes() {
           <Route path="/customer/profile" element={<CustomerProfilePage />} />
           <Route path="/customer/preferences" element={<CustomerPreferencesPage />} />
 
-          {privateScreens.map((s) => <Route key={s.code} path={s.route} element={<ScreenPage />} />)}
-          {aliases.map((a) => <Route key={a.legacyRoute} path={a.legacyRoute} element={<Navigate to={a.newRoute} replace />} />)}
+          {privateScreens.map((s) => (
+            <Route key={s.code} path={s.route} element={<ScreenPage />} />
+          ))}
+
+          {aliases.map((a) => (
+            <Route
+              key={a.legacyRoute}
+              path={a.legacyRoute}
+              element={<Navigate to={a.newRoute} replace />}
+            />
+          ))}
         </Route>
       </Route>
 
@@ -208,7 +272,9 @@ export default function App() {
     <ErrorBoundary>
       <I18nProvider>
         <AuthProvider>
-          <BrowserRouter><AppRoutes /></BrowserRouter>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
         </AuthProvider>
       </I18nProvider>
     </ErrorBoundary>
