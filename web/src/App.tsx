@@ -8,10 +8,10 @@ import { I18nProvider } from '@/i18n/I18nProvider';
 import { AppShell } from '@/components/AppShell';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { LoginPage } from '@/screens/LoginPage';
-import SignUp from '@/screens/SignUp';
 import ForgotPassword from '@/screens/ForgotPassword';
 import ResetPassword from '@/screens/ResetPassword';
-import Unauthorized from '@/screens/Unauthorized';
+import SignUp from '@/screens/SignUp';
+import ForcePasswordReset from '@/screens/ForcePasswordReset';
 import PortalLandingPage from '@/screens/PortalLandingPage';
 import ScreenPage from '@/screens/ScreenPage';
 import SmartPortalHome from '@/screens/SmartPortalHome';
@@ -132,7 +132,7 @@ function AppRoutes() {
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-      <Route path="/unauthorized" element={<Unauthorized />} />
+      <Route path="/force-password-reset" element={<ForcePasswordReset />} />
 
       {publicScreens.map((s) => <Route key={s.code} path={s.route} element={<ScreenPage />} />)}
 

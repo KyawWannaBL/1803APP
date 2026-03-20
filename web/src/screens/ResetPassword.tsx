@@ -34,20 +34,11 @@ export default function ResetPassword() {
         if (data.session) {
           setReady(true);
         } else {
-          setError(
-            locale === 'en'
-              ? 'Invalid or expired recovery link.'
-              : 'Recovery link မမှန် သို့မဟုတ် သက်တမ်းကုန်နေပါသည်။',
-          );
+          setError(locale === 'en' ? 'Invalid or expired recovery link.' : 'Recovery link မမှန် သို့မဟုတ် သက်တမ်းကုန်နေပါသည်။');
         }
       } catch (e: any) {
         if (!mounted) return;
-        setError(
-          e?.message ??
-            (locale === 'en'
-              ? 'Invalid or expired recovery link.'
-              : 'Recovery link မမှန် သို့မဟုတ် သက်တမ်းကုန်နေပါသည်။'),
-        );
+        setError(e?.message ?? (locale === 'en' ? 'Invalid or expired recovery link.' : 'Recovery link မမှန် သို့မဟုတ် သက်တမ်းကုန်နေပါသည်။'));
       } finally {
         if (mounted) setBusy(false);
       }
@@ -80,39 +71,22 @@ export default function ResetPassword() {
       setError(locale === 'en' ? 'Both password fields are required.' : 'Password field နှစ်ခုလုံး လိုအပ်ပါသည်။');
       return;
     }
-
     if (password !== confirmPassword) {
       setError(locale === 'en' ? 'Passwords do not match.' : 'စကားဝှက်များ မကိုက်ညီပါ။');
       return;
     }
-
     if (password.length < 8) {
-      setError(
-        locale === 'en'
-          ? 'Password must be at least 8 characters.'
-          : 'စကားဝှက်သည် အနည်းဆုံး ၈ လုံး ဖြစ်ရမည်။',
-      );
+      setError(locale === 'en' ? 'Password must be at least 8 characters.' : 'စကားဝှက်သည် အနည်းဆုံး ၈ လုံး ဖြစ်ရမည်။');
       return;
     }
 
     setBusy(true);
-
     try {
-      const { error: updateError } = await supabase.auth.updateUser({
-        password,
-      });
-
+      const { error: updateError } = await supabase.auth.updateUser({ password });
       if (updateError) throw updateError;
 
-      setMessage(
-        locale === 'en'
-          ? 'Password updated successfully. Redirecting to login...'
-          : 'စကားဝှက် ပြောင်းပြီးပါပြီ။ Login သို့ ပြန်သွားနေသည်...',
-      );
-
-      setTimeout(() => {
-        navigate('/login', { replace: true });
-      }, 1500);
+      setMessage(locale === 'en' ? 'Password updated successfully. Redirecting to login...' : 'စကားဝှက် ပြောင်းပြီးပါပြီ။ Login သို့ ပြန်သွားနေသည်...');
+      setTimeout(() => navigate('/login', { replace: true }), 1500);
     } catch (e: any) {
       setError(e?.message ?? t('common.requestFailed', 'Request failed.'));
     } finally {
@@ -123,16 +97,10 @@ export default function ResetPassword() {
   return (
     <section className="auth-shell">
       <div className="auth-shell__panel auth-shell__panel--brand">
-        <div className="auth-brand-badge">
-          {t('common.enterprisePlatform', 'Enterprise Delivery Platform')}
-        </div>
-
+        <div className="auth-brand-badge">{t('common.enterprisePlatform', 'Enterprise Delivery Platform')}</div>
         <h1 className="auth-hero-title">
-          {locale === 'en'
-            ? 'Britium Express Password Recovery'
-            : 'Britium Express Password Recovery'}
+          {locale === 'en' ? 'Britium Express Password Recovery' : 'Britium Express Password Recovery'}
         </h1>
-
         <p className="auth-hero-text">
           {locale === 'en'
             ? 'Set a new password securely and restore access to your assigned enterprise workspace.'
@@ -148,7 +116,6 @@ export default function ResetPassword() {
                 : 'Password update မပြုမီ recovery link ကို Supabase authentication ဖြင့် စစ်ဆေးပါသည်။'}
             </p>
           </article>
-
           <article className="auth-feature-card">
             <h3>{locale === 'en' ? 'Production-safe access recovery' : 'Production-safe access recovery'}</h3>
             <p>
@@ -167,23 +134,15 @@ export default function ResetPassword() {
 
       <div className="auth-shell__panel auth-shell__panel--form">
         <article className="auth-form-card">
-          <div className="page-eyebrow">
-            {locale === 'en' ? 'Password Reset' : 'Password Reset'}
-          </div>
-
+          <div className="page-eyebrow">{locale === 'en' ? 'Password Reset' : 'Password Reset'}</div>
           <h2>{locale === 'en' ? 'Set a new password' : 'Set a new password'}</h2>
-
           <p>
             {locale === 'en'
               ? 'Enter and confirm your new password to complete recovery.'
               : 'Recovery ကို ပြီးစီးစေရန် စကားဝှက်အသစ်ကို ဖြည့်ပြီး အတည်ပြုပါ။'}
           </p>
 
-          {busy && !ready ? (
-            <div className="callout">
-              {locale === 'en' ? 'Preparing password recovery...' : 'Password recovery ကို ပြင်ဆင်နေသည်...'}
-            </div>
-          ) : null}
+          {busy && !ready ? <div className="callout">{locale === 'en' ? 'Preparing password recovery...' : 'Password recovery ကို ပြင်ဆင်နေသည်...'}</div> : null}
 
           {!busy || ready ? (
             <form className="page-main-stack" onSubmit={onSubmit}>
@@ -215,21 +174,10 @@ export default function ResetPassword() {
               {message ? <div className="callout">{message}</div> : null}
 
               <div className="toolbar auth-toolbar">
-                <button
-                  type="submit"
-                  className="toolbar-button toolbar-button--primary"
-                  disabled={!ready || busy}
-                >
-                  {busy
-                    ? (locale === 'en' ? 'Updating...' : 'Updating...')
-                    : (locale === 'en' ? 'Update Password' : 'Update Password')}
+                <button type="submit" className="toolbar-button toolbar-button--primary" disabled={!ready || busy}>
+                  {busy ? (locale === 'en' ? 'Updating...' : 'Updating...') : (locale === 'en' ? 'Update Password' : 'Update Password')}
                 </button>
-
-                <button
-                  type="button"
-                  className="toolbar-button"
-                  onClick={() => navigate('/login')}
-                >
+                <button type="button" className="toolbar-button" onClick={() => navigate('/login')}>
                   {locale === 'en' ? 'Back to Login' : 'Back to Login'}
                 </button>
               </div>

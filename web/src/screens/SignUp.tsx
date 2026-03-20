@@ -1,195 +1,121 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Globe, Loader2, ArrowLeft, UserPlus } from "lucide-react";
-import toast from "react-hot-toast";
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useI18n } from '@/i18n/I18nProvider';
+import { supabase } from '@/lib/supabase';
 
-/**
- * PREVIEW ENVIRONMENT MOCKS
- * These mocks resolve the "Could not resolve" errors in the Canvas environment.
- * In your local project, these will be replaced by your actual imports.
- */
-
-// Mocking @/contexts/LanguageContext
-const useLanguage = () => ({
-  lang: "en",
-  setLang: (l: string) => console.log("Language changed to:", l),
-  t: (en: string, my: string) => en
-});
-
-// Mocking @/lib/supabase
-const supabase = {
-  auth: {
-    signUp: async (data: any) => {
-      console.log("Mock SignUp call:", data);
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      return { data: { user: { id: "mock-id-123" } }, error: null };
-    }
-  },
-  from: (table: string) => ({
-    upsert: async (data: any) => {
-      console.log(`Mock Upsert to ${table}:`, data);
-      return { error: null };
-    }
-  })
-};
-
-// Main SignUp Component
-export function SignUp() {
+export default function SignUp() {
+  const { t, locale } = useI18n();
   const navigate = useNavigate();
-  const langCtx = useLanguage();
-  const lang = langCtx.lang ?? "en";
-  
-  const [loading, setLoading] = useState(false);
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const t = (en: string, my: string) => (lang === "en" ? en : my);
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
 
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (busy) return;
 
-    if (!fullName.trim()) {
-      toast.error(t("Full name is required.", "အမည်အပြည့်အစုံ လိုအပ်ပါသည်။"));
-      return;
-    }
+    setBusy(true);
+    setError('');
+    setMessage('');
 
-    if (password.length < 8) {
-      toast.error(t("Password must be at least 8 characters.", "စကားဝှက်သည် အနည်းဆုံး ၈ လုံး ဖြစ်ရမည်။"));
-      return;
-    }
-
-    setLoading(true);
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
+      const { error: signUpError } = await supabase.auth.signUp({
+        email: email.trim(),
         password,
-        options: { data: { full_name: fullName } },
+        options: {
+          data: {
+            full_name: fullName.trim(),
+          },
+          emailRedirectTo: 'https://www.britiumexpress.app/login',
+        },
       });
 
-      if (error) throw error;
+      if (signUpError) throw signUpError;
 
-      if (data?.user?.id) {
-        await supabase.from("profiles").upsert({
-          id: data.user.id,
-          full_name: fullName,
-          email,
-          role: "USER",
-          requires_password_change: false,
-        });
-      }
-
-      toast.success(t("Account created successfully.", "အကောင့်ဖွင့်ခြင်း အောင်မြင်ပါသည်။"));
-      navigate("/");
-    } catch (error: any) {
-      toast.error(error?.message || t("Sign up failed.", "အကောင့်ဖွင့်ခြင်း မအောင်မြင်ပါ။"));
+      setMessage(
+        locale === 'en'
+          ? 'Sign up submitted. Check your email to confirm your account.'
+          : 'Sign up ပြီးပါပြီ။ သင့် account ကိုအတည်ပြုရန် email ကို စစ်ဆေးပါ။',
+      );
+      setTimeout(() => navigate('/login', { replace: true }), 1500);
+    } catch (e: any) {
+      setError(e?.message ?? t('common.requestFailed', 'Request failed.'));
     } finally {
-      setLoading(false);
+      setBusy(false);
     }
-  };
+  }
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-slate-950 font-sans antialiased text-slate-900">
-      {/* Cinematic Background Layer */}
-      <video 
-        autoPlay 
-        muted 
-        loop 
-        playsInline 
-        className="fixed top-0 left-0 min-w-full min-h-full object-cover z-0 opacity-40"
-      >
-        <source src="/background.mp4" type="video/mp4" />
-      </video>
-      <div className="fixed top-0 left-0 w-full h-full bg-gradient-to-br from-slate-950/95 via-slate-900/70 to-indigo-950/40 backdrop-blur-[2px] z-10" />
+    <section className="auth-shell">
+      <div className="auth-shell__panel auth-shell__panel--brand">
+        <div className="auth-brand-badge">{t('common.enterprisePlatform', 'Enterprise Delivery Platform')}</div>
+        <h1 className="auth-hero-title">{locale === 'en' ? 'Britium Express Account Enrollment' : 'Britium Express Account Enrollment'}</h1>
+        <p className="auth-hero-text">
+          {locale === 'en'
+            ? 'Create a secure account request for enterprise delivery operations and portal access.'
+            : 'enterprise delivery operations နှင့် portal access အတွက် secure account request တင်နိုင်ပါသည်။'}
+        </p>
 
-      <div className="relative z-20 flex min-h-screen items-center justify-center p-6">
-        <div className="w-full max-w-md">
-          {/* Brand Identity */}
-          <div className="mb-10 flex flex-col items-center text-center">
-            <div className="mb-6 rounded-[2rem] bg-white p-5 shadow-[0_0_60px_rgba(255,255,255,0.15)] ring-1 ring-white/20 transform transition-all hover:scale-105">
-              <img src="/logo.png" alt="Britium Logo" className="h-16 w-auto object-contain" />
-            </div>
-            <h1 className="text-4xl font-black tracking-tighter text-white uppercase">
-              Britium <span className="text-indigo-400 italic font-light">Express</span>
-            </h1>
-            <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.4em] text-slate-400">
-              Identity Enrollment
-            </p>
-          </div>
+        <div className="auth-feature-list">
+          <article className="auth-feature-card">
+            <h3>{locale === 'en' ? 'Role-aware access' : 'Role-aware access'}</h3>
+            <p>{locale === 'en' ? 'New accounts can be assigned to controlled portal roles after verification.' : 'အတည်ပြုပြီးနောက် portal role များသို့ assign လုပ်နိုင်ပါသည်။'}</p>
+          </article>
+          <article className="auth-feature-card">
+            <h3>{locale === 'en' ? 'Production-safe onboarding' : 'Production-safe onboarding'}</h3>
+            <p>{locale === 'en' ? 'Sign-up integrates with Supabase Auth confirmation flow.' : 'Sign-up သည် Supabase Auth confirmation flow နှင့် ချိတ်ဆက်ထားပါသည်။'}</p>
+          </article>
+        </div>
 
-          {/* Form Container (Glassmorphism) */}
-          <div className="rounded-[2.5rem] border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-3xl lg:p-10 ring-1 ring-white/5">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-white tracking-tight">Create Account</h2>
-              <p className="text-xs text-slate-400 mt-1">Register your terminal credentials</p>
-            </div>
-
-            <form onSubmit={handleSignUp} className="space-y-4">
-              <div className="space-y-4">
-                <input 
-                  type="text" 
-                  placeholder={t("FULL NAME", "အမည်အပြည့်အစုံ")} 
-                  required 
-                  className="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-4 text-sm font-semibold text-white outline-none transition-all placeholder:text-slate-500 focus:border-indigo-500/50 focus:bg-white/10" 
-                  value={fullName} 
-                  onChange={(e) => setFullName(e.target.value)} 
-                />
-                <input 
-                  type="email" 
-                  placeholder={t("EMAIL", "အီးမေးလ်")} 
-                  required 
-                  className="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-4 text-sm font-semibold text-white outline-none transition-all placeholder:text-slate-500 focus:border-indigo-500/50 focus:bg-white/10" 
-                  value={email} 
-                  onChange={(e) => setEmail(e.target.value)} 
-                />
-                <input 
-                  type="password" 
-                  placeholder={t("PASSWORD", "စကားဝှက်")} 
-                  required 
-                  className="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-4 text-sm font-semibold text-white outline-none transition-all placeholder:text-slate-500 focus:border-indigo-500/50 focus:bg-white/10" 
-                  value={password} 
-                  onChange={(e) => setPassword(e.target.value)} 
-                />
-              </div>
-
-              <button 
-                disabled={loading} 
-                type="submit" 
-                className="w-full flex items-center justify-center gap-2 rounded-2xl bg-indigo-600 py-4 text-xs font-black uppercase tracking-widest text-white shadow-xl shadow-indigo-900/20 transition-all hover:bg-indigo-500 active:scale-95 disabled:opacity-50"
-              >
-                {loading ? <Loader2 className="animate-spin" /> : <UserPlus size={16} />}
-                {t("Create Account", "အကောင့်ဖွင့်မည်")}
-              </button>
-            </form>
-
-            <button 
-              onClick={() => navigate("/")} 
-              className="mt-8 flex w-full items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-white transition-colors"
-            >
-              <ArrowLeft size={14} /> {t("Back to Login", "အကောင့်ဝင်ရန် ပြန်သွားမည်")}
-            </button>
-          </div>
-
-          <div className="mt-8 flex justify-center">
-            <div className="flex items-center space-x-2 text-[10px] font-bold uppercase tracking-widest text-white/30">
-              <Globe size={12} />
-              <span>Global Enrollment System v2.4</span>
-            </div>
-          </div>
+        <div className="auth-brand-footer">
+          <strong>Britium Express</strong>
+          <span>{locale === 'en' ? 'Fast. Controlled. Auditable.' : 'Fast. Controlled. Auditable.'}</span>
         </div>
       </div>
-    </div>
-  );
-}
 
-/**
- * PREVIEW WRAPPER
- * This ensures the component has the necessary Router context during Canvas preview.
- */
-export default function App() {
-  return (
-    
-      <SignUp />
-    
+      <div className="auth-shell__panel auth-shell__panel--form">
+        <article className="auth-form-card">
+          <div className="page-eyebrow">{locale === 'en' ? 'Sign Up' : 'Sign Up'}</div>
+          <h2>{locale === 'en' ? 'Create account' : 'Create account'}</h2>
+          <p>{locale === 'en' ? 'Submit your details to start using the platform.' : 'Platform ကို စတင်အသုံးပြုရန် သင့်အချက်အလက်များ ဖြည့်ပါ။'}</p>
+
+          <form className="page-main-stack" onSubmit={onSubmit}>
+            <label className="field">
+              <span>{locale === 'en' ? 'Full name' : 'နာမည်အပြည့်အစုံ'}</span>
+              <input value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder={locale === 'en' ? 'Enter full name' : 'နာမည်ထည့်ပါ'} />
+            </label>
+            <label className="field">
+              <span>{t('common.email', 'Email')}</span>
+              <input type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t('common.emailPlaceholder', 'Enter your email')} />
+            </label>
+            <label className="field">
+              <span>{t('common.password', 'Password')}</span>
+              <input type="password" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder={t('common.passwordPlaceholder', 'Enter your password')} />
+            </label>
+
+            {error ? <div className="callout">{error}</div> : null}
+            {message ? <div className="callout">{message}</div> : null}
+
+            <div className="toolbar auth-toolbar">
+              <button type="submit" className="toolbar-button toolbar-button--primary">
+                {busy ? (locale === 'en' ? 'Submitting...' : 'Submitting...') : (locale === 'en' ? 'Create Account' : 'Create Account')}
+              </button>
+              <button type="button" className="toolbar-button" onClick={() => navigate('/login')}>
+                {locale === 'en' ? 'Back to Login' : 'Back to Login'}
+              </button>
+            </div>
+          </form>
+
+          <div className="auth-form-footer">
+            <span>{locale === 'en' ? 'Already have an account?' : 'Already have an account?'}</span>
+            <Link to="/login" className="auth-inline-link">{locale === 'en' ? 'Sign In' : 'Sign In'}</Link>
+          </div>
+        </article>
+      </div>
+    </section>
   );
 }

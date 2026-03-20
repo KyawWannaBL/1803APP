@@ -1,3 +1,4 @@
+
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useI18n } from '@/i18n/I18nProvider';
@@ -78,18 +79,6 @@ export function LoginPage() {
     }
   }
 
-  function goToSignUp() {
-    navigate('/sign-up');
-  }
-
-  function goToForgotPassword() {
-    navigate('/forgot-password');
-  }
-
-  function downloadApk() {
-    window.location.href = '/britium-enterprise.apk';
-  }
-
   return (
     <section className="auth-shell">
       <div className="auth-shell__panel auth-shell__panel--brand">
@@ -163,17 +152,17 @@ export function LoginPage() {
           </form>
 
           <div className="toolbar auth-toolbar" style={{ marginTop: '1rem', gap: '0.75rem', flexWrap: 'wrap' }}>
-            <button type="button" className="toolbar-button" onClick={goToSignUp}>
+            <Link to="/sign-up" className="toolbar-button">
               {locale === 'en' ? 'Sign Up' : 'Sign Up'}
-            </button>
+            </Link>
 
-            <button type="button" className="toolbar-button" onClick={goToForgotPassword}>
+            <Link to="/forgot-password" className="toolbar-button">
               {locale === 'en' ? 'Forgot Password' : 'Forgot Password'}
-            </button>
+            </Link>
 
-            <button type="button" className="toolbar-button" onClick={downloadApk}>
-              {locale === 'en' ? 'Download APK' : 'Download APK'}
-            </button>
+            <a href="/DOWNLOADS.md" target="_blank" rel="noreferrer" className="toolbar-button">
+              {locale === 'en' ? 'Download APK Guide' : 'Download APK Guide'}
+            </a>
           </div>
 
           <div className="auth-form-footer">
@@ -187,5 +176,3 @@ export function LoginPage() {
     </section>
   );
 }
-
-export default LoginPage;

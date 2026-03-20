@@ -22,16 +22,14 @@ export default function ForgotPassword() {
 
     try {
       if (!email.trim()) {
-        throw new Error('Email is required.');
+        throw new Error(locale === 'en' ? 'Email is required.' : 'Email လိုအပ်ပါသည်။');
       }
 
       const { error: resetError } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-        redirectTo: `${window.location.origin}/reset-password`,
+        redirectTo: 'https://www.britiumexpress.app/reset-password',
       });
 
-      if (resetError) {
-        throw resetError;
-      }
+      if (resetError) throw resetError;
 
       setMessage(
         locale === 'en'
@@ -53,9 +51,7 @@ export default function ForgotPassword() {
         </div>
 
         <h1 className="auth-hero-title">
-          {locale === 'en'
-            ? 'Britium Express Credential Recovery'
-            : 'Britium Express Credential Recovery'}
+          {locale === 'en' ? 'Britium Express Credential Recovery' : 'Britium Express Credential Recovery'}
         </h1>
 
         <p className="auth-hero-text">
@@ -92,12 +88,8 @@ export default function ForgotPassword() {
 
       <div className="auth-shell__panel auth-shell__panel--form">
         <article className="auth-form-card">
-          <div className="page-eyebrow">
-            {locale === 'en' ? 'Credential Recovery' : 'Credential Recovery'}
-          </div>
-
+          <div className="page-eyebrow">{locale === 'en' ? 'Credential Recovery' : 'Credential Recovery'}</div>
           <h2>{locale === 'en' ? 'Forgot password' : 'Forgot password'}</h2>
-
           <p>
             {locale === 'en'
               ? 'Enter your email address and we will send a reset link.'
@@ -121,16 +113,10 @@ export default function ForgotPassword() {
 
             <div className="toolbar auth-toolbar">
               <button type="submit" className="toolbar-button toolbar-button--primary">
-                {busy
-                  ? (locale === 'en' ? 'Sending...' : 'Sending...')
-                  : (locale === 'en' ? 'Send Reset Link' : 'Send Reset Link')}
+                {busy ? (locale === 'en' ? 'Sending...' : 'Sending...') : (locale === 'en' ? 'Send Reset Link' : 'Send Reset Link')}
               </button>
 
-              <button
-                type="button"
-                className="toolbar-button"
-                onClick={() => navigate('/login')}
-              >
+              <button type="button" className="toolbar-button" onClick={() => navigate('/login')}>
                 {locale === 'en' ? 'Back to Login' : 'Back to Login'}
               </button>
             </div>
