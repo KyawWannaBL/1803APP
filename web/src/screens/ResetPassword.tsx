@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useI18n } from '@/i18n/I18nProvider';
 import { supabase } from '@/lib/supabase';
@@ -49,21 +49,16 @@ async function initializeRecoverySession(): Promise<RecoveryInitResult> {
       return { ok: true };
     }
 
-    return {
-      ok: false,
-      message: 'Invalid or expired recovery link.',
-    };
+    return { ok: false, message: 'Invalid or expired recovery link.' };
   } catch (e: any) {
-    return {
-      ok: false,
-      message: e?.message ?? 'Invalid or expired recovery link.',
-    };
+    return { ok: false, message: e?.message ?? 'Invalid or expired recovery link.' };
   }
 }
 
 export default function ResetPassword() {
   const { t, locale } = useI18n();
   const navigate = useNavigate();
+  const bootedRef = useRef(false);
 
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -74,41 +69,32 @@ export default function ResetPassword() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
+    if (bootedRef.current) return;
+    bootedRef.current = true;
+
     let mounted = true;
 
-    const boot = async () => {
+    (async () => {
       const result = await initializeRecoverySession();
       if (!mounted) return;
 
-if (result.ok) {
-  setReady(true);
-  setError('');
-} else {
-  setReady(false);
-  setError(
-    locale === 'en'
-      ? ('message' in result ? result.message : 'Invalid or expired recovery link.')
-      : 'Recovery link မမှန် သို့မဟုတ် သက်တမ်းကုန်နေပါသည်။',
-  );
-}
+      if (result.ok) {
+        setReady(true);
+        setError('');
+      } else {
+        setReady(false);
+        setError(
+          locale === 'en'
+            ? ('message' in result ? result.message : 'Invalid or expired recovery link.')
+            : 'Recovery link မမှန် သို့မဟုတ် သက်တမ်းကုန်နေပါသည်။',
+        );
+      }
 
       setInitializing(false);
-    };
-
-    const { data: authListener } = supabase.auth.onAuthStateChange((event) => {
-      if (!mounted) return;
-
-      if (event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN') {
-        setReady(true);
-        setInitializing(false);
-      }
-    });
-
-    void boot();
+    })();
 
     return () => {
       mounted = false;
-      authListener.subscription.unsubscribe();
     };
   }, [locale]);
 
@@ -155,13 +141,13 @@ if (result.ok) {
 
       if (updateError) throw updateError;
 
-      await supabase.auth.signOut();
-
       setMessage(
         locale === 'en'
           ? 'Password updated successfully. Redirecting to login...'
           : 'စကားဝှက် ပြောင်းပြီးပါပြီ။ Login သို့ ပြန်သွားနေသည်...',
       );
+
+      await supabase.auth.signOut();
 
       setTimeout(() => {
         navigate('/login', { replace: true });
@@ -241,6 +227,8 @@ if (result.ok) {
           ) : null}
 
           <form className="page-main-stack" onSubmit={onSubmit}>
+            <input type="text" autoComplete="username" value="recovery-user" readOnly hidden />
+
             <label className="field">
               <span>{locale === 'en' ? 'New password' : 'စကားဝှက်အသစ်'}</span>
               <input
