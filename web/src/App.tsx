@@ -263,6 +263,7 @@ function AppRoutes() {
       </Route>
 
       <Route path="*" element={<Navigate to={user ? '/portal-home' : '/login'} replace />} />
+     <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
     </Routes>
   );
 }
