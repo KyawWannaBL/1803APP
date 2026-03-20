@@ -8,9 +8,14 @@ import { I18nProvider } from '@/i18n/I18nProvider';
 import { AppShell } from '@/components/AppShell';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { LoginPage } from '@/screens/LoginPage';
-import { PortalLandingPage } from '@/screens/PortalLandingPage';
-import { ScreenPage } from '@/screens/ScreenPage';
-import { ResetPasswordPage } from '@/screens/ResetPasswordPage'; 
+import SignUp from '@/screens/SignUp';
+import ForgotPassword from '@/screens/ForgotPassword';
+import ResetPassword from '@/screens/ResetPassword';
+import Unauthorized from '@/screens/Unauthorized';
+import PortalLandingPage from '@/screens/PortalLandingPage';
+import ScreenPage from '@/screens/ScreenPage';
+import SmartPortalHome from '@/screens/SmartPortalHome';
+import SysDashboardPage from '@/screens/admin/SysDashboardPage';
 
 import { RiderDashboardPage } from '@/screens/rider/RiderDashboardPage';
 import { RiderAssignedTasksPage } from '@/screens/rider/RiderAssignedTasksPage';
@@ -72,6 +77,8 @@ import { CustomerTrackingPage } from '@/screens/customer/CustomerTrackingPage';
 import { CustomerSupportTicketsPage } from '@/screens/customer/CustomerSupportTicketsPage';
 import { CustomerProfilePage } from '@/screens/customer/CustomerProfilePage';
 import { CustomerPreferencesPage } from '@/screens/customer/CustomerPreferencesPage';
+import { EnterpriseAdminDashboardPage } from '@/screens/admin/EnterpriseAdminDashboardPage';
+import { SuperAdminDashboardPage } from '@/screens/admin/SuperAdminDashboardPage';
 
 const LIVE_PORTAL_KEYS = new Set([
   'rider',
@@ -82,72 +89,26 @@ const LIVE_PORTAL_KEYS = new Set([
   'merchant',
   'customer',
   'customer_portal',
+  'super_admin',
+  'enterprise_admin',
+  'branch_office',
+  'data_entry',
+  'supervisor',
+  'bi_reporting',
 ]);
 
 const publicScreens = screens.filter((s) => s.portal === 'public_tracking');
-
 const dedicatedRoutes = new Set([
-  '/rider/dashboard',
-  '/rider/assigned-tasks',
-  '/rider/pickup',
-  '/rider/delivery',
-  '/rider/incidents',
-  '/warehouse/dashboard',
-  '/warehouse/inbound-manifest',
-  '/warehouse/receiving-bay',
-  '/warehouse/cargo-receiving-scan',
-  '/warehouse/shortage-damage-entry',
-  '/warehouse/outbound-manifest',
-  '/warehouse/vehicle-load-verification',
-  '/warehouse/load-confirmation',
-  '/warehouse/dispatch-handover',
-  '/operations/dashboard',
-  '/operations/control-room',
-  '/operations/new-orders',
-  '/operations/assignment-workbench',
-  '/operations/rider-availability',
-  '/operations/in-transit-board',
-  '/operations/sla-risk-board',
-  '/operations/failed-deliveries',
-  '/operations/returns',
-  '/operations/escalations',
-  '/operations/shipments',
-  '/operations/shipment-lifecycle',
-  '/finance/dashboard',
-  '/finance/cod-reconciliation',
-  '/finance/settlement-queue',
-  '/finance/invoices',
-  '/finance/payment-records',
-  '/finance/rider-payouts',
-  '/finance/merchant-ledger',
-  '/finance/refund-review',
-  '/support/dashboard',
-  '/support/ticket-inbox',
-  '/support/order-search',
-  '/support/customer-history',
-  '/support/complaint-logging',
-  '/support/escalation-queue',
-  '/support/knowledge-base',
-  '/merchant/dashboard',
-  '/merchant/create-order',
-  '/merchant/bulk-upload',
-  '/merchant/orders',
-  '/merchant/tracking',
-  '/merchant/returns',
-  '/merchant/invoices',
-  '/merchant/settings',
-  '/customer/dashboard',
-  '/customer/create-request',
-  '/customer/orders',
-  '/customer/tracking',
-  '/customer/support-tickets',
-  '/customer/profile',
-  '/customer/preferences',
+  '/rider/dashboard','/rider/assigned-tasks','/rider/pickup','/rider/delivery','/rider/incidents',
+  '/warehouse/dashboard','/warehouse/inbound-manifest','/warehouse/receiving-bay','/warehouse/cargo-receiving-scan','/warehouse/shortage-damage-entry','/warehouse/outbound-manifest','/warehouse/vehicle-load-verification','/warehouse/load-confirmation','/warehouse/dispatch-handover',
+  '/operations/dashboard','/operations/control-room','/operations/new-orders','/operations/assignment-workbench','/operations/rider-availability','/operations/in-transit-board','/operations/sla-risk-board','/operations/failed-deliveries','/operations/returns','/operations/escalations','/operations/shipments','/operations/shipment-lifecycle',
+  '/finance/dashboard','/finance/cod-reconciliation','/finance/settlement-queue','/finance/invoices','/finance/payment-records','/finance/rider-payouts','/finance/merchant-ledger','/finance/refund-review',
+  '/support/dashboard','/support/ticket-inbox','/support/order-search','/support/customer-history','/support/complaint-logging','/support/escalation-queue','/support/knowledge-base',
+  '/merchant/dashboard','/merchant/create-order','/merchant/bulk-upload','/merchant/orders','/merchant/tracking','/merchant/returns','/merchant/invoices','/merchant/settings',
+  '/customer/dashboard','/customer/create-request','/customer/orders','/customer/tracking','/customer/support-tickets','/customer/profile','/customer/preferences',
+  '/sys/dashboard','/super-admin/dashboard','/enterprise-admin/dashboard',
 ]);
-
-const privateScreens = screens.filter(
-  (s) => s.portal !== 'public_tracking' && !dedicatedRoutes.has(s.route),
-);
+const privateScreens = screens.filter((s) => s.portal !== 'public_tracking' && !dedicatedRoutes.has(s.route));
 
 function getPortalHome(key: string, base: string) {
   if (key === 'rider') return '/rider/dashboard';
@@ -157,24 +118,27 @@ function getPortalHome(key: string, base: string) {
   if (key === 'customer_support') return '/support/dashboard';
   if (key === 'merchant') return '/merchant/dashboard';
   if (key === 'customer' || key === 'customer_portal') return '/customer/dashboard';
+  if (key === 'super_admin') return '/sys/dashboard';
+  if (key === 'enterprise_admin') return '/enterprise-admin/dashboard';
   return base;
 }
 
 function AppRoutes() {
   const { user } = useAuth();
-
   return (
     <Routes>
       <Route path="/" element={<Navigate to={user ? '/portal-home' : '/login'} replace />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/sign-up" element={<SignUp />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/unauthorized" element={<Unauthorized />} />
 
-      {publicScreens.map((s) => (
-        <Route key={s.code} path={s.route} element={<ScreenPage />} />
-      ))}
+      {publicScreens.map((s) => <Route key={s.code} path={s.route} element={<ScreenPage />} />)}
 
       <Route element={<ProtectedRoute />}>
-        <Route path="/portal-home" element={<PortalLandingPage />} />
-
+        <Route path="/portal-home" element={<SmartPortalHome />} />
+        <Route path="/portal-directory" element={<PortalLandingPage />} />
         <Route element={<AppShell />}>
           {Object.entries(portals)
             .filter(([key, p]) => p.base !== '/track' && LIVE_PORTAL_KEYS.has(key))
@@ -185,6 +149,10 @@ function AppRoutes() {
                 element={<Navigate to={getPortalHome(key, portal.base)} replace />}
               />
             ))}
+
+          <Route path="/sys/dashboard" element={<SysDashboardPage />} />
+          <Route path="/super-admin/dashboard" element={<SuperAdminDashboardPage />} />
+          <Route path="/enterprise-admin/dashboard" element={<EnterpriseAdminDashboardPage />} />
 
           <Route path="/rider/dashboard" element={<RiderDashboardPage />} />
           <Route path="/rider/assigned-tasks" element={<RiderAssignedTasksPage />} />
@@ -249,21 +217,11 @@ function AppRoutes() {
           <Route path="/customer/profile" element={<CustomerProfilePage />} />
           <Route path="/customer/preferences" element={<CustomerPreferencesPage />} />
 
-          {privateScreens.map((s) => (
-            <Route key={s.code} path={s.route} element={<ScreenPage />} />
-          ))}
-
-          {aliases.map((a) => (
-            <Route
-              key={a.legacyRoute}
-              path={a.legacyRoute}
-              element={<Navigate to={a.newRoute} replace />}
-            />
-          ))}
+          {privateScreens.map((s) => <Route key={s.code} path={s.route} element={<ScreenPage />} />)}
+          {aliases.map((a) => <Route key={a.legacyRoute} path={a.legacyRoute} element={<Navigate to={a.newRoute} replace />} />)}
         </Route>
       </Route>
 
-      <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
       <Route path="*" element={<Navigate to={user ? '/portal-home' : '/login'} replace />} />
     </Routes>
   );
@@ -274,9 +232,7 @@ export default function App() {
     <ErrorBoundary>
       <I18nProvider>
         <AuthProvider>
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
+          <BrowserRouter><AppRoutes /></BrowserRouter>
         </AuthProvider>
       </I18nProvider>
     </ErrorBoundary>

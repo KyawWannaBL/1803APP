@@ -7,14 +7,15 @@ import {
   transitionEntity,
   type WorkflowEntityType,
 } from '@/services/workflowService';
+import { WorkflowProgressRail } from '@/components/WorkflowProgressRail';
 
 type Props = {
-  entityType: string;
+  entityType: WorkflowEntityType;
   record: GenericRecord | null;
-  onTransitioned?: () => void;
+  onTransitioned?: (updatedRecord?: GenericRecord) => void | Promise<void>;
 };
 
-function getCurrentState(entityType: string, record: GenericRecord | null) {
+function getCurrentState(entityType: WorkflowEntityType, record: GenericRecord | null) {
   if (!record) return 'created';
   if (entityType === 'order') return String(record.status_code ?? record.status ?? 'created');
   return String(record.status ?? 'created');
@@ -26,47 +27,57 @@ export function WorkflowGatePanel({ entityType, record, onTransitioned }: Props)
   const [message, setMessage] = useState('');
 
   const currentStatus = getCurrentState(entityType, record);
+
   const transitions = useMemo(
-    () => getTransitions(entityType as WorkflowEntityType, currentStatus),
+    () => getTransitions(entityType, currentStatus),
     [entityType, currentStatus],
   );
+
   const nextTransition = transitions[0] ?? null;
+
   const requirements = useMemo(
     () => evaluateTransitionRequirements(record ?? {}, nextTransition?.requirements ?? []),
     [record, nextTransition],
   );
+
   const unmet = requirements.filter((item) => !item.passed);
 
+  const disabledReason =
+    !record
+      ? 'Select a record before running workflow.'
+      : !nextTransition
+      ? 'No further transition is available for this record.'
+      : unmet.length
+      ? 'Complete the missing workflow evidence before continuing.'
+      : '';
+
+  const canProceed = Boolean(record && nextTransition && unmet.length === 0 && !busy);
+
   async function handleProceed() {
-    if (!record) {
-      setMessage('Select a record before running workflow.');
-      return;
-    }
-    if (!nextTransition) {
-      setMessage('No further transition is available for this record.');
-      return;
-    }
-    if (unmet.length) {
-      setMessage('Complete the missing workflow evidence before continuing.');
+    if (!record || !nextTransition || unmet.length > 0) {
+      setMessage(disabledReason);
       return;
     }
 
     setBusy(true);
     setMessage('');
+
     try {
+      const updatedRecord: GenericRecord = {
+        ...record,
+        status: nextTransition.to,
+        status_code: nextTransition.to,
+        updated_at: new Date().toISOString(),
+      };
+
       const result = await transitionEntity(
-        entityType as WorkflowEntityType,
+        entityType,
         String(record.id),
         nextTransition.action,
         {
           from: currentStatus,
           to: nextTransition.to,
-          context: {
-            updated_at: new Date().toISOString(),
-            signature_captured: true,
-            handover_signed_at: new Date().toISOString(),
-            seal_checked_at: new Date().toISOString(),
-          },
+          context: updatedRecord,
         },
       );
 
@@ -76,18 +87,20 @@ export function WorkflowGatePanel({ entityType, record, onTransitioned }: Props)
       }
 
       setMessage(`Transitioned from ${currentStatus} to ${nextTransition.to}.`);
-      await onTransitioned?.();
+      await onTransitioned?.(updatedRecord);
     } finally {
       setBusy(false);
     }
   }
 
   return (
-    <section className="page-card">
+    <section className="page-card glass-card">
       <div className="widget-card__title widget-card__title--space">
         <strong>{t('common.workflowControl', 'Workflow Control')}</strong>
         <span className="badge">{entityType}</span>
       </div>
+
+      <WorkflowProgressRail currentStatus={currentStatus} />
 
       {!record ? (
         <div className="empty-state">
@@ -109,10 +122,14 @@ export function WorkflowGatePanel({ entityType, record, onTransitioned }: Props)
 
           <div className="transition-card">
             <strong>{t('common.requiredCompletion', 'Required completion')}</strong>
+
             <div className="checklist">
               {requirements.length ? (
                 requirements.map((item) => (
-                  <div key={item.key} className={item.passed ? 'checklist__pass' : 'checklist__fail'}>
+                  <div
+                    key={item.key}
+                    className={item.passed ? 'checklist__pass' : 'checklist__fail'}
+                  >
                     {item.passed ? '✓' : '✕'} {item.key}
                   </div>
                 ))
@@ -128,6 +145,9 @@ export function WorkflowGatePanel({ entityType, record, onTransitioned }: Props)
                 type="button"
                 className="toolbar-button toolbar-button--primary"
                 onClick={() => void handleProceed()}
+                disabled={!canProceed}
+                title={!canProceed ? disabledReason : undefined}
+                aria-disabled={!canProceed}
               >
                 {busy
                   ? t('common.processing', 'Processing…')
@@ -144,3 +164,5 @@ export function WorkflowGatePanel({ entityType, record, onTransitioned }: Props)
     </section>
   );
 }
+
+export default WorkflowGatePanel;

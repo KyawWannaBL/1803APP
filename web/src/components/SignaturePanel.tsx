@@ -1,6 +1,12 @@
 import { useRef, useState } from 'react';
+import type { GenericRecord } from '@/services/repositories';
 
-export function SignaturePanel() {
+type SignaturePanelProps = {
+  record?: GenericRecord | null;
+  onRecordChange?: (next: GenericRecord) => void;
+};
+
+export function SignaturePanel({ record, onRecordChange }: SignaturePanelProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [message, setMessage] = useState('Draw a signature, then save it.');
   const [drawing, setDrawing] = useState(false);
@@ -43,8 +49,29 @@ export function SignaturePanel() {
 
   function save() {
     const canvas = canvasRef.current;
+
+    if (!record) {
+      setMessage('Select a record first.');
+      return;
+    }
+
     if (!canvas) return;
-    setMessage(`Signature captured (${canvas.toDataURL().length} bytes).`);
+
+    const dataUrl = canvas.toDataURL();
+    const now = new Date().toISOString();
+
+    const next: GenericRecord = {
+      ...record,
+      signature_data_url: dataUrl,
+      signature_saved_at: now,
+      otp_or_signature_complete: true,
+      pod_record_created: true,
+      handover_signature_captured: true,
+      updated_at: now,
+    };
+
+    onRecordChange?.(next);
+    setMessage(`Signature captured (${dataUrl.length} bytes).`);
   }
 
   return (
@@ -68,3 +95,5 @@ export function SignaturePanel() {
     </div>
   );
 }
+
+export default SignaturePanel;

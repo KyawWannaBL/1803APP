@@ -1,12 +1,12 @@
-import { createClient, type SupabaseClient } from '@supabase/supabase-js';
-import { env } from '@/lib/env';
+import { createClient } from '@supabase/supabase-js';
 
-const hasConfig = Boolean(env.supabaseUrl && env.supabaseAnonKey);
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export const supabase: SupabaseClient | null = hasConfig
-  ? createClient(env.supabaseUrl, env.supabaseAnonKey, {
-      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
-    })
-  : null;
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Supabase environment variables are missing.');
+}
 
-export const isSupabaseConfigured = hasConfig;
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+export default supabase;

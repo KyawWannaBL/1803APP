@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useNavigate, BrowserRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Globe,
   Loader2,
@@ -262,8 +262,8 @@ export function Login() {
  */
 export default function App() {
   return (
-    <BrowserRouter>
+    
       <Login />
-    </BrowserRouter>
+    
   );
 }

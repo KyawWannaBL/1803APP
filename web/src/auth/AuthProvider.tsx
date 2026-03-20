@@ -23,7 +23,7 @@ async function fetchProfile(userId: string, email: string): Promise<SessionUser 
 
   const profileResult = await supabase
     .from('profiles')
-    .select('id, full_name, email, default_role')
+    .select('id, full_name, email, default_role, role')
     .eq('id', userId)
     .maybeSingle();
 
@@ -31,8 +31,8 @@ async function fetchProfile(userId: string, email: string): Promise<SessionUser 
     return {
       id: profileResult.data.id,
       email: profileResult.data.email ?? email,
-      fullName: profileResult.data.full_name ?? 'Britium User',
-      role: (profileResult.data.default_role ?? 'EA') as AppRole,
+      fullName: profileResult.data.full_name ?? email,
+      role: (profileResult.data.default_role ?? profileResult.data.role ?? 'EA') as AppRole,
     };
   }
 
@@ -56,7 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const mode: 'demo' | 'supabase' =
-    isSupabaseConfigured && !env.enableDemoFallback ? 'supabase' : 'demo';
+    isSupabaseConfigured && (!env.enableDemoFallback || env.appEnv === 'production') ? 'supabase' : 'demo';
 
   useEffect(() => {
     let active = true;

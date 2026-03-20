@@ -9,6 +9,7 @@ import { TimelinePanel } from '@/components/TimelinePanel';
 import { KpiStrip } from '@/components/KpiStrip';
 import { DatasetPanel } from '@/components/DataSetPanel';
 import { WorkflowGatePanel } from '@/components/WorkflowGatePanel';
+import { WorkflowProgressRail } from '@/components/WorkflowProgressRail';
 import { fetchPortalSummary, fetchScreenDatasets, getPrimaryEntityType, type GenericRecord } from '@/services/repositories';
 import type { WorkflowEntityType } from '@/services/workflowService';
 import { useAuth } from '@/auth/AuthProvider';
@@ -30,75 +31,176 @@ export function ScreenPage() {
   const { pathname } = useLocation();
   const { t, locale } = useI18n();
   const { user } = useAuth();
+
   const [summary, setSummary] = useState(defaultSummary);
   const [datasets, setDatasets] = useState<Record<string, GenericRecord[]>>({});
   const [busy, setBusy] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<GenericRecord | null>(null);
 
-  const screen = useMemo<ScreenCatalogEntry | undefined>(() => screenCatalog.find((i) => i.route === pathname) ?? screenCatalog.find((i) => i.legacy_route === pathname), [pathname]);
+  const screen = useMemo<ScreenCatalogEntry | undefined>(
+    () =>
+      screenCatalog.find((i) => i.route === pathname) ??
+      screenCatalog.find((i) => i.legacy_route === pathname),
+    [pathname],
+  );
 
-  async function reload() {
+  async function reload(preferredRecordId?: string | null) {
     if (!screen) return;
+
     setBusy(true);
     try {
       const [portalSummary, screenDatasets] = await Promise.all([
         fetchPortalSummary(user?.role ?? 'EA'),
         fetchScreenDatasets(screen, 12),
       ]);
+
       setSummary(portalSummary);
       setDatasets(screenDatasets);
-      const first = screen.tables?.[0];
-      setSelectedRecord(first ? (screenDatasets[first] ?? [])[0] ?? null : null);
+
+      const firstTable = screen.tables?.[0];
+      const firstTableRows = firstTable ? screenDatasets[firstTable] ?? [] : [];
+
+      const keepId = preferredRecordId ?? (selectedRecord ? String(selectedRecord.id) : null);
+      const preserved =
+        keepId != null
+          ? Object.values(screenDatasets)
+              .flat()
+              .find((row) => String(row.id) === keepId) ?? null
+          : null;
+
+      setSelectedRecord(preserved ?? firstTableRows[0] ?? null);
     } finally {
       setBusy(false);
     }
+  }
+
+  function mergeSelectedRecord(nextRecord: GenericRecord) {
+    setSelectedRecord(nextRecord);
+    setDatasets((prev) =>
+      Object.fromEntries(
+        Object.entries(prev).map(([table, rows]) => [
+          table,
+          rows.map((row) =>
+            String(row.id) === String(nextRecord.id) ? { ...row, ...nextRecord } : row,
+          ),
+        ]),
+      ),
+    );
   }
 
   useEffect(() => {
     void reload();
   }, [screen?.code, user?.role]);
 
-  if (!screen) return <section className="page-card"><h1>{t('common.notFound', 'Not found')}</h1></section>;
+  if (!screen) {
+    return (
+      <section className="page-card">
+        <h1>{t('common.notFound', 'Not found')}</h1>
+      </section>
+    );
+  }
+
   if (screen.portal === 'rider') return <Navigate to={riderMap(screen)} replace />;
   if (screen.portal === 'warehouse_hub_operations') return <Navigate to={warehouseMap(screen)} replace />;
   if (screen.portal === 'operations_dispatch') return <Navigate to={operationsMap(screen)} replace />;
   if (screen.portal === 'finance') return <Navigate to={financeMap(screen)} replace />;
   if (screen.portal === 'customer_support') return <Navigate to={supportMap(screen)} replace />;
   if (screen.portal === 'merchant') return <Navigate to={merchantMap(screen)} replace />;
-  if (screen.portal === 'customer' || screen.portal === 'customer_portal') return <Navigate to={customerMap(screen)} replace />;
+  if (screen.portal === 'customer' || screen.portal === 'customer_portal') {
+    return <Navigate to={customerMap(screen)} replace />;
+  }
 
-  const localizedTitle = t(`screens.${screen.code}.title`, locale === 'en' ? screen.title_en : screen.title_mm);
+  const localizedTitle = t(
+    `screens.${screen.code}.title`,
+    locale === 'en' ? screen.title_en : screen.title_mm,
+  );
+
   const primary = screen.tables?.[0] ?? '';
   const entityType = primary ? getPrimaryEntityType(primary) : null;
-  const showMap = ['dispatch','tracking','map'].some((k) => (screen.modules ?? []).includes(k)) || screen.route.includes('map');
-  const showQr = screen.route.includes('qr') || screen.route.includes('scan') || screen.route.includes('label') || (screen.modules ?? []).includes('qr');
-  const showSignature = screen.route.includes('signature') || screen.route.includes('pod') || screen.title_en.includes('Confirmation') || (screen.modules ?? []).includes('signature');
+  const currentStatus = String(selectedRecord?.status_code ?? selectedRecord?.status ?? 'created');
+
+  const showMap =
+    ['dispatch', 'tracking', 'map'].some((k) => (screen.modules ?? []).includes(k)) ||
+    screen.route.includes('map');
+
+  const showQr =
+    screen.route.includes('qr') ||
+    screen.route.includes('scan') ||
+    screen.route.includes('label') ||
+    (screen.modules ?? []).includes('qr');
+
+  const showSignature =
+    screen.route.includes('signature') ||
+    screen.route.includes('pod') ||
+    screen.title_en.includes('Confirmation') ||
+    (screen.modules ?? []).includes('signature');
 
   return (
     <section className="page-main-stack">
-      <article className="page-card page-card--hero">
+      <article className="page-card page-card--hero glass-card">
         <div className="badge-row">
-          <span className={`badge badge--${screen.kind}`}>{t(`screens.${screen.code}.kind`, screen.kind)}</span>
-          <span className="badge">{t(`portals.${screen.portal}`, locale === 'en' ? screen.portal_name_en : screen.portal_name_mm)}</span>
+          <span className={`badge badge--${screen.kind}`}>
+            {t(`screens.${screen.code}.kind`, screen.kind)}
+          </span>
+          <span className="badge">
+            {t(`portals.${screen.portal}`, locale === 'en' ? screen.portal_name_en : screen.portal_name_mm)}
+          </span>
           <span className="badge">{t(`menus.${screen.menu}`, screen.menu)}</span>
         </div>
+
         <h1>{localizedTitle}</h1>
-        <KpiStrip metrics={summary} />
+        <KpiStrip metrics={summary} variant="premium" />
       </article>
+
+      <WorkflowProgressRail currentStatus={currentStatus} />
+
       <div className="page-grid">
         <div className="page-main-stack">
-          {screen.tables.slice(0,2).map((table) => (
-            <DatasetPanel key={table} table={table} rows={datasets[table] ?? []} busy={busy} onReload={reload} selectedId={selectedRecord ? String(selectedRecord.id) : null} onSelect={setSelectedRecord} />
+          {screen.tables.slice(0, 2).map((table) => (
+            <DatasetPanel
+              key={table}
+              table={table}
+              rows={datasets[table] ?? []}
+              busy={busy}
+              onReload={() => reload(selectedRecord ? String(selectedRecord.id) : null)}
+              selectedId={selectedRecord ? String(selectedRecord.id) : null}
+              onSelect={(row) => setSelectedRecord(row)}
+            />
           ))}
-          {entityType ? <WorkflowGatePanel entityType={entityType as WorkflowEntityType} record={selectedRecord} onTransitioned={reload} /> : null}
+
+          {entityType ? (
+            <WorkflowGatePanel
+              entityType={entityType as WorkflowEntityType}
+              record={selectedRecord}
+              onTransitioned={async (updatedRecord) => {
+                if (updatedRecord) {
+                  mergeSelectedRecord(updatedRecord);
+                }
+                await reload(updatedRecord ? String(updatedRecord.id) : null);
+              }}
+            />
+          ) : null}
         </div>
+
         <aside className="widget-column">
-          <TimelinePanel />
+          <TimelinePanel currentStatus={currentStatus} />
           {showMap ? <MapboxPanel /> : null}
-          {showQr ? <QRScanPanel /> : null}
-          {showSignature ? <SignaturePanel /> : null}
+          {showQr ? (
+            <QRScanPanel
+              record={selectedRecord}
+              onRecordChange={mergeSelectedRecord}
+            />
+          ) : null}
+          {showSignature ? (
+            <SignaturePanel
+              record={selectedRecord}
+              onRecordChange={mergeSelectedRecord}
+            />
+          ) : null}
         </aside>
       </div>
     </section>
   );
 }
+
+export default ScreenPage;

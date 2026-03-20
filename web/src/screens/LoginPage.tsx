@@ -78,6 +78,18 @@ export function LoginPage() {
     }
   }
 
+  function goToSignUp() {
+    navigate('/sign-up');
+  }
+
+  function goToForgotPassword() {
+    navigate('/forgot-password');
+  }
+
+  function downloadApk() {
+    window.location.href = '/britium-enterprise.apk';
+  }
+
   return (
     <section className="auth-shell">
       <div className="auth-shell__panel auth-shell__panel--brand">
@@ -151,21 +163,17 @@ export function LoginPage() {
           </form>
 
           <div className="toolbar auth-toolbar" style={{ marginTop: '1rem', gap: '0.75rem', flexWrap: 'wrap' }}>
-            <Link to="/sign-up" className="toolbar-button">
+            <button type="button" className="toolbar-button" onClick={goToSignUp}>
               {locale === 'en' ? 'Sign Up' : 'Sign Up'}
-            </Link>
+            </button>
 
-            <Link to="/forgot-password" className="toolbar-button">
+            <button type="button" className="toolbar-button" onClick={goToForgotPassword}>
               {locale === 'en' ? 'Forgot Password' : 'Forgot Password'}
-            </Link>
+            </button>
 
-            <a
-              href="/britium-enterprise.apk"
-              download
-              className="toolbar-button"
-            >
+            <button type="button" className="toolbar-button" onClick={downloadApk}>
               {locale === 'en' ? 'Download APK' : 'Download APK'}
-            </a>
+            </button>
           </div>
 
           <div className="auth-form-footer">

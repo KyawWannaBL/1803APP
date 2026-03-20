@@ -2,50 +2,33 @@ import { Link } from 'react-router-dom';
 import portals from '@/data/portalConfig.json';
 import { useI18n } from '@/i18n/I18nProvider';
 import { useAuth } from '@/auth/AuthProvider';
+import { getPortalBase } from '@/lib/roleRouting';
+import { PortalCard } from '@/components/PortalCard';
+import { TelemetryRail } from '@/components/TelemetryRail';
 
 type UserLike = { role?: string; fullName?: string };
 type PortalMeta = { name_en: string; name_mm: string; base: string; roles: string[] };
-
-function getPortalHome(key: string, base: string) {
-  if (key === 'rider') return '/rider/dashboard';
-  if (key === 'warehouse_hub_operations') return '/warehouse/dashboard';
-  if (key === 'operations_dispatch') return '/operations/dashboard';
-  if (key === 'finance') return '/finance/dashboard';
-  if (key === 'customer_support') return '/support/dashboard';
-  if (key === 'merchant') return '/merchant/dashboard';
-  if (key === 'customer' || key === 'customer_portal') return '/customer/dashboard';
-  return base;
-}
 
 export function PortalLandingPage() {
   const { t, locale } = useI18n();
   const auth = useAuth() as unknown as { user?: UserLike | null };
   const user = auth?.user ?? null;
 
-  const syntheticPortals: Record<string, PortalMeta> = {
-    super_admin: { name_en: 'Super Admin', name_mm: 'Super Admin', base: '/super-admin/dashboard', roles: ['SYS', 'SUPER_ADMIN'] },
-    enterprise_admin: { name_en: 'Enterprise Admin', name_mm: 'Enterprise Admin', base: '/enterprise-admin/dashboard', roles: ['EA', 'SYS', 'SUPER_ADMIN'] },
-    branch_office: { name_en: 'Branch Office', name_mm: 'Branch Office', base: '/branch-office/dashboard', roles: ['BRANCH_MANAGER', 'BRANCH_OFFICER', 'EA', 'SYS', 'SUPER_ADMIN'] },
-    data_entry: { name_en: 'Data Entry', name_mm: 'Data Entry', base: '/data-entry/dashboard', roles: ['DATA_ENTRY', 'DE', 'SUPERVISOR', 'EA', 'SYS', 'SUPER_ADMIN'] },
-    supervisor: { name_en: 'Supervisor', name_mm: 'Supervisor', base: '/supervisor/dashboard', roles: ['SUPERVISOR', 'SV', 'EA', 'BRANCH_MANAGER', 'SYS', 'SUPER_ADMIN'] },
-    bi_reporting: { name_en: 'BI / Reporting', name_mm: 'BI / Reporting', base: '/bi/dashboard', roles: ['SYS', 'SUPER_ADMIN', 'EA', 'BI', 'ANALYST', 'FINANCE_MANAGER'] },
-  };
-
-  const mergedPortals = { ...syntheticPortals, ...(portals as Record<string, PortalMeta>) };
+  const mergedPortals = portals as Record<string, PortalMeta>;
 
   const accessiblePortals = Object.entries(mergedPortals)
     .filter(([, portal]) => user?.role && portal.roles.includes(user.role))
     .map(([key, portal]) => ({
       key,
       title: locale === 'en' ? portal.name_en : portal.name_mm,
-      href: getPortalHome(key, portal.base),
+      href: getPortalBase(key, portal.base),
       description:
         locale === 'en'
           ? `Open ${portal.name_en} workspace`
           : `${portal.name_mm} workspace ကိုဖွင့်ရန်`,
     }));
 
-  const experienceGroups = [
+  const groups = [
     {
       title: locale === 'en' ? 'Operations & Fulfillment' : 'Operations & Fulfillment',
       portals: accessiblePortals.filter((item) =>
@@ -65,18 +48,23 @@ export function PortalLandingPage() {
   ].filter((group) => group.portals.length > 0);
 
   return (
-    <section className="landing-shell">
-      <article className="landing-hero">
+    <section className="page-main-stack">
+      <article className="page-card page-card--hero glass-card">
         <div className="page-eyebrow">{t('common.portalDirectory', 'Portal Directory')}</div>
         <h1>{locale === 'en' ? `Welcome back, ${user?.fullName ?? 'Operator'}` : `Welcome back, ${user?.fullName ?? 'Operator'}`}</h1>
         <p>
-          {locale === 'en'
-            ? 'Every portal below is wired to a navigable route. In demo mode, actions use seeded data. With Supabase credentials, the same routes point at live backend resources.'
-            : 'Every portal below is wired to a navigable route. In demo mode, actions use seeded data. With Supabase credentials, the same routes point at live backend resources.'}
+          One premium command center for admin, merchant, operations, finance, support, and customer journeys. Use the smart landing route for role-adaptive entry or pick any permitted portal below.
         </p>
+        <div className="toolbar">
+          <Link to="/portal-home" className="toolbar-button toolbar-button--primary">
+            Open smart landing
+          </Link>
+        </div>
       </article>
 
-      {experienceGroups.map((group) => (
+      <TelemetryRail />
+
+      {groups.map((group) => (
         <section key={group.title} className="page-main-stack">
           <div className="section-header">
             <div>
@@ -87,19 +75,19 @@ export function PortalLandingPage() {
 
           <div className="portal-grid">
             {group.portals.map((portal) => (
-              <Link key={portal.key} to={portal.href} className="portal-card">
-                <div className="portal-card__title">{portal.title}</div>
-                <p className="portal-card__description">{portal.description}</p>
-                <div className="portal-card__footer">
-                  <span>{t('common.openPortal', 'Open Portal')}</span>
-                </div>
-              </Link>
+              <PortalCard
+                key={portal.key}
+                name={portal.title}
+                description={portal.description}
+                route={portal.href}
+                count={4}
+              />
             ))}
           </div>
         </section>
       ))}
 
-      {!experienceGroups.length ? (
+      {!groups.length ? (
         <section className="page-card">
           <div className="empty-state">No portal is assigned to the current user.</div>
         </section>
@@ -107,3 +95,5 @@ export function PortalLandingPage() {
     </section>
   );
 }
+
+export default PortalLandingPage;

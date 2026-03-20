@@ -1,36 +1,30 @@
-import { env, isSupabaseConfigured as supabaseConfigured } from '@/lib/env'
-
-export type AppEnv = 'development' | 'staging' | 'production'
+import { env, isSupabaseConfigured } from '@/lib/env'
 
 export type RuntimeGuardInput = {
-  appEnv: AppEnv
+  appEnv: 'development' | 'staging' | 'production'
   enableDemoFallback: boolean
   isSupabaseConfigured: boolean
 }
 
-export function getRuntimeGuardError({
-  appEnv,
-  enableDemoFallback,
-  isSupabaseConfigured,
-}: RuntimeGuardInput): string | null {
-  const isProtectedEnv = appEnv === 'staging' || appEnv === 'production'
+export function getRuntimeGuardError(input: RuntimeGuardInput): string | null {
+  const isProtectedEnv = input.appEnv === 'staging' || input.appEnv === 'production'
 
-  if (isProtectedEnv && enableDemoFallback) {
+  if (isProtectedEnv && input.enableDemoFallback) {
     return 'Demo fallback must be disabled in staging and production.'
   }
 
-  if (isProtectedEnv && !isSupabaseConfigured) {
+  if (isProtectedEnv && !input.isSupabaseConfigured) {
     return 'Supabase credentials are required in staging and production.'
   }
 
   return null
 }
 
-export function assertRuntimeSafety(): void {
+export function assertRuntimeSafety() {
   const error = getRuntimeGuardError({
-    appEnv: env.appEnv as AppEnv,
+    appEnv: env.appEnv,
     enableDemoFallback: env.enableDemoFallback,
-    isSupabaseConfigured: supabaseConfigured,
+    isSupabaseConfigured,
   })
 
   if (error) {
