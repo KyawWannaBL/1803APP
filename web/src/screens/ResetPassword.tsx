@@ -1,301 +1,249 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { 
-  Globe, 
-  Loader2, 
-  Lock, 
-  ArrowLeft, 
-  ShieldAlert, 
-  CheckCircle2, 
-  AlertCircle 
-} from "lucide-react";
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useI18n } from '@/i18n/I18nProvider';
+import { supabase } from '@/lib/supabase';
 
-/**
- * PREVIEW ENVIRONMENT MOCKS
- * These mocks resolve the "Could not resolve" errors in the Canvas environment.
- * In your local project, these will be replaced by your actual imports from:
- * - @/contexts/LanguageContext
- * - @/lib/supabase
- * - @/components/ui/*
- */
+export default function ResetPassword() {
+  const { t, locale } = useI18n();
+  const navigate = useNavigate();
 
-// Mocking @/contexts/LanguageContext
-const useLanguage = () => ({
-  lang: "en",
-  setLanguage: (l: string) => console.log("Language set to:", l),
-  toggleLang: () => console.log("Toggle language"),
-});
-
-// Mocking @/lib/supabase
-const SUPABASE_CONFIGURED = true;
-const supabase = {
-  auth: {
-    exchangeCodeForSession: async (code: string) => {
-      console.log("Mock exchangeCodeForSession:", code);
-      return { error: null };
-    },
-    setSession: async (session: any) => ({ error: null }),
-    updateUser: async (data: any) => {
-      console.log("Mock updateUser:", data);
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      return { error: null };
-    },
-    getUser: async () => ({ data: { user: { id: "mock-user-123" } } })
-  },
-  from: (table: string) => ({
-    update: (data: any) => ({
-      eq: (field: string, val: any) => ({ error: null })
-    })
-  })
-};
-
-// Inline UI Components to replace @/components/ui/* for the preview
-const Card = ({ children, className }: any) => (
-  <div className={`rounded-[2rem] border border-white/10 bg-white/5 shadow-2xl backdrop-blur-3xl overflow-hidden ${className}`}>
-    {children}
-  </div>
-);
-const CardContent = ({ children, className }: any) => <div className={`p-7 ${className}`}>{children}</div>;
-const CardHeader = ({ children }: any) => <div className="p-6 pb-0">{children}</div>;
-const CardTitle = ({ children, className }: any) => <h3 className={`text-xl font-bold text-white ${className}`}>{children}</h3>;
-const Input = ({ className, ...props }: any) => (
-  <input 
-    {...props} 
-    className={`w-full bg-black/40 border border-white/10 text-white h-12 rounded-xl px-4 outline-none focus:border-indigo-500/50 transition-all ${className}`} 
-  />
-);
-const Button = ({ children, className, disabled, ...props }: any) => (
-  <button 
-    {...props} 
-    disabled={disabled}
-    className={`flex items-center justify-center gap-2 rounded-xl font-black tracking-widest uppercase transition-all active:scale-95 disabled:opacity-50 ${className}`}
-  >
-    {children}
-  </button>
-);
-
-// --- Helper Functions ---
-function getErrorMessage(error: unknown): string {
-  if (error instanceof Error) return error.message;
-  return "An unexpected error occurred.";
-}
-
-// --- Main Component ---
-export function ResetPassword() {
-  const nav = useNavigate();
-  const { lang, setLanguage, toggleLang } = useLanguage();
-  const [currentLang, setCurrentLang] = useState<string>(lang || "en");
-  
-  const t = (en: string, my: string): string => (currentLang === "en" ? en : my);
-
-  const [configMissing, setConfigMissing] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  const [pw, setPw] = useState<string>("");
-  const [pw2, setPw2] = useState<string>("");
-
-  const [errorMsg, setErrorMsg] = useState<string>("");
-  const [successMsg, setSuccessMsg] = useState<string>("");
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [busy, setBusy] = useState(true);
+  const [ready, setReady] = useState(false);
+  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
-    (async () => {
-      if (!SUPABASE_CONFIGURED) {
-        setLoading(false);
-        setConfigMissing(true);
-        return;
-      }
+    let mounted = true;
 
+    const init = async () => {
       try {
         const url = new URL(window.location.href);
-        const code = url.searchParams.get("code");
+        const code = url.searchParams.get('code');
+
         if (code) {
-          await supabase.auth.exchangeCodeForSession(code);
+          const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+          if (exchangeError) throw exchangeError;
         }
-        setLoading(false);
-      } catch (error: unknown) {
-        setErrorMsg(t("Invalid or expired recovery link.", "Recovery link မမှန် သို့မဟုတ် သက်တမ်းကုန်နေပါသည်။"));
-        setLoading(false);
+
+        const { data } = await supabase.auth.getSession();
+
+        if (!mounted) return;
+
+        if (data.session) {
+          setReady(true);
+        } else {
+          setError(
+            locale === 'en'
+              ? 'Invalid or expired recovery link.'
+              : 'Recovery link မမှန် သို့မဟုတ် သက်တမ်းကုန်နေပါသည်။',
+          );
+        }
+      } catch (e: any) {
+        if (!mounted) return;
+        setError(
+          e?.message ??
+            (locale === 'en'
+              ? 'Invalid or expired recovery link.'
+              : 'Recovery link မမှန် သို့မဟုတ် သက်တမ်းကုန်နေပါသည်။'),
+        );
+      } finally {
+        if (mounted) setBusy(false);
       }
-    })();
-  }, []);
+    };
 
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    setErrorMsg("");
-    setSuccessMsg("");
+    const { data: authListener } = supabase.auth.onAuthStateChange((event) => {
+      if (!mounted) return;
+      if (event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN') {
+        setReady(true);
+        setBusy(false);
+      }
+    });
 
-    if (pw !== pw2) {
-      setErrorMsg(t("Passwords do not match.", "စကားဝှက်များ မကိုက်ညီပါ။"));
+    void init();
+
+    return () => {
+      mounted = false;
+      authListener.subscription.unsubscribe();
+    };
+  }, [locale]);
+
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (busy) return;
+
+    setError('');
+    setMessage('');
+
+    if (!password || !confirmPassword) {
+      setError(locale === 'en' ? 'Both password fields are required.' : 'Password field နှစ်ခုလုံး လိုအပ်ပါသည်။');
       return;
     }
-    if (pw.length < 8) {
-      setErrorMsg(t("Password must be at least 8 characters.", "စကားဝှက်သည် အနည်းဆုံး ၈ လုံး ဖြစ်ရမည်။"));
+
+    if (password !== confirmPassword) {
+      setError(locale === 'en' ? 'Passwords do not match.' : 'စကားဝှက်များ မကိုက်ညီပါ။');
       return;
     }
 
-    setLoading(true);
+    if (password.length < 8) {
+      setError(
+        locale === 'en'
+          ? 'Password must be at least 8 characters.'
+          : 'စကားဝှက်သည် အနည်းဆုံး ၈ လုံး ဖြစ်ရမည်။',
+      );
+      return;
+    }
+
+    setBusy(true);
+
     try {
-      const { error } = await supabase.auth.updateUser({ password: pw });
-      if (error) throw error;
+      const { error: updateError } = await supabase.auth.updateUser({
+        password,
+      });
 
-      setSuccessMsg(t("Password updated. Redirecting to login...", "စကားဝှက် ပြောင်းပြီးပါပြီ။ Login သို့ ပြန်သွားနေသည်..."));
-      setTimeout(() => nav("/", { replace: true }), 2000);
-    } catch (error: unknown) {
-      setErrorMsg(getErrorMessage(error));
+      if (updateError) throw updateError;
+
+      setMessage(
+        locale === 'en'
+          ? 'Password updated successfully. Redirecting to login...'
+          : 'စကားဝှက် ပြောင်းပြီးပါပြီ။ Login သို့ ပြန်သွားနေသည်...',
+      );
+
+      setTimeout(() => {
+        navigate('/login', { replace: true });
+      }, 1500);
+    } catch (e: any) {
+      setError(e?.message ?? t('common.requestFailed', 'Request failed.'));
     } finally {
-      setLoading(false);
+      setBusy(false);
     }
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-slate-950 text-slate-100 font-sans antialiased">
-      {/* Cinematic Background Layer */}
-      <video autoPlay loop muted playsInline className="fixed inset-0 w-full h-full object-cover opacity-40 z-0">
-        <source src="/background.mp4" type="video/mp4" />
-      </video>
-      <div className="fixed inset-0 bg-gradient-to-br from-slate-950/90 via-slate-950/60 to-indigo-950/40 backdrop-blur-[2px] z-10" />
+    <section className="auth-shell">
+      <div className="auth-shell__panel auth-shell__panel--brand">
+        <div className="auth-brand-badge">
+          {t('common.enterprisePlatform', 'Enterprise Delivery Platform')}
+        </div>
 
-      {/* Language Toggle */}
-      <div className="absolute top-6 right-6 z-30">
-        <Button 
-          onClick={() => setCurrentLang(currentLang === "en" ? "my" : "en")} 
-          className="bg-white/5 border border-white/10 text-slate-200 px-4 py-2 rounded-full backdrop-blur-md hover:bg-white/10"
-        >
-          <Globe className="h-4 w-4" />
-          <span className="text-[10px] font-black tracking-widest uppercase">{currentLang === "en" ? "MY" : "EN"}</span>
-        </Button>
-      </div>
+        <h1 className="auth-hero-title">
+          {locale === 'en'
+            ? 'Britium Express Password Recovery'
+            : 'Britium Express Password Recovery'}
+        </h1>
 
-      <div className="relative z-20 min-h-screen flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md">
-          <div className="text-center space-y-4 mb-10">
-            <div className="mx-auto h-20 w-20 rounded-[1.5rem] bg-white p-4 shadow-2xl transform transition-all hover:scale-105">
-              <img src="/logo.png" alt="Britium Logo" className="h-full w-full object-contain" />
-            </div>
-            <div>
-              <h1 className="text-4xl font-black tracking-tighter text-white uppercase sm:text-5xl">
-                Britium <span className="text-indigo-400 italic font-light">Express</span>
-              </h1>
-              <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.4em] text-slate-400">
-                Security Protocol L5
-              </p>
-            </div>
+        <p className="auth-hero-text">
+          {locale === 'en'
+            ? 'Set a new password securely and restore access to your assigned enterprise workspace.'
+            : 'သင့် enterprise workspace သို့ ပြန်လည်ဝင်ရောက်နိုင်ရန် စကားဝှက်အသစ်ကို လုံခြုံစွာ သတ်မှတ်ပါ။'}
+        </p>
 
-            <button 
-              className="inline-flex items-center text-slate-400 hover:text-white transition-colors text-[10px] font-bold uppercase tracking-widest gap-2" 
-              onClick={() => nav("/")}
-            >
-              <ArrowLeft className="h-3 w-3" />
-              {t("Back to Login", "Login သို့ပြန်")}
-            </button>
-          </div>
-
-          {configMissing ? (
-            <Card className="ring-1 ring-rose-500/20">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-rose-400">
-                  <AlertCircle className="h-5 w-5" />
-                  {t("Configuration Required", "Config လိုအပ်သည်")}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Supabase environment variables are missing. Please ensure your production environment has the correct keys configured.
-                </p>
-              </CardContent>
-            </Card>
-          ) : (
-            <Card>
-              <div className="h-1.5 w-full bg-gradient-to-r from-indigo-600 via-blue-500 to-indigo-600" />
-              <CardContent className="space-y-6">
-                <div className="text-center">
-                  <h2 className="text-xl font-black text-white uppercase tracking-wider">{t("Reset Password", "စကားဝှက် ပြန်သတ်မှတ်")}</h2>
-                  <p className="text-xs text-slate-400 mt-1">Initialize your new access key</p>
-                </div>
-
-                {errorMsg && (
-                  <div className="p-4 bg-rose-500/10 border border-rose-500/20 rounded-xl flex items-start gap-3 text-rose-400 animate-in fade-in slide-in-from-top-2">
-                    <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
-                    <p className="text-[11px] font-bold leading-relaxed">{errorMsg}</p>
-                  </div>
-                )}
-
-                {successMsg && (
-                  <div className="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-start gap-3 text-emerald-400 animate-in fade-in slide-in-from-top-2">
-                    <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5" />
-                    <p className="text-[11px] font-bold leading-relaxed">{successMsg}</p>
-                  </div>
-                )}
-
-                {loading ? (
-                  <div className="flex flex-col items-center justify-center gap-4 py-10">
-                    <Loader2 className="h-8 w-8 animate-spin text-indigo-400" />
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                      {t("Securing Session...", "ပြင်ဆင်နေသည်...")}
-                    </p>
-                  </div>
-                ) : (
-                  <form onSubmit={submit} className="space-y-5">
-                    <div className="relative group">
-                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500 group-focus-within:text-indigo-400 transition-colors" />
-                      <Input
-                        type="password"
-                        required
-                        value={pw}
-                        onChange={(e: any) => setPw(e.target.value)}
-                        className="pl-12 h-14"
-                        placeholder={t("New Access Key", "စကားဝှက်အသစ်")}
-                      />
-                    </div>
-
-                    <div className="relative group">
-                      <CheckCircle2 className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500 group-focus-within:text-indigo-400 transition-colors" />
-                      <Input
-                        type="password"
-                        required
-                        value={pw2}
-                        onChange={(e: any) => setPw2(e.target.value)}
-                        className="pl-12 h-14"
-                        placeholder={t("Confirm Key", "စကားဝှက် အတည်ပြု")}
-                      />
-                    </div>
-
-                    <Button 
-                      disabled={loading} 
-                      type="submit" 
-                      className="w-full h-14 bg-indigo-600 hover:bg-indigo-500 text-white shadow-xl shadow-indigo-900/20"
-                    >
-                      {loading ? (
-                        <Loader2 className="h-5 w-5 animate-spin" />
-                      ) : (
-                        t("Update Security", "စကားဝှက် ပြောင်းမည်")
-                      )}
-                    </Button>
-                  </form>
-                )}
-              </CardContent>
-            </Card>
-          )}
-
-          <div className="mt-12 text-center">
-            <p className="text-[10px] text-slate-600 font-bold uppercase tracking-[0.4em]">
-              © 2024 Britium Express &bull; Encrypted Portal
+        <div className="auth-feature-list">
+          <article className="auth-feature-card">
+            <h3>{locale === 'en' ? 'Secure reset session' : 'Secure reset session'}</h3>
+            <p>
+              {locale === 'en'
+                ? 'Recovery links are validated through Supabase authentication before password updates are allowed.'
+                : 'Password update မပြုမီ recovery link ကို Supabase authentication ဖြင့် စစ်ဆေးပါသည်။'}
             </p>
-          </div>
+          </article>
+
+          <article className="auth-feature-card">
+            <h3>{locale === 'en' ? 'Production-safe access recovery' : 'Production-safe access recovery'}</h3>
+            <p>
+              {locale === 'en'
+                ? 'Users are redirected back to login after password rotation so they can sign in with the new credential.'
+                : 'စကားဝှက်ပြောင်းပြီးနောက် login သို့ပြန်လည်ညွှန်ပေးပြီး credential အသစ်ဖြင့် ဝင်ရောက်နိုင်ပါသည်။'}
+            </p>
+          </article>
+        </div>
+
+        <div className="auth-brand-footer">
+          <strong>Britium Express</strong>
+          <span>{locale === 'en' ? 'Fast. Controlled. Auditable.' : 'Fast. Controlled. Auditable.'}</span>
         </div>
       </div>
-    </div>
-  );
-}
 
-/**
- * PREVIEW WRAPPER
- * This ensures the component has the necessary Router context during Canvas preview.
- */
-export default function App() {
-  return (
-    
-      <ResetPassword />
-    
+      <div className="auth-shell__panel auth-shell__panel--form">
+        <article className="auth-form-card">
+          <div className="page-eyebrow">
+            {locale === 'en' ? 'Password Reset' : 'Password Reset'}
+          </div>
+
+          <h2>{locale === 'en' ? 'Set a new password' : 'Set a new password'}</h2>
+
+          <p>
+            {locale === 'en'
+              ? 'Enter and confirm your new password to complete recovery.'
+              : 'Recovery ကို ပြီးစီးစေရန် စကားဝှက်အသစ်ကို ဖြည့်ပြီး အတည်ပြုပါ။'}
+          </p>
+
+          {busy && !ready ? (
+            <div className="callout">
+              {locale === 'en' ? 'Preparing password recovery...' : 'Password recovery ကို ပြင်ဆင်နေသည်...'}
+            </div>
+          ) : null}
+
+          {!busy || ready ? (
+            <form className="page-main-stack" onSubmit={onSubmit}>
+              <label className="field">
+                <span>{locale === 'en' ? 'New password' : 'စကားဝှက်အသစ်'}</span>
+                <input
+                  type="password"
+                  autoComplete="new-password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  placeholder={locale === 'en' ? 'Enter new password' : 'စကားဝှက်အသစ် ထည့်ပါ'}
+                  disabled={!ready}
+                />
+              </label>
+
+              <label className="field">
+                <span>{locale === 'en' ? 'Confirm password' : 'စကားဝှက် အတည်ပြု'}</span>
+                <input
+                  type="password"
+                  autoComplete="new-password"
+                  value={confirmPassword}
+                  onChange={(event) => setConfirmPassword(event.target.value)}
+                  placeholder={locale === 'en' ? 'Confirm new password' : 'စကားဝှက်အသစ် အတည်ပြုပါ'}
+                  disabled={!ready}
+                />
+              </label>
+
+              {error ? <div className="callout">{error}</div> : null}
+              {message ? <div className="callout">{message}</div> : null}
+
+              <div className="toolbar auth-toolbar">
+                <button
+                  type="submit"
+                  className="toolbar-button toolbar-button--primary"
+                  disabled={!ready || busy}
+                >
+                  {busy
+                    ? (locale === 'en' ? 'Updating...' : 'Updating...')
+                    : (locale === 'en' ? 'Update Password' : 'Update Password')}
+                </button>
+
+                <button
+                  type="button"
+                  className="toolbar-button"
+                  onClick={() => navigate('/login')}
+                >
+                  {locale === 'en' ? 'Back to Login' : 'Back to Login'}
+                </button>
+              </div>
+            </form>
+          ) : null}
+
+          <div className="auth-form-footer">
+            <span>{locale === 'en' ? 'Need public tracking?' : 'Need public tracking?'}</span>
+            <Link to="/track" className="auth-inline-link">
+              {t('common.openTracking', 'Open Tracking')}
+            </Link>
+          </div>
+        </article>
+      </div>
+    </section>
   );
 }
