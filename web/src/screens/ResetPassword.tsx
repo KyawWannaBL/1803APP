@@ -80,17 +80,17 @@ export default function ResetPassword() {
       const result = await initializeRecoverySession();
       if (!mounted) return;
 
-      if (result.ok) {
-        setReady(true);
-        setError('');
-      } else {
-        setReady(false);
-        setError(
-          locale === 'en'
-            ? result.message
-            : 'Recovery link မမှန် သို့မဟုတ် သက်တမ်းကုန်နေပါသည်။',
-        );
-      }
+if (result.ok) {
+  setReady(true);
+  setError('');
+} else {
+  setReady(false);
+  setError(
+    locale === 'en'
+      ? ('message' in result ? result.message : 'Invalid or expired recovery link.')
+      : 'Recovery link မမှန် သို့မဟုတ် သက်တမ်းကုန်နေပါသည်။',
+  );
+}
 
       setInitializing(false);
     };
