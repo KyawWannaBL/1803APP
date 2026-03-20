@@ -10,6 +10,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { LoginPage } from '@/screens/LoginPage';
 import { PortalLandingPage } from '@/screens/PortalLandingPage';
 import { ScreenPage } from '@/screens/ScreenPage';
+import { ResetPasswordPage } from '@/screens/ResetPasswordPage'; 
 
 import { RiderDashboardPage } from '@/screens/rider/RiderDashboardPage';
 import { RiderAssignedTasksPage } from '@/screens/rider/RiderAssignedTasksPage';
@@ -262,8 +263,8 @@ function AppRoutes() {
         </Route>
       </Route>
 
+      <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
       <Route path="*" element={<Navigate to={user ? '/portal-home' : '/login'} replace />} />
-     <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
     </Routes>
   );
 }
