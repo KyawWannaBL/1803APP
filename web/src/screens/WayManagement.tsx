@@ -9,11 +9,10 @@ export default function WayManagement() {
   const { lang } = useLanguage();
   const t = (en: string, my: string) => (lang === "en" ? en : my);
   
-  // Safe default that won't trigger Github Secret Scanning
   const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN || "YOUR_MAPBOX_PUBLIC_TOKEN";
   
   const [viewState, setViewState] = useState({
-    longitude: 96.1561, // Yangon Coordinates
+    longitude: 96.1561, 
     latitude: 16.8053,
     zoom: 11,
     pitch: 45
@@ -35,8 +34,6 @@ export default function WayManagement() {
       </div>
 
       <div className="flex-1 grid grid-cols-1 xl:grid-cols-4 gap-10 min-h-0">
-        
-        {/* Sidebar Tracking List */}
         <div className="xl:col-span-1 acrylic-sheet acrylic-indigo rounded-[3.5rem] p-8 flex flex-col gap-6 overflow-hidden">
           <h3 className="grandeur-label text-[10px] text-indigo-400 border-b border-white/5 pb-4">Active Convoys</h3>
           <div className="flex-1 overflow-y-auto space-y-4 custom-scrollbar">
@@ -53,10 +50,8 @@ export default function WayManagement() {
           </div>
         </div>
 
-        {/* Mapbox Container */}
         <div className="xl:col-span-3 acrylic-sheet acrylic-slate rounded-[3.5rem] overflow-hidden shadow-2xl relative border border-white/10 group">
           <div className="absolute inset-0 bg-slate-900 flex items-center justify-center z-0">
-             {/* Fallback if mapbox fails to load in preview */}
              <div className="text-center opacity-50"><MapPin size={64} className="mx-auto text-slate-700 mb-4 animate-bounce"/><p className="grandeur-label text-slate-600 text-xs">Initializing Mapbox GL Engine...</p></div>
           </div>
           

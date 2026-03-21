@@ -41,7 +41,6 @@ export default function DeliveryProof() {
     setScanStatus("Initializing Tesseract Neural Engine (ENG+MYA)...");
     
     try {
-      // Simulate real OCR for MYA/ENG if Tesseract takes too long to fetch language data
       toast("Commencing OCR Analysis...", { icon: '🔍' });
       const result = await Tesseract.recognize(photoPreview, 'eng+mya', {
         logger: m => {
@@ -85,8 +84,6 @@ export default function DeliveryProof() {
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
-        
-        {/* Left Column: Smart Camera & OCR */}
         <div className="acrylic-sheet acrylic-indigo rounded-[3.5rem] p-10 space-y-8 flex flex-col">
            <div className="flex justify-between items-center">
              <h3 className="grandeur-label text-xs text-indigo-400 flex items-center gap-3"><Camera size={16}/> Smart Capture Node</h3>
@@ -128,7 +125,6 @@ export default function DeliveryProof() {
            </div>
         </div>
 
-        {/* Right Column: E-Signature & Handover */}
         <div className="acrylic-sheet acrylic-amber rounded-[3.5rem] p-10 flex flex-col space-y-8">
           <div className="flex justify-between items-center">
              <h3 className="grandeur-label text-xs text-amber-400 flex items-center gap-3"><ShieldCheck size={16}/> Biometric Validation</h3>
