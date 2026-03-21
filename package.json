@@ -1,0 +1,10 @@
+{
+  "name": "1803app-root",
+  "private": true,
+  "scripts": {
+    "build": "npm install --prefix web --legacy-peer-deps && npm run build --prefix web",
+    "test": "npm test --prefix web",
+    "lint:types": "npm run lint:types --prefix web",
+    "dev": "npm run dev --prefix web"
+  }
+}
