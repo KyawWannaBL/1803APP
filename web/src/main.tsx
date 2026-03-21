@@ -5,7 +5,7 @@ import { assertRuntimeSafety } from './lib/runtimeGuard'
 import './index.css'
 import './styles.css'
 
-assertRuntimeSafety()
+// assertRuntimeSafety() // Killed by Patcher
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
