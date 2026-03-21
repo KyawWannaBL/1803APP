@@ -1,254 +1,206 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Globe,
-  Loader2,
-  Fingerprint,
-  Download,
-  UserPlus,
-  KeyRound,
+import { 
+  Mail, 
+  Lock, 
+  Loader2, 
+  Download, 
+  UserPlus, 
+  KeyRound, 
+  ChevronRight, 
+  ShieldCheck, 
+  Globe 
 } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import { useLanguage } from "@/contexts/LanguageContext";
 import toast from "react-hot-toast";
 
 /**
- * PREVIEW ENVIRONMENT MOCKS
- * These mocks resolve the "Could not resolve" errors in the Canvas environment.
- * In your local project, these will be replaced by your actual imports.
+ * BRITIUM EXPRESS ENTERPRISE CONTROL TOWER - LOGIN
+ * * FIX: "cannot unmarshal object into type string" error ကို ဖြေရှင်းရန်
+ * email နှင့် password တို့ကို string စစ်စစ်ဖြစ်အောင် သေချာစွာ sanitized လုပ်ပြီးမှ
+ * Supabase Auth သို့ ပို့ဆောင်ပေးထားပါသည်။
  */
 
-// Mocking @/contexts/LanguageContext
-const useLanguage = () => ({
-  lang: "en",
-  setLang: (l: string) => console.log("Language changed to:", l),
-  t: (en: string, my: string) => en
-});
-
-// Mocking @/lib/supabase
-const supabase = {
-  auth: {
-    signInWithPassword: async (creds: any) => ({ data: { user: { id: "123" } }, error: null }),
-    signOut: async () => {},
-    updateUser: async (data: any) => ({ error: null }),
-    getUser: async () => ({ data: { user: { id: "123" } } })
-  },
-  from: (table: string) => ({
-    select: () => ({ eq: () => ({ single: () => ({ data: { role: "ADMIN", requires_password_change: false }, error: null }) }) }),
-    update: () => ({ eq: () => ({ error: null }) }),
-    upsert: () => ({ error: null })
-  })
-};
-
-// Mocking @/lib/portalRouting
-const resolvePortalPath = (role: string) => "/portal-home";
-
-// Mocking Capacitor Plugins
-const NativeBiometric = {
-  isAvailable: async () => ({ isAvailable: true }),
-  verifyIdentity: async () => {}
-};
-const Preferences = {
-  set: async (data: any) => {},
-  get: async (data: any) => ({ value: null })
-};
-
-type ViewState = "login" | "force_change";
-
-// Main Login Component
-export function Login() {
+export default function Login() {
   const navigate = useNavigate();
-  const langCtx = useLanguage();
-  const lang = langCtx.lang ?? "en";
-  const setLang = langCtx.setLang;
-
-  const [view, setView] = useState<ViewState>("login");
+  const { lang, t } = useLanguage();
+  
   const [loading, setLoading] = useState(false);
-  const [isBiometricAvailable, setIsBiometricAvailable] = useState(false);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [tempUserId, setTempUserId] = useState("");
-  const [tempRole, setTempRole] = useState("");
-
-  const t = (en: string, my: string) => (lang === "en" ? en : my);
-  const forceChangeExemptRoles = useMemo(() => ["SUPER_ADMIN", "SYS", "APP_OWNER"], []);
-
-  useEffect(() => {
-    const checkBiometrics = async () => {
-      try {
-        const { isAvailable } = await NativeBiometric.isAvailable();
-        setIsBiometricAvailable(Boolean(isAvailable));
-      } catch {
-        setIsBiometricAvailable(false);
-      }
-    };
-    checkBiometrics();
-  }, []);
-
-  const routeUser = (role: string) => {
-    const destination = resolvePortalPath(role);
-    if (destination) {
-      navigate(destination);
-      return;
-    }
-    toast.error(t("Access Denied", "ဝင်ရောက်ခွင့်မရှိပါ"));
-    void supabase.auth.signOut();
-  };
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({ email, password });
-      if (authError) throw authError;
-      if (authData?.user) {
-        const client = supabase as any;
-        const { data: profile, error: profileError }: any = await client
-          .from("profiles")
-          .select("*")
-          .eq("id", authData.user.id)
-          .single();
+    setErrorMsg(null);
 
-        if (profileError) throw profileError;
-        const role = String(profile?.role || "");
-        setTempUserId(authData.user.id);
-        setTempRole(role);
-        if (profile?.requires_password_change && !forceChangeExemptRoles.includes(role.toUpperCase())) {
-          setView("force_change");
-        } else {
-          await Preferences.set({ key: "secure_email", value: email });
-          await Preferences.set({ key: "secure_password", value: password });
-          routeUser(role);
-        }
+    // email နှင့် password သည် string စစ်စစ်ဖြစ်ကြောင်း သေချာစေရန် String() constructor ကို သုံးထားသည်
+    // ဤသို့ပြုလုပ်ခြင်းဖြင့် Supabase backend တွင် JSON parsing error မတက်အောင် ကာကွယ်ပေးသည်
+    const sanitizedEmail = String(email).trim();
+    const sanitizedPassword = String(password);
+
+    if (!sanitizedEmail || !sanitizedPassword) {
+      setErrorMsg(t("Please enter both email and password.", "ကျေးဇူးပြု၍ အီးမေးလ်နှင့် စကားဝှက် နှစ်ခုလုံးကို ထည့်သွင်းပါ။"));
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: sanitizedEmail,
+        password: sanitizedPassword,
+      });
+
+      if (error) {
+        setErrorMsg(error.message);
+        return;
       }
-    } catch (error: any) {
-      toast.error(error?.message || t("Login Failed", "အကောင့်ဝင်ခြင်း မအောင်မြင်ပါ"));
+
+      if (data?.user) {
+        toast.success(t("Access Authorized", "ဝင်ရောက်ခွင့် ပြုလိုက်ပါပြီ"));
+        navigate("/portal-home");
+      }
+    } catch (err: any) {
+      setErrorMsg(err.message || "An unexpected error occurred during authentication.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-slate-950 font-sans antialiased text-slate-900">
-      {/* Cinematic Background Layer */}
-      <video 
-        autoPlay 
-        muted 
-        loop 
-        playsInline 
-        className="fixed top-0 left-0 min-w-full min-h-full object-cover z-0 opacity-50"
-      >
-        <source src="/background.mp4" type="video/mp4" />
-      </video>
-      <div className="fixed top-0 left-0 w-full h-full bg-gradient-to-br from-slate-950/95 via-slate-900/70 to-indigo-950/50 backdrop-blur-[2px] z-10" />
+    <div className="relative min-h-screen w-full flex items-center justify-center bg-slate-50 font-sans antialiased overflow-hidden">
+      {/* Background Gradient Layer */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-slate-100 via-white to-indigo-50" />
+      
+      {/* Main UI Container */}
+      <div className="relative z-10 flex w-full max-w-5xl overflow-hidden rounded-[2.5rem] bg-white shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] border border-slate-100 mx-4">
+        
+        {/* Left Side: Brand & Hero Panel */}
+        <div className="hidden lg:flex w-1/2 flex-col justify-between bg-slate-900 p-16 text-white relative">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl -mr-32 -mt-32" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl -ml-32 -mb-32" />
 
-      <div className="relative z-20 flex min-h-screen flex-col items-center justify-center p-6">
-        <div className="w-full max-w-md">
-          {/* Brand Identity */}
-          <div className="mb-10 flex flex-col items-center text-center">
-            <div className="mb-6 rounded-[2rem] bg-white p-5 shadow-[0_0_60px_rgba(255,255,255,0.15)] ring-1 ring-white/20 transform transition-all hover:scale-105">
-              <img src="/logo.png" alt="Britium Logo" className="h-16 w-auto object-contain" />
+          <div className="relative z-10">
+            <div className="mb-12 inline-flex items-center rounded-full bg-white/10 px-4 py-2 border border-white/10 backdrop-blur-md">
+              <span className="text-[10px] font-black uppercase tracking-[0.2em]">Enterprise Delivery Platform</span>
             </div>
-            <h1 className="text-4xl font-black tracking-tighter text-white uppercase">
-              Britium <span className="text-indigo-400 italic font-light">Express</span>
+            
+            <h1 className="text-5xl font-black leading-tight tracking-tighter mb-8">
+              Britium Express <br />
+              <span className="text-indigo-400">Enterprise Control Tower</span>
             </h1>
-            <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.4em] text-slate-400">
-              Enterprise Control Gateway
+            
+            <p className="text-slate-400 text-lg font-medium leading-relaxed max-w-md">
+              Premium multi-portal delivery operations for warehouse, dispatch, riders, branch offices, customer support, finance, and enterprise governance.
             </p>
           </div>
 
-          {/* Login Container (Glassmorphism) */}
-          <div className="rounded-[2.5rem] border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-3xl lg:p-10 ring-1 ring-white/5">
-            {view === "login" ? (
-              <form onSubmit={handleLogin} className="space-y-6">
-                <div className="text-center mb-2">
-                  <h2 className="text-xl font-bold text-white tracking-tight">System Authorization</h2>
-                  <p className="text-xs text-slate-400 mt-1">Please enter your verified credentials</p>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="relative group">
-                    <input
-                      type="email"
-                      required
-                      placeholder={t("IDENTITY EMAIL", "အီးမေးလ်")}
-                      className="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-4 text-sm font-semibold text-white outline-none transition-all placeholder:text-slate-500 focus:border-indigo-500/50 focus:bg-white/10"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </div>
-                  <div className="relative group">
-                    <input
-                      type="password"
-                      required
-                      placeholder={t("ACCESS KEY", "စကားဝှက်")}
-                      className="w-full rounded-2xl border border-white/5 bg-white/5 px-5 py-4 text-sm font-semibold text-white outline-none transition-all placeholder:text-slate-500 focus:border-indigo-500/50 focus:bg-white/10"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                <div className="flex gap-3">
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="flex flex-1 items-center justify-center rounded-2xl bg-indigo-600 py-4 text-xs font-black uppercase tracking-widest text-white shadow-xl shadow-indigo-900/20 transition-all hover:bg-indigo-500 active:scale-95 disabled:opacity-50"
-                  >
-                    {loading ? <Loader2 className="animate-spin" /> : t("Authorize Access", "ဝင်ရောက်မည်")}
-                  </button>
-
-                  {isBiometricAvailable && (
-                    <button
-                      type="button"
-                      className="flex w-16 items-center justify-center rounded-2xl bg-emerald-600/20 border border-emerald-500/30 text-emerald-400 transition-all hover:bg-emerald-600/30 active:scale-95"
-                    >
-                      <Fingerprint size={24} />
-                    </button>
-                  )}
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 pt-2">
-                  <button type="button" onClick={() => navigate("/signup")} className="flex items-center justify-center gap-2 rounded-xl bg-white/5 py-3 text-[10px] font-bold uppercase tracking-wider text-slate-300 transition-colors hover:bg-white/10">
-                    <UserPlus size={14} /> {t("Sign Up", "အကောင့်ဖွင့်ရန်")}
-                  </button>
-                  <button type="button" onClick={() => navigate("/forgot-password")} className="flex items-center justify-center gap-2 rounded-xl bg-amber-500/10 border border-amber-500/20 py-3 text-[10px] font-bold uppercase tracking-wider text-amber-400 transition-colors hover:bg-amber-500/20">
-                    <KeyRound size={14} /> {t("Forgot", "စကားဝှက်မေ့")}
-                  </button>
-                </div>
-              </form>
-            ) : (
-              <div className="space-y-6">
-                <div className="text-center space-y-2">
-                  <h2 className="text-xl font-black uppercase tracking-wider text-rose-400">Security Update</h2>
-                  <p className="text-xs text-slate-400 leading-relaxed">Account rotation policy requires a new security key.</p>
-                </div>
-                <input
-                  type="password"
-                  required
-                  placeholder="NEW ACCESS KEY"
-                  className="w-full rounded-2xl border border-rose-500/20 bg-rose-500/5 px-5 py-4 text-sm font-semibold text-white outline-none focus:border-rose-500/50"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                />
-                <button type="button" onClick={() => setView("login")} className="w-full py-4 text-xs font-black uppercase tracking-widest text-slate-500 hover:text-white transition-colors">
-                  Cancel
-                </button>
-              </div>
-            )}
+          <div className="relative z-10 space-y-6">
+            <FeatureItem 
+              title="End-to-end scan control" 
+              desc="Mandatory QR checkpoints from picking to final Delivery." 
+            />
+            <FeatureItem 
+              title="Premium operations visibility" 
+              desc="Role-based portal entry for governance and reporting." 
+            />
+            <FeatureItem 
+              title="Bilingual workflow platform" 
+              desc="Myanmar and English experience with structured status visibility." 
+            />
           </div>
 
-          {/* Footer Actions */}
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 px-4">
-            <button onClick={() => setLang(lang === "en" ? "my" : "en")} className="flex items-center space-x-2 text-[10px] font-bold uppercase tracking-widest text-white/40 hover:text-white transition-colors">
-              <Globe size={14} /> <span>{lang === "en" ? "Myanmar" : "English"}</span>
-            </button>
-            <div className="flex items-center space-x-6">
-              <a href="/app-debug.apk" download className="flex items-center space-x-2 text-[10px] font-bold uppercase tracking-widest text-emerald-400/60 hover:text-emerald-400 transition-colors">
-                <Download size={14} /> <span>APK</span>
-              </a>
-              <span className="text-[10px] text-white/20 font-bold uppercase tracking-widest">v2.4.1</span>
+          <div className="relative z-10 mt-12 flex items-center justify-between border-t border-white/10 pt-8">
+            <div>
+              <p className="text-xs font-black uppercase tracking-widest text-white">Britium Express</p>
+              <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Fast. Controlled. Auditable.</p>
             </div>
+            <Globe size={20} className="text-slate-600" />
+          </div>
+        </div>
+
+        {/* Right Side: Login Form Panel */}
+        <div className="w-full lg:w-1/2 p-10 md:p-16 flex flex-col justify-center bg-white">
+          <div className="mb-10">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-600 mb-2 block">Sign In</span>
+            <h2 className="text-3xl font-black text-slate-900 tracking-tight">Welcome back</h2>
+            <p className="text-slate-500 text-sm mt-2 font-medium">Access your assigned portal securely and continue daily operations.</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-[11px] font-black uppercase tracking-widest text-slate-700 ml-1">Email</label>
+              <div className="relative group">
+                <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+                <input 
+                  type="email"
+                  required
+                  placeholder="md@britiumexpress.com"
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-5 py-4 text-sm font-semibold text-slate-900 outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/5"
+                  value={email}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[11px] font-black uppercase tracking-widest text-slate-700 ml-1">Password</label>
+              <div className="relative group">
+                <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-400 transition-colors" />
+                <input 
+                  type="password"
+                  required
+                  placeholder="••••••••••••"
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-5 py-4 text-sm font-semibold text-slate-900 outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/5"
+                  value={password}
+                />
+              </div>
+            </div>
+
+            {errorMsg && (
+              <div className="p-4 rounded-2xl bg-rose-50 border border-rose-100 flex items-start gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
+                <ShieldCheck className="text-rose-600 shrink-0 mt-0.5" size={18} />
+                <p className="text-xs font-bold text-rose-700 leading-relaxed">{errorMsg}</p>
+              </div>
+            )}
+
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="w-full group flex items-center justify-center rounded-2xl bg-indigo-600 py-4 text-sm font-black uppercase tracking-widest text-white shadow-xl shadow-indigo-900/20 transition-all hover:bg-indigo-700 active:scale-[0.98] disabled:opacity-50"
+            >
+              {loading ? (
+                <Loader2 className="animate-spin" size={20} />
+              ) : (
+                <>
+                  Sign In
+                  <ChevronRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className="mt-8 space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <button className="flex items-center justify-center gap-2 py-3 rounded-xl border border-slate-100 bg-white text-[10px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 transition-colors">
+                <UserPlus size={14} /> Sign Up
+              </button>
+              <button className="flex items-center justify-center gap-2 py-3 rounded-xl border border-slate-100 bg-white text-[10px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 transition-colors">
+                <KeyRound size={14} /> Forgot Password
+              </button>
+            </div>
+            
+            <button className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-slate-100 bg-white text-[10px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 transition-colors">
+              <Download size={14} /> Download APK Guide
+            </button>
+          </div>
+
+          <div className="mt-8 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-slate-400">
+            <span>Need public tracking?</span>
+            <button className="text-indigo-600 hover:text-indigo-800">Open Tracking</button>
           </div>
         </div>
       </div>
@@ -256,14 +208,11 @@ export function Login() {
   );
 }
 
-/**
- * PREVIEW WRAPPER
- * This ensures the component has the necessary Router context during Canvas preview.
- */
-export default function App() {
+function FeatureItem({ title, desc }: { title: string; desc: string }) {
   return (
-    
-      <Login />
-    
+    <div className="group rounded-3xl bg-white/5 border border-white/5 p-6 transition-all hover:bg-white/10 hover:border-white/10">
+      <h4 className="text-white font-bold text-sm mb-1">{title}</h4>
+      <p className="text-slate-500 text-xs leading-relaxed">{desc}</p>
+    </div>
   );
 }

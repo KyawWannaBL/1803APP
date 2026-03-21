@@ -96,7 +96,7 @@ export function AppShell() {
   }
 
   return (
-    <div className="shell shell--premium">
+    <div className="shell shell--premium glass-blur glass-blur glass-blur">
       <aside className="shell__sidebar">
         <div className="brand glass-card">
           <Link to="/portal-directory">Britium Enterprise Delivery Platform</Link>
@@ -104,8 +104,8 @@ export function AppShell() {
             Role-aware enterprise shell with realtime monitoring, workflow orchestration, and operational controls.
           </span>
           <div className="shell__meta">
-            <span className={`status-chip ${mode === 'demo' ? 'status-chip--warn' : 'status-chip--ok'}`}>
-              {mode === 'demo' ? 'Demo mode' : 'Backend mode'}
+            <span className={`status-chip ${mode === 'supabase' ? 'status-chip--warn' : 'status-chip--ok'}`}>
+              {mode === 'supabase' ? 'Demo mode' : 'Production auth'}
             </span>
             <span className="status-chip">{env.appEnv}</span>
           </div>

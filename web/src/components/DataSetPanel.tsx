@@ -1,104 +1,35 @@
-import React from 'react';
-import { Database, Activity, RefreshCw } from 'lucide-react';
+// @ts-nocheck
+import React, { useState, useMemo } from 'react';
+import { Database, RefreshCw, Search, ChevronRight } from 'lucide-react';
 
-interface DataSetPanelProps {
-  table: string;
-  rows: any[];
-  busy?: boolean;
-  onReload?: () => void;
-  selectedId?: string | null;
-  onSelect?: (row: any) => void;
-  title?: string;
-}
-
-// Named export အဖြစ် ထားရှိသည်
-export const DatasetPanel: React.FC<DataSetPanelProps> = ({ 
-  table,
-  rows = [], 
-  busy = false,
-  onReload,
-  selectedId,
-  onSelect,
-  title
-}) => {
-  // ခေါင်းစဉ်ကို မြန်မာဘာသာသို့ အလိုအလျောက် ပြောင်းလဲခြင်း သို့မဟုတ် ပေးထားသော ခေါင်းစဉ်ကို သုံးခြင်း
+export const DatasetPanel = ({ table = "dataset", rows = [], busy = false, onReload = () => Promise.resolve(), selectedId = null, onSelect = (row: any) => {}, title = "" }) => {
+  const [searchTerm, setSearchTerm] = useState('');
   const displayTitle = title || table.replace(/_/g, ' ').toUpperCase();
+  const filteredRows = useMemo(() => rows.filter(r => Object.values(r).some(v => String(v).toLowerCase().includes(searchTerm.toLowerCase()))), [rows, searchTerm]);
 
   return (
-    <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-md transition-all hover:border-indigo-500/30">
-      {/* Header အပိုင်း */}
-      <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between bg-white/5">
-        <div className="flex items-center space-x-3">
-          <Database className="text-indigo-400" size={18} />
-          <h3 className="text-white font-bold text-sm uppercase tracking-widest">{displayTitle}</h3>
-        </div>
-        <div className="flex items-center space-x-4">
-          {onReload && (
-            <button 
-              onClick={onReload}
-              disabled={busy}
-              className="text-slate-400 hover:text-white transition-colors disabled:opacity-30"
-              title="ဒေတာ ပြန်လည်စတင်ရန်"
-            >
-              <RefreshCw size={14} className={busy ? 'animate-spin' : ''} />
-            </button>
-          )}
-          <div className="flex items-center space-x-2">
-            <span className={`h-2 w-2 rounded-full ${busy ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500'}`} />
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">
-              {busy ? 'လုပ်ဆောင်နေသည်' : 'တိုက်ရိုက် ချိတ်ဆက်မှု'}
-            </span>
+    <div className="flex flex-col h-full acrylic-sheet acrylic-indigo rounded-[3.5rem] overflow-hidden shadow-2xl transition-all hover:border-indigo-500/30">
+      <div className="px-12 py-10 border-b border-white/5 flex flex-col gap-8">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-6">
+            <div className="p-5 bg-indigo-500/20 rounded-[2rem] border border-indigo-500/30 shadow-[0_0_40px_rgba(99,102,241,0.3)]"><Database className="text-indigo-300" size={28} /></div>
+            <div><h3 className="text-white grandeur-label text-sm italic">{displayTitle}</h3><p className="text-[10px] text-indigo-400/60 font-black uppercase tracking-[0.3em] mt-2 italic">Secure Data Node</p></div>
           </div>
+          <button onClick={onReload} className="p-4 rounded-2xl bg-white/5 text-slate-400 hover:text-white jelly-click transition-all"><RefreshCw size={20} className={busy ? 'animate-spin' : ''} /></button>
+        </div>
+        <div className="relative group">
+          <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-600" size={18} />
+          <input placeholder="ENTER QUERY..." value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} className="w-full bg-black/40 border border-white/10 rounded-2xl py-5 pl-16 pr-8 text-xs font-black text-white grandeur-label outline-none focus:border-indigo-500/50 transition-all" />
         </div>
       </div>
-      
-      {/* List အပိုင်း */}
-      <div className="p-2 max-h-[400px] overflow-y-auto custom-scrollbar">
-        {busy && rows.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 space-y-3 opacity-50">
-            <Activity className="text-indigo-500 animate-bounce" size={24} />
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">ဒေတာ စတင်ဖတ်နေသည်...</p>
+      <div className="flex-1 overflow-y-auto p-6 space-y-4">
+        {filteredRows.map((row, idx) => (
+          <div key={idx} onClick={() => onSelect(row)} className={`p-8 rounded-[2rem] acrylic-sheet jelly-click cursor-pointer group ${selectedId && String(selectedId) === String(row.id) ? 'acrylic-indigo border-indigo-500/50 shadow-indigo-900/40' : 'bg-white/[0.01] border-transparent hover:bg-white/[0.04]'}`}>
+            <div className="flex items-center justify-between"><div className="flex items-center gap-6"><div className={`h-12 w-12 rounded-2xl flex items-center justify-center text-xs font-black ${selectedId && String(selectedId) === String(row.id) ? 'bg-indigo-500 text-white shadow-lg' : 'bg-white/5 text-slate-500'}`}>{idx + 1}</div><span className="text-slate-100 font-black text-base uppercase tracking-tighter group-hover:text-indigo-300 transition-colors">{row.name || row.title || `L5_ENTITY_${row.id || idx+1}`}</span></div><ChevronRight size={20} className="text-slate-700 group-hover:text-indigo-500 transition-all" /></div>
           </div>
-        ) : rows.length === 0 ? (
-          <div className="text-center py-12 border-2 border-dashed border-white/5 rounded-xl m-2">
-            <p className="text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em]">လက်ရှိ ဒေတာအစုအဝေးတွင် မှတ်တမ်းမရှိပါ</p>
-          </div>
-        ) : (
-          <div className="space-y-1">
-            {rows.map((row, idx) => {
-              const isSelected = selectedId && String(row.id) === String(selectedId);
-              return (
-                <div 
-                  key={row.id || idx}
-                  onClick={() => onSelect?.(row)}
-                  className={`
-                    group cursor-pointer p-4 rounded-xl border transition-all duration-300
-                    ${isSelected 
-                      ? 'bg-indigo-600/20 border-indigo-500/50 shadow-[0_0_20px_rgba(79,70,229,0.1)]' 
-                      : 'bg-white/5 border-transparent hover:bg-white/10 hover:border-white/10'
-                    }
-                  `}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex flex-col">
-                      <span className="text-white font-bold text-xs">
-                        {row.name || row.title || row.label || `မှတ်တမ်း #${row.id}`}
-                      </span>
-                      <span className="text-[10px] text-slate-500 font-mono mt-1">
-                        ID: {row.id}
-                      </span>
-                    </div>
-                    {isSelected && <Activity size={14} className="text-indigo-400" />}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+        ))}
       </div>
     </div>
   );
 };
-
-// Default export ကို ထည့်သွင်းပေးထားပါသည် (Runtime error ကို ဖြေရှင်းရန်)
 export default DatasetPanel;
