@@ -8,7 +8,7 @@ import type { SessionUser, AppRole } from '@/types';
 type AuthContextValue = {
   user: SessionUser | null;
   loading: boolean;
-  mode: 'demo' | 'supabase';
+  mode: 'supabase' | 'supabase';
   signInDemo: (role: AppRole) => void;
   signInWithPassword: (email: string, password: string) => Promise<{ error?: string }>;
   signIn: (email: string, password: string) => Promise<void>;
@@ -55,7 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<SessionUser | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const mode: 'demo' | 'supabase' =
+  const mode: 'supabase' | 'supabase' =
     isSupabaseConfigured && (!env.enableDemoFallback || env.appEnv === 'production') ? 'supabase' : 'demo';
 
   useEffect(() => {

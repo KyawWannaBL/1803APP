@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/AuthProvider";
 import portals from "@/data/portalConfig.json";
 import { getPortalBase } from "@/lib/roleRouting";
-import { ArrowRight, Layers, ShieldCheck } from "lucide-react";
+import { ArrowRight, Layers, ShieldCheck } from 'lucide-react';
 import { useI18n } from "@/i18n/I18nProvider";
 
 export default function PortalDirectory() {

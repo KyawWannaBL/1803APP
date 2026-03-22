@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import SignatureCanvas from 'react-signature-canvas';
 import Tesseract from 'tesseract.js';
 import * as XLSX from 'xlsx';
-import { Camera, ScanLine, FileSpreadsheet, CheckCircle2, ShieldCheck, Loader2, Maximize, FileText, Sun } from "lucide-react";
+import { Camera, ScanLine, FileSpreadsheet, CheckCircle2, ShieldCheck, Loader2, Maximize, FileText, Sun } from 'lucide-react';
 import toast from "react-hot-toast";
 
 export default function DeliveryProof() {
