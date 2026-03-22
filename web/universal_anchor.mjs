@@ -1,4 +1,25 @@
-// @ts-nocheck
+import fs from 'fs';
+import path from 'path';
+
+const srcDir = path.join(process.cwd(), 'src');
+console.log("⚓ DEPLOYING UNIVERSAL ANCHOR...");
+
+function findFile(dir, fileName) {
+    if (!fs.existsSync(dir)) return null;
+    for (const file of fs.readdirSync(dir)) {
+        const fullPath = path.join(dir, file);
+        if (fs.statSync(fullPath).isDirectory()) {
+            const res = findFile(fullPath, fileName);
+            if (res) return res;
+        } else if (file.toLowerCase() === fileName.toLowerCase()) return fullPath;
+    }
+    return null;
+}
+
+// 1. CREATE A TOTALLY INDEPENDENT, CRASH-PROOF APPSHELL
+const shellPath = findFile(srcDir, 'appshell.tsx');
+if (shellPath) {
+    const safeShell = `// @ts-nocheck
 import React from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { LayoutGrid, Users, Package, Truck, Wallet, Settings, LogOut, Bell, Shield } from 'lucide-react';
@@ -56,3 +77,20 @@ export const AppShell = ({ children }) => {
   );
 };
 export default AppShell;
+`;
+    fs.writeFileSync(shellPath, safeShell);
+    console.log("✅ AppShell.tsx bulletproofed.");
+}
+
+// 2. FORCE APP.TSX TO USE THE NAMED EXPORT
+const appPath = findFile(srcDir, 'app.tsx');
+if (appPath) {
+    let code = fs.readFileSync(appPath, 'utf8');
+    code = code.replace(/import AppShell from/g, "import { AppShell } from");
+    fs.writeFileSync(appPath, code);
+    console.log("✅ App.tsx import fixed.");
+}
+
+console.log("--------------------------------------------------------");
+console.log("🎉 ANCHOR SECURED. Restart your server.");
+console.log("--------------------------------------------------------");

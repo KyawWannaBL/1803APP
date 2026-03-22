@@ -23,7 +23,7 @@ export default function CustomerPortalDashboard() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
         {[ {l: t('Throughput', 'လုပ်ဆောင်မှုနှုန်း'), v:'1,284'}, {l: t('Efficiency', 'စွမ်းဆောင်ရည်'), v:'98.2%'}, {l: t('Active Nodes', 'အချက်များ'), v:'42'}, {l: t('Compliance', 'လိုက်နာမှု'), v:'100%'} ].map((s,i)=>(
-          <div key={i} className="p-10 acrylic-sheet rounded-[3rem] bg-black/20 border-white/5 hover:border-cyan-500/40 transition-all">
+          <div key={i} className="p-10 acrylic-sheet rounded-[3rem] bg-black/20 border-white/20 hover:border-cyan-500/40 transition-all">
             <div className="flex justify-between items-start mb-6">
               <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">{s.l}</span>
               <ArrowUpRight className="text-cyan-400" size={16} />

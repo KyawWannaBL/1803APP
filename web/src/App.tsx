@@ -1,6 +1,6 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import AppShell from './components/AppShell';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AppShell } from './components/AppShell';
 import RiderDashboard from './screens/RiderDashboard';
 import RiderAssignedTasks from './screens/RiderAssignedTasks';
 import RiderPickup from './screens/RiderPickup';
@@ -75,7 +75,8 @@ import HrManagement from './screens/HrManagement';
 
 export default function App() {
   return (
-    <Routes>
+    <BrowserRouter>
+      <Routes>
       {/* Absolute Bypass: Teleport past the login directly to the dashboard */}
       <Route path="/" element={<Navigate to="/enterprise-admin/dashboard" replace />} />
       <Route path="/login" element={<Navigate to="/enterprise-admin/dashboard" replace />} />
@@ -157,5 +158,6 @@ export default function App() {
       {/* 404 Fallback Catch-All */}
       <Route path="*" element={<Navigate to="/enterprise-admin/dashboard" replace />} />
     </Routes>
+    </BrowserRouter>
   );
 }

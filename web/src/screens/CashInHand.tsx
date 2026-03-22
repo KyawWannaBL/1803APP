@@ -114,7 +114,7 @@ export default function CashInHand() {
         </div>
       </div>
 
-      <div className="acrylic-sheet rounded-[3rem] bg-black/40 border-white/5 p-10 min-h-[500px] flex flex-col items-center justify-center">
+      <div className="acrylic-sheet rounded-[3rem] bg-slate-900/90 border-white/20 p-10 min-h-[500px] flex flex-col items-center justify-center">
          {loading ? (
             <div className="text-center space-y-4">
                <Activity size={48} className="text-rose-500/50 animate-bounce mx-auto" />
@@ -182,7 +182,7 @@ export default function CashInHand() {
                )}
 
                {('GRID' === 'MAP') && (
-                 <div className="aspect-video bg-slate-900/80 rounded-3xl flex items-center justify-center border border-white/10">
+                 <div className="aspect-video bg-slate-900/90 rounded-3xl flex items-center justify-center border border-white/10">
                    <Map size={64} className="text-rose-400/50 animate-pulse" />
                  </div>
                )}

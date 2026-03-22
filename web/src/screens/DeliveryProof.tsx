@@ -87,7 +87,7 @@ export default function DeliveryProof() {
         <div className="acrylic-sheet acrylic-indigo rounded-[3.5rem] p-10 space-y-8 flex flex-col">
            <div className="flex justify-between items-center">
              <h3 className="grandeur-label text-xs text-indigo-400 flex items-center gap-3"><Camera size={16}/> Smart Capture Node</h3>
-             <span className="px-4 py-1.5 rounded-full bg-black/40 border border-white/10 text-[9px] font-black uppercase text-amber-400 tracking-widest flex items-center gap-2">
+             <span className="px-4 py-1.5 rounded-full bg-slate-900/90 border border-white/10 text-[9px] font-black uppercase text-amber-400 tracking-widest flex items-center gap-2">
                <Sun size={12} className={lightingStatus.includes("optimal") ? "text-emerald-400" : "text-amber-400 animate-pulse"} /> 
                {lightingStatus}
              </span>
@@ -108,8 +108,8 @@ export default function DeliveryProof() {
              <input type="file" accept="image/*" capture="environment" className="absolute inset-0 opacity-0 cursor-pointer" onChange={handleCapture} />
            </div>
 
-           <div className="p-6 bg-black/40 rounded-[2rem] border border-white/5 space-y-4">
-             <div className="flex items-center justify-between text-[10px] grandeur-label text-slate-400 border-b border-white/5 pb-4">
+           <div className="p-6 bg-slate-900/90 rounded-[2rem] border border-white/20 space-y-4">
+             <div className="flex items-center justify-between text-[10px] grandeur-label text-slate-400 border-b border-white/20 pb-4">
                <span>Status: {scanStatus}</span>
              </div>
              {extractedText ? (
@@ -138,7 +138,7 @@ export default function DeliveryProof() {
             <SignatureCanvas ref={sigPad} penColor="#0f172a" canvasProps={{ className: 'w-full h-full cursor-crosshair' }} />
           </div>
 
-          <div className="p-6 bg-black/40 rounded-[2rem] border border-white/5 space-y-2">
+          <div className="p-6 bg-slate-900/90 rounded-[2rem] border border-white/20 space-y-2">
             <label className="grandeur-label text-[10px] text-amber-400 ml-2">Authorized Signatory</label>
             <input className="w-full bg-transparent border-b-2 border-white/10 px-4 py-4 text-2xl font-black text-white outline-none focus:border-amber-400 transition-all uppercase placeholder:text-slate-700" placeholder="ENTER NAME" />
           </div>

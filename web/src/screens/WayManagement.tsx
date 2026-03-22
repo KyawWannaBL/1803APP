@@ -35,10 +35,10 @@ export default function WayManagement() {
 
       <div className="flex-1 grid grid-cols-1 xl:grid-cols-4 gap-10 min-h-0">
         <div className="xl:col-span-1 acrylic-sheet acrylic-indigo rounded-[3.5rem] p-8 flex flex-col gap-6 overflow-hidden">
-          <h3 className="grandeur-label text-[10px] text-indigo-400 border-b border-white/5 pb-4">Active Convoys</h3>
+          <h3 className="grandeur-label text-[10px] text-indigo-400 border-b border-white/20 pb-4">Active Convoys</h3>
           <div className="flex-1 overflow-y-auto space-y-4 custom-scrollbar">
             {activeNodes.map((node) => (
-              <div key={node.id} className="p-6 rounded-[2rem] bg-black/40 border border-white/5 jelly-click cursor-pointer hover:border-indigo-500/50 transition-all">
+              <div key={node.id} className="p-6 rounded-[2rem] bg-slate-900/90 border border-white/20 jelly-click cursor-pointer hover:border-indigo-500/50 transition-all">
                 <div className="flex justify-between items-start mb-4">
                   <Truck className="text-indigo-400" size={20} />
                   <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[8px] font-black uppercase tracking-widest">{node.status}</span>
